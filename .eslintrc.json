@@ -43,6 +43,7 @@
       }
     }
   },
+  "ignorePatterns": ["tailwind.config.ts"],
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "tailwindcss/no-custom-classname": "off",
@@ -80,7 +81,7 @@
     {
       "files": ["*.ts", "*.tsx"],
       "rules": {
-        "@typescript-eslint/explicit-module-boundary-types": ["warn"]
+        "@typescript-eslint/explicit-module-boundary-types": "off"
       }
     },
     {
