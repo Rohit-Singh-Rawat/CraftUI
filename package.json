@@ -6,24 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prepare": "husky init",
     "lint": "next lint",
-    "prepare": "husky"
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,mdx,json,html}'",
+    "type-check": "tsc --noEmit",
+    "test": "bun test",
+    "commitlint": "commitlint --edit"
   },
   "dependencies": {
-    "@radix-ui/react-icons": "^1.3.0",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.437.0",
     "next": "14.2.7",
     "react": "^18",
-    "react-dom": "^18",
-    "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "react-dom": "^18"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.4.1",
+    "@commitlint/config-conventional": "^19.4.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.7",
     "eslint-config-prettier": "^9.1.0",
@@ -36,5 +38,12 @@
     "prettier-plugin-tailwindcss": "^0.6.6",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "pnpm lint:fix",
+      "pnpm format"
+    ],
+    "*.{css,md,mdx,json,html}": "pnpm format"
   }
 }

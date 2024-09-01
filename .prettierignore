@@ -1,0 +1,36 @@
+node_modules
+.next/
+out/
+coverage/
+.github
+
+# Static files and logs
+public/static/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# IDE settings
+.vscode
+.idea
+
+# TypeScript and build artifacts
+*.d.ts
+*.tsbuildinfo
+*.js.map
+*.ts.map
+
+# Configuration files
+*.config.js
+*.config.ts
+*.config.cjs
+*.config.mjs
+
+# Miscellaneous
+*.tgz
+*.zip
