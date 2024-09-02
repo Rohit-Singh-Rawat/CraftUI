@@ -1,10 +1,9 @@
+import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 
 import './globals.css'
 import { ThemeProvider } from '@/components/provider/theme-provider'
-
-const inter = Inter({ subsets: ['latin'] })
+import Navbar from '@/components/shared/Navbar'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,16 +17,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {' '}
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
-        disableTransitionOnChange
-      >
-        {' '}
-        <body className={inter.className}>{children}</body>
-      </ThemeProvider>
+      <body className={GeistSans.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="dark:bg-black">
+            <Navbar />
+            {children}
+          </div>
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
