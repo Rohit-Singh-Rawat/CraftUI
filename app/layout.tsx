@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react'
+// eslint-disable-next-line import/no-unresolved
 import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
 
@@ -24,6 +26,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Analytics />
           <div className="dark:bg-black">
             <Navbar />
             {children}
