@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans'
 import type { Metadata } from 'next'
 
 import './globals.css'
+import InlineStyleMarquee from '@/components/development'
 import { ThemeProvider } from '@/components/provider/theme-provider'
 import Navbar from '@/components/shared/Navbar'
 
@@ -28,8 +29,9 @@ export default function RootLayout({
         >
           <Analytics />
           <div className="dark:bg-black">
+            <InlineStyleMarquee />
             <Navbar />
-            {children}
+            <div className="container px-52">{children}</div>
           </div>
         </ThemeProvider>
       </body>

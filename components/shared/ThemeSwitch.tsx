@@ -14,7 +14,7 @@ export default function ThemeSwitch() {
   }, [])
 
   if (!mounted) {
-    return <div className="size-11"></div>
+    return <div className="size-9"></div>
   }
 
   function switchTheme() {
@@ -27,7 +27,7 @@ export default function ThemeSwitch() {
         aria-label="Switch theme"
         type="button"
         onClick={switchTheme}
-        className="flex size-9 flex-col items-center justify-center overflow-hidden rounded-full bg-black/10 font-medium duration-200 ease-in-out dark:bg-white/10"
+        className="flex size-9 flex-col items-center justify-center overflow-hidden rounded-full bg-black/5 font-medium duration-200 ease-in-out dark:bg-white/5"
       >
         <AnimatePresence mode="wait" initial={false}>
           {resolvedTheme === 'light' ? (
