@@ -1,9 +1,35 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
 
 import DrawerComponent from '@/components/shared/CodeDialog'
 import { componentsInfo } from '@/util/constant'
 
 import NotFound from '../not-found'
+
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params
+  const componentPageInfo = componentsInfo[`/${slug}`]
+
+  if (slug === '/' || slug === undefined) {
+    return {
+      title: 'Components - Craft UI',
+    }
+  }
+  if (!componentPageInfo) {
+    return {
+      title: 'Not Found',
+    }
+  }
+
+  return {
+    title: componentPageInfo.title,
+    description: componentPageInfo.description,
+  }
+}
 
 const Page = ({ params }: { params: { slug: string } }) => {
   const paramSlug = params?.slug
@@ -65,5 +91,11 @@ const RequestComponent = () => (
     </Link>
   </div>
 )
+
+export async function generateStaticParams(): Promise<{ slug: string[] }[]> {
+  return Object.keys(componentsInfo).map((key) => ({
+    slug: key.slice(1).split('/'),
+  }))
+}
 
 export default Page

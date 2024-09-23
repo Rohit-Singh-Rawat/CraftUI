@@ -227,3 +227,7 @@ h1 {
   background-image: linear-gradient(to top, transparent, black),
     url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='140' height='140' fill='none' stroke='rgba(24, 24, 29,0.8 )' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
 }
+.dark .gridGradient2 {
+  background-image: linear-gradient(to left top, transparent, black 99%),
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='70' height='70' fill='none' stroke='rgba(255,255,255,0.25 )' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
