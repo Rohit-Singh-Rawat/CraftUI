@@ -31,7 +31,7 @@ export default function RootLayout({
           <div className="dark:bg-black">
             <InlineStyleMarquee />
             <Navbar />
-            <div className="container px-52">{children}</div>
+            <main>{children}</main>
           </div>
         </ThemeProvider>
       </body>

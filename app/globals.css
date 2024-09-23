@@ -109,3 +109,119 @@
 .dark-mode::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
+@import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
+
+/* Animation */
+@keyframes fold {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}
+
+@keyframes unfold {
+  0% {
+    transform: rotateX(180deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+/* Mixin for animations */
+.animate {
+  animation: var(--animation-name) var(--animation-duration, 300ms)
+    var(--animation-easing) var(--animation-delay, 0s)
+    var(--animation-iteration, 1) var(--animation-direction, normal)
+    var(--animation-fill-mode, forwards);
+}
+
+/* General styles */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  display: flex;
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background-color: #fbab7e;
+  background-image: linear-gradient(62deg, #fbab7e 0%, #f7ce68 100%);
+}
+
+header {
+  display: flex;
+  position: relative;
+}
+
+h1 {
+  font-family: 'Droid Sans Mono', monospace;
+  font-weight: lighter;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: white;
+}
+
+/* Variables */
+:root {
+  --border: whitesmoke;
+  --card: white;
+  --font-family: 'Droid Sans Mono', monospace;
+  --font-size: 5em;
+  --font-width: lighter;
+  --font-color: #4f4f4f; /* lightened black */
+  --turn-duration: 0.6s;
+  --easeInOut: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+/* Custom scrollbar styles for both light and dark mode */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.custom-scrollbar:hover {
+  scrollbar-color: #f4f6ef transparent;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: #f4f6ef;
+  border-radius: 10px;
+}
+
+.custom-scrollbar:hover {
+  scrollbar-color: #f4f6ef transparent;
+}
+.gridGradient {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='5' height='5' fill='none' stroke='rgb(26 28 30,0.3)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}
+
+.dark .gridGradient {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='5' height='5' fill='none' stroke='rgb(244 246 239,0.3)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+}

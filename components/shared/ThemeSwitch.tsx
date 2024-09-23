@@ -27,7 +27,7 @@ export default function ThemeSwitch() {
         aria-label="Switch theme"
         type="button"
         onClick={switchTheme}
-        className="flex size-9 flex-col items-center justify-center overflow-hidden rounded-full bg-black/5 font-medium duration-200 ease-in-out dark:bg-white/5"
+        className="flex size-9 flex-col items-center justify-center overflow-hidden rounded-full bg-black/5 font-medium outline-none duration-200 ease-in-out dark:bg-white/5"
       >
         <AnimatePresence mode="wait" initial={false}>
           {resolvedTheme === 'light' ? (
@@ -39,7 +39,7 @@ export default function ThemeSwitch() {
               transition={{ duration: 0.2 }}
               className="size-4"
             >
-              <Moon size={15} />
+              <Moon size={15} className="text-black/50 dark:text-white/50" />
             </motion.span>
           ) : (
             <motion.span
@@ -50,7 +50,7 @@ export default function ThemeSwitch() {
               className="size-4"
               transition={{ duration: 0.2 }}
             >
-              <Sun size={15} />
+              <Sun size={15} className="text-black/50 dark:text-white/50" />
             </motion.span>
           )}
         </AnimatePresence>
