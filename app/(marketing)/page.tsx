@@ -2,11 +2,18 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
+import { Marquee } from '@/components/crafts/Marquee'
+import { Css } from '@/components/icons/css'
+import { FramerMotion } from '@/components/icons/FramerMotion'
 import Logo from '@/components/icons/logo'
+import Nextjs from '@/components/icons/Nextjs'
+import { ReactIcon } from '@/components/icons/react'
+import { Shadcn } from '@/components/icons/Shadcn'
+import { Tailwind } from '@/components/icons/tailwindcss'
 
 function MarketingPage() {
   return (
-    <div className="flex flex-col items-center justify-center bg-white py-[149px] dark:bg-black">
+    <div className="gridGradient flex min-h-[calc(100vh-120px)] flex-col items-center justify-center bg-white dark:bg-black">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -70,9 +77,27 @@ function MarketingPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3"
+        className="mt-12 flex w-2/5 items-center justify-center overflow-hidden"
       >
-        {/* Feature cards removed */}
+        <Marquee
+          icons={[
+            Nextjs,
+            ReactIcon,
+            Css,
+            Tailwind,
+            FramerMotion,
+            Shadcn,
+            Nextjs,
+            ReactIcon,
+            Css,
+            Tailwind,
+            FramerMotion,
+            Shadcn,
+          ]}
+          gap="25px"
+          direction="left"
+          fade
+        />
       </motion.div>
       <motion.div
         initial={{ opacity: 0 }}

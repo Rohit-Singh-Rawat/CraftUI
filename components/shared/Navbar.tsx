@@ -27,7 +27,7 @@ const Navbar = () => {
 
       <div className="flex items-center gap-5">
         <Link
-          href={'https://x.com/intent/follow?screen_name=jh3yy'}
+          href={'https://github.com/Rohit-Singh-Rawat/CraftUI'}
           target="_blank"
           className="text-black/50 hover:text-black dark:text-white/50 hover:dark:text-white"
         >

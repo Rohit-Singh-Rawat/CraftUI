@@ -63,7 +63,9 @@ const config: Config = {
       },
       animation: {
         fold: 'fold 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards',
-        unfold: 'unfold 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards',
+        unfold: 'unfold 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards',  'marquee-left': 'marquee-left var(--duration, 30s) linear infinite',
+        'marquee-up': 'marquee-up var(--duration, 30s) linear infinite',
+   
       },
       keyframes: {
         fold: {
@@ -73,6 +75,13 @@ const config: Config = {
         unfold: {
           '0%': { transform: 'rotateX(180deg)' },
           '100%': { transform: 'rotateX(0deg)' },
+        },'marquee-left': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(calc(-100% - var(--gap)))' },
+        },
+        'marquee-up': {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(calc(-100% - var(--gap)))' },
         },
       },
       perspective: {

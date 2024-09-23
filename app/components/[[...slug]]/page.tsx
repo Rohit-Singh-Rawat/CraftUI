@@ -1,24 +1,69 @@
-const page = () => {
+import Link from 'next/link'
+
+import DrawerComponent from '@/components/shared/CodeDialog'
+import { componentsInfo } from '@/util/constant'
+
+import NotFound from '../not-found'
+
+const Page = ({ params }: { params: { slug: string } }) => {
+  const paramSlug = params?.slug
+  const componentPageInfo = componentsInfo[`/${paramSlug}`]
+  if (paramSlug === '/' || paramSlug === undefined) {
+    return (
+      <div className="gridGradient h-full">
+        <RequestComponent />
+        <p className="mt-40 bg-gradient-to-b from-gray-700 via-gray-500 to-gray-300 bg-clip-text text-center text-8xl font-bold text-transparent opacity-60 dark:from-gray-200 dark:via-gray-400 dark:to-gray-600">
+          More coming soon...
+        </p>
+      </div>
+    )
+  }
+
+  if (!componentPageInfo) {
+    return <NotFound />
+  }
+
   return (
-    <div style={{ minHeight: '200vh' }}>
-      <h1>Welcome to the Page</h1>
-      <p>This is a sample page content that fills more than 100vh.</p>
-      <section>
-        <h2>Section 1</h2>
-        <p>Content for section 1...</p>
-      </section>
-      <section>
-        <h2>Section 2</h2>
-        <p>Content for section 2...</p>
-      </section>
-      <section>
-        <h2>Section 3</h2>
-        <p>Content for section 3...</p>
-      </section>
-      <footer>
-        <p>Footer content...</p>
-      </footer>
+    <div>
+      <div className="mb-10">
+        <h2 className="my-2 text-4xl font-semibold capitalize">
+          {componentPageInfo.title}
+        </h2>
+        <p className="text-lg text-gray-700 dark:text-gray-300">
+          {componentPageInfo.description}
+        </p>
+        <span className="inline-flex items-center rounded-md border border-[#555553]/30 bg-[#f4f6ef] px-2 py-0.5 text-xs font-medium text-gray-800 dark:border-[#636361] dark:bg-[#262624] dark:text-[#c7c8c5]">
+          {componentPageInfo.group}
+        </span>
+      </div>
+      <div className="space-y-14">
+        {componentPageInfo.components.map((component) => (
+          <div key={component.name}>
+            <div className="my-3 flex items-center justify-between">
+              <h2>{component.name}</h2>
+              <DrawerComponent code={component.code} />
+            </div>
+            <div className="rounded-xl border border-[#4f4f4f]/10 p-7 dark:border-[#F4F6EF]/10">
+              {component.component}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
-export default page
+
+const RequestComponent = () => (
+  <div>
+    <Link
+      href="https://twitter.com/Spacing_Whale"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="mt-4 inline-block rounded-3xl border-2 border-gray-300 bg-clip-border px-4 py-2 font-semibold dark:border-white/10"
+    >
+      Request a Component
+    </Link>
+  </div>
+)
+
+export default Page
