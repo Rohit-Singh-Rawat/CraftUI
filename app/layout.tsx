@@ -20,25 +20,6 @@ const info = {
 export const metadata: Metadata = {
   metadataBase: new URL(info.url),
   title: info.name,
-  icons: {
-    icon: [
-      {
-        media: '(prefers-color-schema: no-preference)',
-        url: '/light-icon.svg',
-        href: '/light-icon.svg',
-      },
-      {
-        media: '(prefers-color-schema: light)',
-        url: '/light-icon.svg',
-        href: '/light-icon.svg',
-      },
-      {
-        media: '(prefers-color-schema: dark)',
-        url: '/dark-icon.svg',
-        href: '/dark-icon.svg',
-      },
-    ],
-  },
   description: info.description,
   authors: {
     name: info.name,
@@ -68,6 +49,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+      </head>
       <body className={GeistSans.className}>
         <ThemeProvider
           attribute="class"
