@@ -1,19 +1,5 @@
-import { ReactNode } from 'react'
-
-type ComponentInfo = {
-  name: string
-  code: string
-  component: ReactNode
-}
-
-type ComponentPageInfo = {
-  title: string
-  tag?: string
-  group: string
-  path: string
-  description: string
-  components: ComponentInfo[]
-}
+import HexagonBackground from '@/components/crafts/HexagonBackground'
+import { ComponentPageInfo } from '@/lib/types'
 
 export const componentsInfo: Record<string, ComponentPageInfo> = {
   '/button': {
@@ -71,6 +57,36 @@ export const componentsInfo: Record<string, ComponentPageInfo> = {
         name: 'Swap',
         code: '<Web3Swap>Swap here</Web3Swap>',
         component: <div>Swap here</div>,
+      },
+    ],
+  },
+  '/backgrounds': {
+    title: 'Backgrounds',
+    group: 'Layout',
+    tag: 'new',
+    path: '/components/backgrounds',
+    description: 'A customizable  background components',
+    components: [
+      {
+        name: 'Hexagon Background',
+        code: '<HexagonBackground color="#FFFF00" secondaryColor="#CC5500" fade cellSize="200px" opacity={0.8} />',
+        component: (
+          <div className="relative h-[300px] sm:h-[400px]">
+            <HexagonBackground
+              className="absolute inset-0"
+              color="#1F2942"
+              secondaryColor="#288898"
+              fade
+              cellSize="80px"
+              opacity={0.7}
+            />
+            <div className="relative z-10 flex h-full items-center justify-center p-4 text-center sm:p-6">
+              <h2 className="bg-gradient-to-b from-black to-green-200/50 bg-clip-text text-2xl font-semibold text-transparent dark:from-white/70 dark:to-green-900/20 sm:text-3xl md:text-6xl">
+                Hexagon Background
+              </h2>
+            </div>
+          </div>
+        ),
       },
     ],
   },

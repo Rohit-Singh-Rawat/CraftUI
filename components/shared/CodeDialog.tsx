@@ -1,4 +1,5 @@
 'use client'
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Drawer } from 'vaul'
 
@@ -26,18 +27,18 @@ const CodeDialog: React.FC<CodeDialogProps> = ({ code }) => {
       </Drawer.Trigger>
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 dark:bg-black/60" />
-        <Drawer.Content className="fixed inset-x-0 bottom-0 mt-24 flex h-[96%] flex-col rounded-t-[10px] border-2 border-zinc-400 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
+        <Drawer.Content className="fixed inset-x-0 bottom-0 z-[100] mt-24 flex h-[96%] flex-col rounded-t-[10px] border-2 border-zinc-400 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
           {' '}
           <div className="flex-1 rounded-t-[10px] bg-white p-4 dark:bg-zinc-950">
             <div className="mx-auto mb-8 h-1.5 w-12 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-600" />
             <div className="flex-1 rounded-t-[10px] bg-white p-4 dark:bg-zinc-950">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="group absolute right-10 top-10 rounded-full bg-[#dfeae4] p-1 text-sm transition duration-200 ease-linear hover:bg-[#c3c8c6] dark:bg-[#1a1e1c] dark:hover:bg-[#363636]"
+              >
+                <Plus className="rotate-45 stroke-white transition duration-200 ease-linear group-hover:rotate-[135deg]" />
+              </button>
               <div className="mb-4 flex items-center justify-between">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-lg border border-[#dfeae4] px-4 py-2 text-sm transition duration-300 hover:border-[#c3c8c6] dark:border-[#1a1e1c] dark:hover:border-[#3e4742]"
-                >
-                  Close
-                </button>
                 <button
                   onClick={handleCopy}
                   className="rounded-lg border border-[#dfeae4] px-4 py-2 text-sm transition duration-300 hover:border-[#c3c8c6] dark:border-[#1a1e1c] dark:hover:border-[#3e4742]"

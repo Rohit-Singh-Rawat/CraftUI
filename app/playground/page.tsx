@@ -1,7 +1,17 @@
-const Page = () => {
+import HexagonBackground from '@/components/crafts/HexagonBackground'
+
+const page = () => {
   return (
-    <div className="gridGradient2 flex min-h-[calc(100vh-100px)] flex-col items-center justify-center"></div>
+    <div>
+      <HexagonBackground
+        className="min-h-screen"
+        color="#FFFF00"
+        secondaryColor="#CC5500"
+        fade
+        cellSize={'200px'}
+        opacity={0.8}
+      />
+    </div>
   )
 }
-
-export default Page
+export default page
