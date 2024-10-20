@@ -3,6 +3,7 @@ node_modules
 out/
 coverage/
 .github
+.content-collections
 
 # Static files and logs
 public/static/
