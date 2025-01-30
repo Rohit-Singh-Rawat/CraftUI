@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { SVGProps } from 'react'
+import * as React from 'react';
+import type { SVGProps } from 'react';
 
 const Nextjs = (props: SVGProps<SVGSVGElement>) => {
-  const gradAId = `next-a-${props.id}`
-  const gradBId = `next-b-${props.id}`
+  const gradAId = `next-a-${props.id}`;
+  const gradBId = `next-b-${props.id}`;
 
   return (
     <svg viewBox="0 0 128 128" {...props}>
@@ -40,7 +40,7 @@ const Nextjs = (props: SVGProps<SVGSVGElement>) => {
         </linearGradient>
       </defs>
     </svg>
-  )
-}
+  );
+};
 
-export default Nextjs
+export default Nextjs;

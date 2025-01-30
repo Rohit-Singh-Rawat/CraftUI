@@ -1,14 +1,14 @@
-import { HTMLProps } from 'react'
+import type { HTMLProps } from 'react';
 
 interface HexagonBackgroundProps {
-  color?: string
-  secondaryColor?: string
-  cellSize?: string | number
-  strokeWidth?: number | string
-  className?: string
-  fade?: boolean
-  fadePercentage?: number
-  opacity?: number
+  color?: string;
+  secondaryColor?: string;
+  cellSize?: string | number;
+  strokeWidth?: number | string;
+  className?: string;
+  fade?: boolean;
+  fadePercentage?: number;
+  opacity?: number;
 }
 
 const HexagonBackground = ({
@@ -22,7 +22,7 @@ const HexagonBackground = ({
   opacity = 1,
   ...props
 }: HexagonBackgroundProps & HTMLProps<HTMLDivElement>) => {
-  const actualSecondaryColor = secondaryColor || color
+  const actualSecondaryColor = secondaryColor || color;
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 345">
       <defs>
@@ -50,8 +50,8 @@ const HexagonBackground = ({
       "
         stroke="url(#colorGradient)" stroke-width="${strokeWidth}" fill="none"/>
     </svg>
-  `
-  const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`
+  `;
+  const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   return (
     <div
       className={`pointer-events-none ${className}`}
@@ -67,8 +67,8 @@ const HexagonBackground = ({
           : undefined,
       }}
       {...props}
-    ></div>
-  )
-}
+    />
+  );
+};
 
-export default HexagonBackground
+export default HexagonBackground;

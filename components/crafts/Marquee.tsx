@@ -1,16 +1,17 @@
-import React, { SVGProps } from 'react'
+import type React from 'react';
+import type { SVGProps } from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 type MarqueeProps = {
-  icons: ((props: SVGProps<SVGSVGElement>) => React.JSX.Element)[]
-  gap?: string
-  direction?: 'left' | 'up'
-  pauseOnHover?: boolean
-  reverse?: boolean
-  fade?: boolean
-  className?: string
-}
+  icons: ((props: SVGProps<SVGSVGElement>) => React.JSX.Element)[];
+  gap?: string;
+  direction?: 'left' | 'up';
+  pauseOnHover?: boolean;
+  reverse?: boolean;
+  fade?: boolean;
+  className?: string;
+};
 
 export const Marquee = (props: MarqueeProps) => {
   const {
@@ -21,20 +22,20 @@ export const Marquee = (props: MarqueeProps) => {
     reverse = false,
     fade = false,
     className,
-  } = props
+  } = props;
 
   const mask = fade
     ? `linear-gradient(${
         direction === 'left' ? 'to right' : 'to bottom'
       }, transparent 0%, rgba(0, 0, 0, 1.0) 10%, rgba(0, 0, 0, 1.0) 90%, transparent 100%)`
-    : undefined
+    : undefined;
 
   return (
     <div
       className={cn(
         'group flex overflow-hidden',
         direction === 'left' ? 'flex-row' : 'flex-col',
-        className
+        className,
       )}
       style={{
         maskImage: mask,
@@ -56,16 +57,16 @@ export const Marquee = (props: MarqueeProps) => {
               ? 'animate-marquee-left flex-row'
               : 'animate-marquee-up flex-col',
             pauseOnHover && 'group-hover:[animation-play-state:paused]',
-            reverse && 'direction-reverse'
+            reverse && 'direction-reverse',
           )}
         >
           {icons.map((Icon, index) => (
-            <div key={index}>
+            <div key={`marquee-icon-${Icon.name || index}`}>
               <Icon className="size-10 grayscale transition-all duration-500 ease-in-out hover:grayscale-0 dark:invert dark:hover:invert-0" />
             </div>
           ))}
         </div>
       ))}
     </div>
-  )
-}
+  );
+};

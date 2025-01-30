@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { Calendar, Mail, Rocket, Settings, Smile, User } from 'lucide-react'
-import * as React from 'react'
+import { Calendar, Mail, Rocket, Settings, Smile, User } from 'lucide-react';
+import * as React from 'react';
 
 import {
   CommandDialog,
@@ -12,34 +12,35 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from '@/components/ui/command'
+} from '@/components/ui/command';
 
-import Search from '../icons/Search'
+import Search from '../icons/Search';
 
 export function CommandDialogDemo() {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setOpen((open) => !open)
+        e.preventDefault();
+        setOpen((open) => !open);
       }
-    }
+    };
 
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [])
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
+  }, []);
 
   return (
     <>
       <button
+        type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-3 rounded-md border border-black/10 bg-gray-100/60 p-1 px-3 text-sm text-muted-foreground transition-colors hover:bg-gray-100 hover:text-foreground dark:border-white/10 dark:bg-zinc-950/60 dark:hover:bg-zinc-950"
+        className="flex items-center gap-3 rounded-md border border-black/10 bg-gray-100/60 p-1 px-3 text-muted-foreground text-sm transition-colors hover:bg-gray-100 hover:text-foreground dark:border-white/10 dark:bg-zinc-950/60 dark:hover:bg-zinc-950"
       >
         <Search className="size-6" />
         Search Components{' '}
-        <kbd className="pointer-events-none ml-2 inline-flex h-5 select-none items-center gap-1 rounded border border-black/10 bg-gray-100 px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 dark:border-white/10 dark:bg-zinc-900 dark:text-gray-300">
+        <kbd className="pointer-events-none ml-2 inline-flex h-5 select-none items-center gap-1 rounded border border-black/10 bg-gray-100 px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100 dark:border-white/10 dark:bg-zinc-900 dark:text-gray-300">
           <span className="text-xs">⌘</span>
           <span>K</span>
         </kbd>
@@ -91,5 +92,5 @@ export function CommandDialogDemo() {
         </CommandGroup>
       </CommandDialog>
     </>
-  )
+  );
 }

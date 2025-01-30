@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { SVGProps } from 'react'
+import * as React from 'react';
+import type { SVGProps } from 'react';
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 128 128" {...props}>
     <path
@@ -27,5 +27,5 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
       d="M64.048 23.435v13.831H30.64l-.277-3.108-.63-7.012-.331-3.711h34.646zm-.047 27.996v13.831H48.792l-.277-3.108-.631-7.012-.33-3.711h16.447z"
     />
   </svg>
-)
-export { SvgComponent as Css }
+);
+export { SvgComponent as Css };

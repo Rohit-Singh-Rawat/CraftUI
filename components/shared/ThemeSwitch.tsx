@@ -27,7 +27,7 @@ export default function ThemeSwitch() {
         aria-label="Switch theme"
         type="button"
         onClick={switchTheme}
-        className="flex size-9 flex-col items-center justify-center overflow-hidden rounded-full bg-black/5 font-medium outline-none duration-200 ease-in-out dark:bg-white/5"
+        className="flex size-9 flex-col items-center justify-center overflow-hidden rounded-full bg-black/5 font-medium outline-hidden duration-200 ease-in-out dark:bg-white/5"
       >
         <AnimatePresence mode="wait" initial={false}>
           {resolvedTheme === 'light' ? (

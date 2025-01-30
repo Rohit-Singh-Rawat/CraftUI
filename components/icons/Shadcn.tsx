@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { SVGProps } from 'react'
+import * as React from 'react';
+import type { SVGProps } from 'react';
 const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -17,5 +17,5 @@ const SvgComponent = (props: SVGProps<SVGSVGElement>) => (
       d="m208 128-80 80M192 40 40 192"
     />
   </svg>
-)
-export { SvgComponent as Shadcn }
+);
+export { SvgComponent as Shadcn };

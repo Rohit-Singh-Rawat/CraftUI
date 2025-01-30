@@ -1,5 +1,5 @@
-import * as React from 'react'
-import { SVGProps } from 'react'
+import * as React from 'react';
+import type { SVGProps } from 'react';
 const Code = (props: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -10,7 +10,7 @@ const Code = (props: SVGProps<SVGSVGElement>) => (
     <path
       d="M7 17a1 1 0 0 1-.707-.293l-4-4a1 1 0 0 1 0-1.414l4-4a1 1 0 1 1 1.414 1.414L4.414 12l3.293 3.293A1 1 0 0 1 7 17z"
       data-name="Code, Embed"
-      className="transition duration-300 ease-linear group-hover:-translate-x-1"
+      className="group-hover:-translate-x-1 transition duration-300 ease-linear"
     />
     <path
       className="transition duration-300 ease-linear group-hover:translate-x-1"
@@ -23,5 +23,5 @@ const Code = (props: SVGProps<SVGSVGElement>) => (
       data-name="Code, Embed"
     />
   </svg>
-)
-export default Code
+);
+export default Code;

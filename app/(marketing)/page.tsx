@@ -45,7 +45,7 @@ function MarketingPage() {
             href="/components"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="gridGradient rounded-full bg-[#F4F6EF]/60 px-6 py-2 font-medium text-base text-gray-800 shadow-sm transition-all hover:bg-[#f4f6ef] dark:bg-[#1A1C1E] dark:text-[#F4F6EF] dark:hover:bg-[#1e1717]"
+            className="gridGradient rounded-full bg-[#F4F6EF]/60 px-6 py-2 font-medium text-base text-gray-800 shadow-xs transition-all hover:bg-[#f4f6ef] dark:bg-[#1A1C1E] dark:text-[#F4F6EF] dark:hover:bg-[#1e1717]"
           >
             Explore Components
           </motion.a>
