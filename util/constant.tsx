@@ -1,5 +1,5 @@
-import HexagonBackground from '@/components/crafts/HexagonBackground'
-import { ComponentPageInfo } from '@/lib/types'
+import HexagonBackground from '@/components/crafts/HexagonBackground';
+import type { ComponentPageInfo } from '@/lib/types';
 
 export const componentsInfo: Record<string, ComponentPageInfo> = {
   '/button': {
@@ -81,7 +81,7 @@ export const componentsInfo: Record<string, ComponentPageInfo> = {
               opacity={0.7}
             />
             <div className="relative z-10 flex h-full items-center justify-center p-4 text-center sm:p-6">
-              <h2 className="bg-gradient-to-b from-black to-green-200/50 bg-clip-text text-2xl font-semibold text-transparent dark:from-white/70 dark:to-green-900/20 sm:text-3xl md:text-6xl">
+              <h2 className="bg-gradient-to-b from-black to-green-200/50 bg-clip-text font-semibold text-2xl text-transparent sm:text-3xl md:text-6xl dark:from-white/70 dark:to-green-900/20">
                 Hexagon Background
               </h2>
             </div>
@@ -90,4 +90,4 @@ export const componentsInfo: Record<string, ComponentPageInfo> = {
       },
     ],
   },
-}
+};

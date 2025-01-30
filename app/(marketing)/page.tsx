@@ -1,15 +1,15 @@
-'use client'
-import { motion } from 'framer-motion'
-import Link from 'next/link'
+'use client';
+import { motion } from 'motion/react';
+import Link from 'next/link';
 
-import { Marquee } from '@/components/crafts/Marquee'
-import { Css } from '@/components/icons/css'
-import { FramerMotion } from '@/components/icons/FramerMotion'
-import Logo from '@/components/icons/logo'
-import Nextjs from '@/components/icons/Nextjs'
-import { ReactIcon } from '@/components/icons/react'
-import { Shadcn } from '@/components/icons/Shadcn'
-import { Tailwind } from '@/components/icons/tailwindcss'
+import { Marquee } from '@/components/crafts/Marquee';
+import { FramerMotion } from '@/components/icons/FramerMotion';
+import Nextjs from '@/components/icons/Nextjs';
+import { Shadcn } from '@/components/icons/Shadcn';
+import { Css } from '@/components/icons/css';
+import Logo from '@/components/icons/logo';
+import { ReactIcon } from '@/components/icons/react';
+import { Tailwind } from '@/components/icons/tailwindcss';
 
 function MarketingPage() {
   return (
@@ -27,17 +27,17 @@ function MarketingPage() {
           transition={{
             duration: 4,
             ease: 'easeInOut',
-            repeat: Infinity,
+            repeat: Number.POSITIVE_INFINITY,
             repeatType: 'reverse',
           }}
           className="flex justify-center"
         >
           <Logo className="h-28 dark:invert" />
         </motion.div>
-        <h1 className="mb-6 text-3xl font-extrabold text-gray-800 dark:text-gray-200">
+        <h1 className="mb-6 font-extrabold text-3xl text-gray-800 dark:text-gray-200">
           Craft Your Unique Components Today
         </h1>
-        <p className="mb-8 text-xl text-gray-700 dark:text-gray-300">
+        <p className="mb-8 text-gray-700 text-xl dark:text-gray-300">
           A minimalist UI component library
         </p>
         <div className="flex items-center justify-center space-x-4">
@@ -45,7 +45,7 @@ function MarketingPage() {
             href="/components"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="gridGradient rounded-full bg-[#F4F6EF]/60 px-6 py-2 text-base font-medium text-gray-800 shadow-sm transition-all hover:bg-[#f4f6ef] dark:bg-[#1A1C1E] dark:text-[#F4F6EF] dark:hover:bg-[#1e1717]"
+            className="gridGradient rounded-full bg-[#F4F6EF]/60 px-6 py-2 font-medium text-base text-gray-800 shadow-sm transition-all hover:bg-[#f4f6ef] dark:bg-[#1A1C1E] dark:text-[#F4F6EF] dark:hover:bg-[#1e1717]"
           >
             Explore Components
           </motion.a>
@@ -55,7 +55,7 @@ function MarketingPage() {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center rounded-full bg-[#E5E6E1] px-6 py-2 text-base font-medium text-gray-800 hover:bg-[#DADBD5] dark:bg-[#1a1e1c] dark:text-[#F4F6EF] dark:hover:bg-[#272f2b]"
+            className="inline-flex items-center rounded-full bg-[#E5E6E1] px-6 py-2 font-medium text-base text-gray-800 hover:bg-[#DADBD5] dark:bg-[#1a1e1c] dark:text-[#F4F6EF] dark:hover:bg-[#272f2b]"
           >
             <svg
               className="mr-2 size-5"
@@ -103,7 +103,7 @@ function MarketingPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="mt-8 text-sm text-gray-500 dark:text-[#F4F6EF]"
+        className="mt-8 text-gray-500 text-sm dark:text-[#F4F6EF]"
       >
         Made with ❤️ by{' '}
         <Link
@@ -116,7 +116,7 @@ function MarketingPage() {
         </Link>
       </motion.div>
     </div>
-  )
+  );
 }
 
-export default MarketingPage
+export default MarketingPage;
