@@ -109,8 +109,6 @@
 .dark-mode::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
-@import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
-
 /* Animation */
 @keyframes fold {
   0% {
