@@ -1,17 +1,11 @@
-import HexagonBackground from '@/components/crafts/HexagonBackground';
-
-const page = () => {
+export default function PlaygroundPage() {
   return (
-    <div>
-      <HexagonBackground
-        className="min-h-screen"
-        color="#FFFF00"
-        secondaryColor="#CC5500"
-        fade
-        cellSize={'200px'}
-        opacity={0.8}
-      />
+    <div className="container mx-auto p-4">
+      <h1 className="mb-4 font-bold text-2xl">Playground</h1>
+      <p className="mb-4">
+        Welcome to the Craft UI Playground. Experiment with components here.
+      </p>
+      {/* Add your playground components below */}
     </div>
   );
-};
-export default page;
+}

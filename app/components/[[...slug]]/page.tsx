@@ -5,9 +5,8 @@ import { components, getComponent } from '@/config/components';
 import { getComponentsByNames } from '@/lib/utils';
 import type { Metadata } from 'next';
 import NotFound from '../not-found';
-
 type Props = {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
