@@ -8,10 +8,10 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="container flex-1 items-start lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+    <div className=" mt-12 w-full items-start lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
       <LeftSideBar />
-      <div className="mr-10 flex max-h-[calc(100vh-70px)] min-h-[calc(100vh-70px)] max-w-7xl overflow-hidden rounded-2xl border-[#4f4f4f]/10 border-x p-7 dark:border-[#F4F6EF]/10">
-        <div className="custom-scrollbar w-full overflow-y-scroll rounded-2xl border-[#4f4f4f]/10 border-y p-5 dark:border-[#F4F6EF]/10">
+      <div className="lg:mr-10 lg:flex lg:max-h-[calc(100vh-70px)] lg:min-h-[calc(100vh-70px)] lg:max-w-7xl lg:overflow-hidden lg:rounded-2xl lg:border-[#4f4f4f]/10 lg:border-x lg:p-7 lg:dark:border-[#F4F6EF]/10">
+        <div className="custom-scrollbar overflow-y-auto p-2 lg:w-full lg:rounded-2xl lg:border-[#4f4f4f]/10 lg:border-y lg:p-5 lg:dark:border-[#F4F6EF]/10">
           {children}
         </div>
       </div>

@@ -2,14 +2,6 @@
 
 @config '../tailwind.config.ts';
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
 @layer base {
   *,
   ::after,
@@ -75,6 +67,7 @@
     --chart-5: 340 75% 55%;
   }
 }
+
 @layer base {
   * {
     @apply border-border;
@@ -83,7 +76,7 @@
     @apply bg-background text-foreground;
   }
 }
-/* Light mode scrollbar */
+
 .light-mode {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;
@@ -102,11 +95,6 @@
   border-radius: 4px;
 }
 
-.light-mode::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Dark mode scrollbar */
 .dark-mode {
   scrollbar-width: thin;
   scrollbar-color: #666 #333;
@@ -125,10 +113,6 @@
   border-radius: 4px;
 }
 
-.dark-mode::-webkit-scrollbar-thumb:hover {
-  background: #888;
-}
-/* Animation */
 @keyframes fold {
   0% {
     transform: rotateX(0deg);
@@ -147,7 +131,6 @@
   }
 }
 
-/* Mixin for animations */
 .animate {
   animation: var(--animation-name) var(--animation-duration, 300ms)
     var(--animation-easing) var(--animation-delay, 0s)
@@ -155,7 +138,6 @@
     var(--animation-fill-mode, forwards);
 }
 
-/* General styles */
 * {
   box-sizing: border-box;
 }
@@ -186,21 +168,21 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-/* Variables */
+
 :root {
   --border: whitesmoke;
   --card: white;
   --font-family: "Droid Sans Mono", monospace;
   --font-size: 5em;
   --font-width: lighter;
-  --font-color: #4f4f4f; /* lightened black */
+  --font-color: #4f4f4f;
   --turn-duration: 0.6s;
   --easeInOut: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
-/* Custom scrollbar styles for both light and dark mode */
+
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
+  scrollbar-color: #f4f6ef transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -212,27 +194,11 @@ h1 {
   background-color: transparent;
 }
 
-.custom-scrollbar:hover {
-  scrollbar-color: #f4f6ef transparent;
-}
-
-.custom-scrollbar:hover::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: transparent;
-  border-radius: 10px;
-}
-
-.custom-scrollbar:hover::-webkit-scrollbar-thumb {
   background-color: #f4f6ef;
   border-radius: 10px;
 }
 
-.custom-scrollbar:hover {
-  scrollbar-color: #f4f6ef transparent;
-}
 .gridGradient {
   background-image: linear-gradient(to top, transparent, white),
     url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='140' height='140' fill='none' stroke='rgba(26, 28, 30, 0.05)' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
@@ -242,6 +208,7 @@ h1 {
   background-image: linear-gradient(to top, transparent, black),
     url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='140' height='140' fill='none' stroke='rgba(24, 24, 29,1 )' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
 }
+
 .dark .gridGradient2 {
   background-image: linear-gradient(to left top, transparent, black 99%),
     url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='40' height='0' fill='none' stroke='rgba(255,255,255,0.2 )' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");

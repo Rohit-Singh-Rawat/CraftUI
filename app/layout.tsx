@@ -70,7 +70,7 @@ export default function RootLayout({
           <div className="h-screen dark:bg-black">
             {/* <InlineStyleMarquee /> */}
             <Navbar />
-            <main className="h-full">{children}</main>
+            <main className="flex h-full">{children}</main>
           </div>
         </ThemeProvider>
       </body>

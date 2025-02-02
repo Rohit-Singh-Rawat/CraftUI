@@ -28,7 +28,7 @@ export const Showcase = () => {
       <div className="mb-8 flex justify-start">
         <RequestButton />
       </div>
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 ">
+      <div className="grid max-w-5xl grid-cols-1 gap-8 sm:grid-cols-2">
         {allComponents.map((component) => (
           <Link
             href={`/components/${component.categorySlug}`}
@@ -36,14 +36,14 @@ export const Showcase = () => {
             className="group block"
           >
             <div className="overflow-hidden rounded-xl border-2 border-[#4f4f4f]/10 transition-all duration-300 dark:border-[#F4F6EF]/10 ">
-              <div className="relative flex h-[300px] items-center justify-center overflow-hidden">
+              <div className="relative flex h-[300px] h-fit items-center justify-center overflow-hidden">
                 <Image
                   src={`/thumbs/${component.slug}.png`}
                   alt={`${component.slug} thumbnail`}
                   loading="lazy"
-                  width={1080}
-                  height={1080}
-                  className="h-full w-full object-cover transition-all duration-300 ease-in-out group-hover:scale-110"
+                  width={720}
+                  height={1024}
+                  className="aspect-video object-cover transition-all duration-300 ease-in-out group-hover:scale-110"
                 />
               </div>
               <div className="border-[#4f4f4f]/10 border-t bg-zinc-50/50 p-4 font-rubik dark:border-[#F4F6EF]/10 dark:bg-zinc-900/50">
@@ -51,7 +51,7 @@ export const Showcase = () => {
                 <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
                   {component.description}
                 </p>
-                <span className="mt-2 inline-block text-xs text-zinc-500 dark:text-zinc-500">
+                <span className="mt-2 inline-flex items-center rounded-md border border-neutral-200 bg-neutral-100 px-2 py-1 font-medium text-neutral-800 text-xs dark:border-neutral-800 dark:bg-neutral-950 dark:text-[#c7c8c5]">
                   {component.category}
                 </span>
               </div>

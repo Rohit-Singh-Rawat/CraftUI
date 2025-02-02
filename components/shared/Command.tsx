@@ -37,10 +37,10 @@ export function CommandDialogDemo() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-3 rounded-md border border-black/10 bg-gray-100/60 p-1 px-3 text-muted-foreground text-sm transition-colors hover:bg-gray-100 hover:text-foreground dark:border-white/10 dark:bg-zinc-950/60 dark:hover:bg-zinc-950"
+        className="flex cursor-pointer items-center gap-3 rounded-md border border-black/10 bg-gray-100/60 p-1 px-3 text-muted-foreground text-sm transition-colors hover:bg-gray-100 hover:text-foreground max-sm:hidden dark:border-white/10 dark:bg-zinc-950/60 dark:hover:bg-zinc-950"
       >
         <Search className="size-6" />
-        Search Components{' '}
+        <span className="hidden lg:inline">Search Components</span>
         <kbd className="pointer-events-none ml-2 inline-flex h-5 select-none items-center gap-1 rounded border border-black/10 bg-gray-100 px-1.5 font-medium font-mono text-[10px] text-muted-foreground opacity-100 dark:border-white/10 dark:bg-zinc-900 dark:text-gray-300">
           <span className="text-xs">⌘</span>
           <span>K</span>

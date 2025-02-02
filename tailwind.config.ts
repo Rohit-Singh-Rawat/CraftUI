@@ -65,6 +65,16 @@ const config: Config = {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
       },
       animation: {
         fold: 'fold 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards',
@@ -74,20 +84,36 @@ const config: Config = {
       },
       keyframes: {
         fold: {
-          '0%': { transform: 'rotateX(0deg)' },
-          '100%': { transform: 'rotateX(-180deg)' },
+          '0%': {
+            transform: 'rotateX(0deg)',
+          },
+          '100%': {
+            transform: 'rotateX(-180deg)',
+          },
         },
         unfold: {
-          '0%': { transform: 'rotateX(180deg)' },
-          '100%': { transform: 'rotateX(0deg)' },
+          '0%': {
+            transform: 'rotateX(180deg)',
+          },
+          '100%': {
+            transform: 'rotateX(0deg)',
+          },
         },
         'marquee-left': {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(calc(-100% - var(--gap)))' },
+          from: {
+            transform: 'translateX(0)',
+          },
+          to: {
+            transform: 'translateX(calc(-100% - var(--gap)))',
+          },
         },
         'marquee-up': {
-          from: { transform: 'translateY(0)' },
-          to: { transform: 'translateY(calc(-100% - var(--gap)))' },
+          from: {
+            transform: 'translateY(0)',
+          },
+          to: {
+            transform: 'translateY(calc(-100% - var(--gap)))',
+          },
         },
       },
       perspective: {
