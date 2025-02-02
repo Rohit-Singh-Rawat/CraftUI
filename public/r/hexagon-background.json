@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "hexagon-background",
+  "type": "registry:block",
+  "title": "Hexagon Background",
+  "description": "A component for creating a hexagon-patterned background.",
+  "files": [
+    {
+      "path": "registry/crafts/HexagonBackground.tsx",
+      "content": "import type { HTMLProps } from 'react';\n\ninterface HexagonBackgroundProps {\n  color?: string;\n  secondaryColor?: string;\n  cellSize?: string | number;\n  strokeWidth?: number | string;\n  className?: string;\n  fade?: boolean;\n  fadePercentage?: number;\n  opacity?: number;\n}\n\nconst HexagonBackground = ({\n  color = '#5271ff',\n  secondaryColor,\n  cellSize = '50px',\n  strokeWidth = '3',\n  className,\n  fade = true,\n  fadePercentage = 20,\n  opacity = 1,\n  ...props\n}: HexagonBackgroundProps & HTMLProps<HTMLDivElement>) => {\n  const actualSecondaryColor = secondaryColor || color;\n  const svg = `\n    <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 345\">\n      <defs>\n        <linearGradient id=\"colorGradient\" x1=\"0%\" y1=\"0%\" x2=\"0%\" y2=\"100%\">\n          <stop offset=\"0%\" style=\"stop-color:${color};stop-opacity:${opacity}\" />\n          <stop offset=\"50%\" style=\"stop-color:${actualSecondaryColor};stop-opacity:${opacity * 0.7}\" />\n          <stop offset=\"100%\" style=\"stop-color:${color};stop-opacity:${opacity}\" />\n        </linearGradient>\n      </defs>\n      <path d=\"\n        M 100 115\n        L 100 230\n        M 200 57.5\n        L 100 115\n        M 0 57.5\n        L 100 115\n        M 0 287.5\n        L 100 230\n        M 200 287.5\n        L 100 230\n        M 1 287.5\n        L 1 345\n        M 1 0\n        L 1 57.5\n      \"\n        stroke=\"url(#colorGradient)\" stroke-width=\"${strokeWidth}\" fill=\"none\"/>\n    </svg>\n  `;\n  const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;\n  return (\n    <div\n      className={`pointer-events-none ${className}`}\n      style={{\n        backgroundImage: `url(\"${svgDataUrl}\")`,\n        backgroundRepeat: 'repeat',\n        backgroundSize: cellSize,\n        maskImage: fade\n          ? `radial-gradient(ellipse at top, white, transparent ${100 - fadePercentage}%)`\n          : undefined,\n        WebkitMaskImage: fade\n          ? `radial-gradient(ellipse at top, white, transparent ${100 - fadePercentage}%)`\n          : undefined,\n      }}\n      {...props}\n    />\n  );\n};\n\nexport default HexagonBackground;\n",
+      "type": "registry:component"
+    }
+  ]
+}

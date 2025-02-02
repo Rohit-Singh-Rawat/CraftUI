@@ -13,7 +13,7 @@ import { Tailwind } from '@/components/icons/tailwindcss';
 
 function MarketingPage() {
   return (
-    <div className="gridGradient flex min-h-[calc(100vh-120px)] flex-col items-center justify-center bg-white dark:bg-black">
+    <div className="gridGradient flex min-h-full flex-col items-center justify-center bg-white dark:bg-black">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -34,7 +34,7 @@ function MarketingPage() {
         >
           <Logo className="h-28 dark:invert" />
         </motion.div>
-        <h1 className="mb-6 font-extrabold text-3xl text-gray-800 dark:text-gray-200">
+        <h1 className="mb-6 font-extrabold text-3xl text-black dark:text-gray-200">
           Craft Your Unique Components Today
         </h1>
         <p className="mb-8 text-gray-700 text-xl dark:text-gray-300">
@@ -45,7 +45,7 @@ function MarketingPage() {
             href="/components"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="gridGradient rounded-full bg-[#F4F6EF]/60 px-6 py-2 font-medium text-base text-gray-800 shadow-xs transition-all hover:bg-[#f4f6ef] dark:bg-[#1A1C1E] dark:text-[#F4F6EF] dark:hover:bg-[#1e1717]"
+            className="rounded-full bg-black/90 px-6 py-2 font-medium text-base text-white shadow-xs transition-all hover:bg-black dark:bg-white/90 dark:text-black dark:hover:bg-white"
           >
             Explore Components
           </motion.a>
@@ -103,7 +103,7 @@ function MarketingPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="mt-8 text-gray-500 text-sm dark:text-[#F4F6EF]"
+        className="mt-12 text-gray-500 text-sm dark:text-[#F4F6EF]"
       >
         Made with ❤️ by{' '}
         <Link

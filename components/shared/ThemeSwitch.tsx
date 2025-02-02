@@ -1,7 +1,7 @@
 'use client';
 
-import { AnimatePresence, motion } from 'motion/react';
 import { Moon, Sun } from 'lucide-react';
+import { AnimatePresence, motion } from 'motion/react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
@@ -37,7 +37,7 @@ export default function ThemeSwitch() {
               animate={{ rotate: '0deg', scale: 1 }}
               exit={{ rotate: '80deg', scale: 0.7 }}
               transition={{ duration: 0.2 }}
-              className="size-4"
+              className="flex size-4 items-center justify-center"
             >
               <Moon size={15} className="text-black/50 dark:text-white/50" />
             </motion.span>
@@ -47,7 +47,7 @@ export default function ThemeSwitch() {
               initial={{ rotate: '-80deg', scale: 0 }}
               animate={{ rotate: '0deg', scale: 1 }}
               exit={{ rotate: '-80deg', scale: 0.7 }}
-              className="size-4"
+              className="flex size-4 items-center justify-center"
               transition={{ duration: 0.2 }}
             >
               <Sun size={15} className="text-black/50 dark:text-white/50" />

@@ -61,7 +61,7 @@ export const Marquee = (props: MarqueeProps) => {
           )}
         >
           {icons.map((Icon, index) => (
-            <div key={`marquee-icon-${Icon.name || index}`}>
+            <div key={`marquee-icon-${Icon.name}-${index}`}>
               <Icon className="size-10 grayscale transition-all duration-500 ease-in-out hover:grayscale-0 dark:invert dark:hover:invert-0" />
             </div>
           ))}

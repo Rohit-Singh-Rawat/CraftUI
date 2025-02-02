@@ -1,8 +1,5 @@
 'use client';
 
-import { Calendar, Mail, Rocket, Settings, Smile, User } from 'lucide-react';
-import * as React from 'react';
-
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,14 +7,18 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from '@/components/ui/command';
-
+import { Circle, Grid, MessageSquarePlus, Moon, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import * as React from 'react';
 import Search from '../icons/Search';
+import { useComponentGroups } from './leftSideBar/useComponentGroups';
 
 export function CommandDialogDemo() {
   const [open, setOpen] = React.useState(false);
+  const sortedGroups = useComponentGroups();
+  const { setTheme, theme } = useTheme();
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -46,50 +47,67 @@ export function CommandDialogDemo() {
         </kbd>
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput placeholder="Type a component name..." />
         <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandEmpty>No components found.</CommandEmpty>
           <CommandGroup heading="Suggestions">
-            <CommandItem>
-              <Calendar className="mr-2 size-4" />
-              <span>Calendar</span>
+            <CommandItem asChild onSelect={() => setOpen(false)}>
+              <Link
+                href="/components"
+                className="flex w-full cursor-pointer items-center"
+              >
+                <Grid className="mr-2 h-4 w-4" />
+                <span>View All Components</span>
+              </Link>
             </CommandItem>
-            <CommandItem>
-              <Smile className="mr-2 size-4" />
-              <span>Search Emoji</span>
+            <CommandItem
+              onSelect={() =>
+                window.open(
+                  'https://github.com/Rohit-Singh-Rawat/CraftUI/issues/new?assignees=&labels=component+request&template=component_request.md&title=%5BComponent+Request%5D',
+                  '_blank',
+                )
+              }
+            >
+              <MessageSquarePlus className="mr-2 h-4 w-4" />
+              <span>Request a Component</span>
             </CommandItem>
-            <CommandItem>
-              <Rocket className="mr-2 size-4" />
-              <span>Launch</span>
+            <CommandItem
+              onSelect={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            >
+              {theme === 'dark' ? (
+                <Sun className="mr-2 h-4 w-4" />
+              ) : (
+                <Moon className="mr-2 h-4 w-4" />
+              )}
+              <span>
+                {theme === 'dark'
+                  ? 'Switch to Light Mode'
+                  : 'Switch to Dark Mode'}
+              </span>
             </CommandItem>
           </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Settings">
-            <CommandItem>
-              <User className="mr-2 size-4" />
-              <span>Profile</span>
-              <CommandShortcut>⌘P</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Mail className="mr-2 size-4" />
-              <span>Mail</span>
-              <CommandShortcut>⌘B</CommandShortcut>
-            </CommandItem>
-            <CommandItem>
-              <Settings className="mr-2 size-4" />
-              <span>Settings</span>
-              <CommandShortcut>⌘S</CommandShortcut>
-            </CommandItem>
-          </CommandGroup>
+          {sortedGroups.map(([groupName, components]) => (
+            <CommandGroup key={groupName} heading={groupName}>
+              {components.map((item) => (
+                <CommandItem
+                  key={item.name}
+                  asChild
+                  onSelect={() => {
+                    setOpen(false);
+                  }}
+                >
+                  <Link
+                    href={`/components/${item.slug}`}
+                    className="flex w-full cursor-pointer items-center"
+                  >
+                    <Circle className="mr-2 h-4 w-4" />
+                    <span>{item.name}</span>
+                  </Link>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ))}
         </CommandList>
-        <CommandSeparator />
-        <CommandGroup heading="Bottom">
-          <CommandItem>
-            {/* <ArrowDown className="mr-2 size-4" /> */}
-            <span>Scroll to Bottom</span>
-            <CommandShortcut>⌘↓</CommandShortcut>
-          </CommandItem>
-        </CommandGroup>
       </CommandDialog>
     </>
   );

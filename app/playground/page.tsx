@@ -1,4 +1,4 @@
-import HexagonBackground from '@/components/crafts/HexagonBackground'
+import HexagonBackground from '@/components/crafts/HexagonBackground';
 
 const page = () => {
   return (
@@ -12,6 +12,6 @@ const page = () => {
         opacity={0.8}
       />
     </div>
-  )
-}
-export default page
+  );
+};
+export default page;

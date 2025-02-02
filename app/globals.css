@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @config '../tailwind.config.ts';
 
@@ -181,18 +181,16 @@ header {
 }
 
 h1 {
-  font-family: 'Droid Sans Mono', monospace;
+  font-family: "Droid Sans Mono", monospace;
   font-weight: lighter;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: white;
 }
-
 /* Variables */
 :root {
   --border: whitesmoke;
   --card: white;
-  --font-family: 'Droid Sans Mono', monospace;
+  --font-family: "Droid Sans Mono", monospace;
   --font-size: 5em;
   --font-width: lighter;
   --font-color: #4f4f4f; /* lightened black */
@@ -242,7 +240,7 @@ h1 {
 
 .dark .gridGradient {
   background-image: linear-gradient(to top, transparent, black),
-    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='140' height='140' fill='none' stroke='rgba(24, 24, 29,0.8 )' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='140' height='140' fill='none' stroke='rgba(24, 24, 29,1 )' stroke-width='0.2'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e");
 }
 .dark .gridGradient2 {
   background-image: linear-gradient(to left top, transparent, black 99%),

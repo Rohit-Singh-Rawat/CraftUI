@@ -35,7 +35,7 @@ const HexagonBackground = ({
       <path d="
         M 100 115
         L 100 230
-        M 200 57.5
+        M 201 57.1
         L 100 115
         M 0 57.5
         L 100 115

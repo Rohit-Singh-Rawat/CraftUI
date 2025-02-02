@@ -1,12 +1,19 @@
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/react';
 // eslint-disable-next-line import/no-unresolved
-import { GeistSans } from 'geist/font/sans'
-import type { Metadata } from 'next'
+import { GeistSans } from 'geist/font/sans';
+import type { Metadata } from 'next';
+import { Rubik } from 'next/font/google';
 
-import './globals.css'
-import InlineStyleMarquee from '@/components/development'
-import { ThemeProvider } from '@/components/provider/theme-provider'
-import Navbar from '@/components/shared/Navbar'
+import './globals.css';
+import InlineStyleMarquee from '@/components/development';
+import { ThemeProvider } from '@/components/provider/theme-provider';
+import Navbar from '@/components/shared/Navbar';
+
+const rubik = Rubik({
+  subsets: ['latin'],
+  variable: '--font-rubik',
+  weight: ['400', '500', '600'],
+});
 
 const info = {
   name: 'Craft UI',
@@ -15,7 +22,7 @@ const info = {
     'Craft Sleek UIs with a Component Library Tailored for Fast and Stylish Development.',
   url: 'https://ui-craft.vercel.app',
   image: '/images/banner.png',
-}
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(info.url),
@@ -40,19 +47,19 @@ export const metadata: Metadata = {
     creator: info.twitter,
     images: info.image,
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
       </head>
-      <body className={GeistSans.className}>
+      <body className={`${GeistSans.className} ${rubik.variable}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -60,13 +67,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Analytics />
-          <div className="dark:bg-black">
-            <InlineStyleMarquee />
+          <div className="h-screen dark:bg-black">
+            {/* <InlineStyleMarquee /> */}
             <Navbar />
-            <main>{children}</main>
+            <main className="h-full">{children}</main>
           </div>
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

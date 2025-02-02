@@ -2,8 +2,10 @@
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { Drawer } from 'vaul';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 import Code from '@/components/icons/code';
+import CodeBlock from './Code-block';
 
 interface CodeDialogProps {
   code: string;
@@ -31,10 +33,12 @@ const CodeDialog: React.FC<CodeDialogProps> = ({ code }) => {
       <Drawer.Portal>
         <Drawer.Overlay className="fixed inset-0 bg-black/40 dark:bg-black/60" />
         <Drawer.Content className="fixed inset-x-0 bottom-0 z-100 mt-24 flex h-[96%] flex-col rounded-t-[10px] border-2 border-zinc-400 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
-          {' '}
           <div className="flex-1 rounded-t-[10px] bg-white p-4 dark:bg-zinc-950">
             <div className="mx-auto mb-8 h-1.5 w-12 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-600" />
             <div className="flex-1 rounded-t-[10px] bg-white p-4 dark:bg-zinc-950">
+              <VisuallyHidden asChild>
+                <Drawer.Title>Code Dialog</Drawer.Title>
+              </VisuallyHidden>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
@@ -51,9 +55,7 @@ const CodeDialog: React.FC<CodeDialogProps> = ({ code }) => {
                   Copy
                 </button>
               </div>
-              <div className="rounded-md bg-gray-100 p-4 dark:bg-zinc-700">
-                {code}
-              </div>
+              <CodeBlock code={code} lang="tsx" />
             </div>
           </div>
         </Drawer.Content>
