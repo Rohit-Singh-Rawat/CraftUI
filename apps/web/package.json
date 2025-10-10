@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@craft/web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
     "format": "biome format --write"
   },
   "dependencies": {
+    "@craft/ui": "workspace:*",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "next": "15.5.4"
@@ -20,6 +21,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",
+
     "tailwindcss": "^4",
     "@biomejs/biome": "2.2.0"
   }
