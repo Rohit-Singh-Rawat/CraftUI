@@ -118,7 +118,7 @@ export function ShoppingCartDemo() {
 				open={isOpen}
 				onOpenChange={setIsOpen}
 			>
-				<ActionBar variant='default'>
+				<ActionBar	>
 					<ActionBarContent>
 						<ActionBarHeader>
 							<ShoppingCart className='size-5' />
@@ -242,7 +242,7 @@ export function SuccessNotificationDemo() {
 				open={isOpen}
 				onOpenChange={setIsOpen}
 			>
-				<ActionBar variant='success'>
+				<ActionBar >
 					<ActionBarContent>
 						<ActionBarHeader>
 							<Check className='size-5 text-green-600' />
@@ -273,7 +273,7 @@ export function TriggerDemo() {
 				<ActionBarTrigger>Toggle Action Bar</ActionBarTrigger>
 			</div>
 
-			<ActionBar variant='default'>
+			<ActionBar >
 				<ActionBarContent>
 					<ActionBarHeader>
 						<ActionBarTitle>Triggered Action Bar</ActionBarTitle>

@@ -51,7 +51,11 @@ const Navbar = () => {
 							/>
 						</Button>
 					</DropdownMenuTrigger>
-					<DropdownMenuContent className='rounded-xl' alignOffset={20} sideOffset={10}>
+					<DropdownMenuContent
+						className='rounded-xl'
+						alignOffset={20}
+						sideOffset={10}
+					>
 						{possibleLinks.map((link) => (
 							<DropdownMenuItem
 								key={link.path}

@@ -97,7 +97,9 @@ const ActionBarProvider = React.forwardRef<HTMLDivElement, ActionBarProviderProp
 );
 ActionBarProvider.displayName = 'ActionBarProvider';
 
-interface ActionBarProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof actionBarVariants> {
+interface ActionBarProps
+	extends React.HTMLAttributes<HTMLDivElement>,
+		VariantProps<typeof actionBarVariants> {
 	/**
 	 * Animation delay in ms (only for contextual mode)
 	 * @default 100
@@ -117,7 +119,15 @@ interface ActionBarProps extends React.HTMLAttributes<HTMLDivElement>, VariantPr
 
 const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 	(
-		{ className, animationDelay = 100, bottomOffset = 24, maxWidth = '640px', size, children, ...props },
+		{
+			className,
+			animationDelay = 100,
+			bottomOffset = 24,
+			maxWidth = '640px',
+			size,
+			children,
+			...props
+		},
 		ref
 	) => {
 		const { mode, isOpen } = useActionBar();
@@ -165,9 +175,7 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 				)}
 				{...props}
 			>
-				<div className='flex h-full w-full   items-center justify-between gap-4 '>
-					{children}
-				</div>
+				<div className='flex h-full w-full   items-center justify-between gap-4 '>{children}</div>
 			</div>
 		);
 	}
