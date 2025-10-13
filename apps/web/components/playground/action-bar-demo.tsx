@@ -15,6 +15,7 @@ import {
 	ActionBarContent,
 	ActionBarTrigger,
 } from '@craft/ui/components/crafted/action-bar';
+import Logo from '../layout/logo';
 
 /**
  * DOCK MODE - Persistent bottom navigation
@@ -25,9 +26,7 @@ export function DockModeDemo() {
 		<ActionBarProvider mode='dock'>
 			<ActionBar>
 				<ActionBarLogo>
-					<div className='flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-bold'>
-						RC
-					</div>
+					<Logo />
 				</ActionBarLogo>
 
 				<ActionBarNav>

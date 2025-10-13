@@ -13,7 +13,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 			disableTransitionOnChange
 			enableColorScheme
 		>
+		<ActionBarProvider mode='dock'>
 			{children}
+		</ActionBarProvider>
 		</NextThemesProvider>
 	);
 }

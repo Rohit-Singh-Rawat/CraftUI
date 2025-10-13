@@ -6,24 +6,17 @@ import { X } from 'lucide-react';
 import { cn } from '@craft/ui/lib/utils';
 
 const actionBarVariants = cva(
-	'fixed left-1/2 -translate-x-1/2 z-50 border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg transition-all duration-300 ease-out rounded-lg',
+	'fixed left-1/2 -translate-x-1/2 z-50 p-2  border overflow-hidden border-border bg-popover text-popover-foreground shadow-md transition-all duration-300 inset-shadow-sm  ease-out rounded-full h-14',
 	{
 		variants: {
-			variant: {
-				default: 'border-border',
-				destructive: 'border-destructive/50 bg-destructive/5',
-				success: 'border-green-500/50 bg-green-500/5',
-				warning: 'border-yellow-500/50 bg-yellow-500/5',
-			},
 			size: {
-				default: 'h-14',
-				sm: 'h-12',
-				lg: 'h-16',
+				sm: 'h-10',
+				md: 'h-14',
+				lg: 'h-18',
 			},
 		},
 		defaultVariants: {
-			variant: 'default',
-			size: 'default',
+			size: 'md',
 		},
 	}
 );
@@ -95,7 +88,6 @@ const ActionBarProvider = React.forwardRef<HTMLDivElement, ActionBarProviderProp
 					ref={ref}
 					data-mode={mode}
 					data-state={isOpen ? 'open' : 'closed'}
-					className='fixed left-1/2 -translate-x-1/2 z-50 border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg transition-all duration-300 ease-out rounded-lg'
 				>
 					{children}
 				</div>
@@ -105,9 +97,7 @@ const ActionBarProvider = React.forwardRef<HTMLDivElement, ActionBarProviderProp
 );
 ActionBarProvider.displayName = 'ActionBarProvider';
 
-interface ActionBarProps
-	extends React.HTMLAttributes<HTMLDivElement>,
-		VariantProps<typeof actionBarVariants> {
+interface ActionBarProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof actionBarVariants> {
 	/**
 	 * Animation delay in ms (only for contextual mode)
 	 * @default 100
@@ -127,16 +117,7 @@ interface ActionBarProps
 
 const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 	(
-		{
-			className,
-			variant,
-			size,
-			animationDelay = 100,
-			bottomOffset = 24,
-			maxWidth = '640px',
-			children,
-			...props
-		},
+		{ className, animationDelay = 100, bottomOffset = 24, maxWidth = '640px', size, children, ...props },
 		ref
 	) => {
 		const { mode, isOpen } = useActionBar();
@@ -173,7 +154,7 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 					maxWidth,
 				}}
 				className={cn(
-					actionBarVariants({ variant, size }),
+					actionBarVariants({ size }),
 					'w-[calc(100%-2rem)] sm:w-auto sm:min-w-96',
 					// Contextual mode animations
 					mode === 'contextual' && [
@@ -184,7 +165,9 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 				)}
 				{...props}
 			>
-				<div className='flex h-full w-full items-center justify-between gap-4 px-4'>{children}</div>
+				<div className='flex h-full w-full   items-center justify-between gap-4 '>
+					{children}
+				</div>
 			</div>
 		);
 	}
@@ -382,7 +365,6 @@ export {
 	ActionBarNav,
 	ActionBarTrigger,
 	useActionBar,
-	actionBarVariants,
 	type ActionBarProps,
 	type ActionBarProviderProps,
 };

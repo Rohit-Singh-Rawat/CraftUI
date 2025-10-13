@@ -1,8 +1,2 @@
 @import 'tailwindcss';
 @import '@craft/ui/globals.css';
-
-.menu {
-	/* other styles */
-
-	-webkit-filter: url("#goo");
-}

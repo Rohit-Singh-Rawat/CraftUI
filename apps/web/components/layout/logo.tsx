@@ -34,53 +34,64 @@ const Logo = ({ size = 80, className = 'size-10 rounded-full bg-black' }: LogoPr
 	});
 
 	return (
-		<svg
-			xmlns='http://www.w3.org/2000/svg'
-			version='1.1'
-			width={size}
-			height={size}
-			viewBox='0 0 100 100'
-			className={className}
+		<div
+			className='logo'
+			style={{
+				WebkitFilter: 'url("#goo")',
+
+				filter: 'url("#goo")',
+			}}
 		>
-			<defs>
-				<filter id='logo-goo'>
-					<feGaussianBlur
-						in='SourceGraphic'
-						stdDeviation='3'
-						result='blur'
-					/>
-					<feColorMatrix
-						in='blur'
-						mode='matrix'
-						values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9'
-						result='goo'
-					/>
-				</filter>
-			</defs>
-			{logoElements.map((element) => (
-				<circle
-					key={element.key}
-					cx={element.cx}
-					cy={element.cy}
-					r='24%'
-					filter='url(#logo-goo)'
-					fill={element.color}
-				>
-					<animate
-						attributeName='cx'
-						values={`${element.cx};${Math.random() * 100};${element.cx}`}
-						dur={`${element.duration}s`}
-						repeatCount='indefinite'
-					/>
-					<animate
-						attributeName='cy'
-						values={`${element.cy};${Math.random() * 100};${element.cy}`}
-						dur={`${element.duration}s`}
-						repeatCount='indefinite'
-					/>
-				</circle>
-			))}
-		</svg>
+			<svg
+				xmlns='http://www.w3.org/2000/svg'
+				version='1.1'
+				width={size}
+				height={size}
+				viewBox='0 0 100 100'
+				className={className}
+			>
+				<defs>
+					<filter
+						className='goo'
+						id='goo'
+					>
+						<feGaussianBlur
+							in='SourceGraphic'
+							stdDeviation='10'
+							result='blur'
+						/>
+						<feColorMatrix
+							in='blur'
+							mode='matrix'
+							values='1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9'
+							result='goo'
+						/>
+					</filter>
+				</defs>
+				{logoElements.map((element) => (
+					<circle
+						key={element.key}
+						cx={element.cx}
+						cy={element.cy}
+						r='24%'
+						fill={element.color}
+					>
+						<animate
+							attributeName='cx'
+							values={`${element.cx};${Math.random() * 100};${element.cx}`}
+							dur={`${element.duration}s`}
+							repeatCount='indefinite'
+						/>
+						<animate
+							attributeName='cy'
+							values={`${element.cy};${Math.random() * 100};${element.cy}`}
+							dur={`${element.duration}s`}
+							repeatCount='indefinite'
+						/>
+					</circle>
+				))}
+			</svg>
+		</div>
 	);
 };
 
