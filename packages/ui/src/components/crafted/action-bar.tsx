@@ -3,20 +3,31 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
-import { cn } from '@craft/ui/lib/utils';
+import { cn } from '../../lib/utils';
 
 const actionBarVariants = cva(
-	'fixed left-1/2 -translate-x-1/2 z-50 p-2  border overflow-hidden border-border bg-popover text-popover-foreground shadow-md transition-all duration-300 inset-shadow-sm  ease-out rounded-full h-14',
+	'fixed z-50 p-3 border overflow-hidden border-border/50 bg-popover/95 backdrop-blur-md text-popover-foreground shadow-lg',
 	{
 		variants: {
 			size: {
-				sm: 'h-10',
-				md: 'h-14',
-				lg: 'h-18',
+				sm: 'p-3',
+				md: 'p-4',
+				lg: 'p-5',
+			},
+			position: {
+				top: 'left-1/2 -translate-x-1/2 rounded-2xl',
+				bottom: 'left-1/2 -translate-x-1/2 rounded-2xl',
+				left: 'top-1/2 -translate-y-1/2 rounded-2xl',
+				right: 'top-1/2 -translate-y-1/2 rounded-2xl',
+				'top-left': 'rounded-2xl',
+				'top-right': 'rounded-2xl',
+				'bottom-left': 'rounded-2xl',
+				'bottom-right': 'rounded-2xl',
 			},
 		},
 		defaultVariants: {
 			size: 'md',
+			position: 'bottom',
 		},
 	}
 );
@@ -25,6 +36,15 @@ interface ActionBarContextValue {
 	mode: 'dock' | 'contextual';
 	isOpen: boolean;
 	setIsOpen: (open: boolean) => void;
+	position:
+		| 'top'
+		| 'bottom'
+		| 'left'
+		| 'right'
+		| 'top-left'
+		| 'top-right'
+		| 'bottom-left'
+		| 'bottom-right';
 }
 
 const ActionBarContext = React.createContext<ActionBarContextValue | undefined>(undefined);
@@ -47,6 +67,19 @@ interface ActionBarProviderProps {
 	 */
 	mode?: 'dock' | 'contextual';
 	/**
+	 * Position of the action bar
+	 * @default "bottom"
+	 */
+	position?:
+		| 'top'
+		| 'bottom'
+		| 'left'
+		| 'right'
+		| 'top-left'
+		| 'top-right'
+		| 'bottom-left'
+		| 'bottom-right';
+	/**
 	 * Controlled open state (only for contextual mode)
 	 */
 	open?: boolean;
@@ -63,7 +96,14 @@ interface ActionBarProviderProps {
 
 const ActionBarProvider = React.forwardRef<HTMLDivElement, ActionBarProviderProps>(
 	(
-		{ children, mode = 'contextual', open: controlledOpen, onOpenChange, defaultOpen = false },
+		{
+			children,
+			mode = 'contextual',
+			position = 'bottom',
+			open: controlledOpen,
+			onOpenChange,
+			defaultOpen = false,
+		},
 		ref
 	) => {
 		const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
@@ -83,11 +123,12 @@ const ActionBarProvider = React.forwardRef<HTMLDivElement, ActionBarProviderProp
 		);
 
 		return (
-			<ActionBarContext.Provider value={{ mode, isOpen, setIsOpen }}>
+			<ActionBarContext.Provider value={{ mode, isOpen, setIsOpen, position }}>
 				<div
 					ref={ref}
 					data-mode={mode}
 					data-state={isOpen ? 'open' : 'closed'}
+					data-position={position}
 				>
 					{children}
 				</div>
@@ -106,15 +147,23 @@ interface ActionBarProps
 	 */
 	animationDelay?: number;
 	/**
-	 * Distance from bottom in pixels
-	 * @default 24
+	 * Offset from the edge in pixels
+	 * For top/bottom positions: affects top/bottom spacing
+	 * For left/right positions: affects left/right spacing
+	 * For corner positions: affects both axes
+	 * @default 16
 	 */
-	bottomOffset?: number;
+	offset?: number;
 	/**
-	 * Max width of the action bar
+	 * Maximum width for horizontal positions (top, bottom, corners)
 	 * @default "640px"
 	 */
 	maxWidth?: string;
+	/**
+	 * Maximum height for vertical positions (left, right)
+	 * @default "calc(100vh - 2rem)"
+	 */
+	maxHeight?: string;
 }
 
 const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
@@ -122,60 +171,132 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 		{
 			className,
 			animationDelay = 100,
-			bottomOffset = 24,
+			offset = 16,
 			maxWidth = '640px',
+			maxHeight = 'calc(100vh - 2rem)',
 			size,
+			position,
 			children,
 			...props
 		},
 		ref
 	) => {
-		const { mode, isOpen } = useActionBar();
-		const [mounted, setMounted] = React.useState(false);
+		const { mode, isOpen, position: contextPosition } = useActionBar();
+		const [shouldRender, setShouldRender] = React.useState(mode === 'dock' || isOpen);
 
-		// Animate on mount for contextual mode
+		const finalPosition = position || contextPosition;
+		const isVertical = finalPosition === 'left' || finalPosition === 'right';
+
+		// Handle mounting/unmounting with delay for exit animation
 		React.useEffect(() => {
-			if (mode === 'contextual' && isOpen) {
+			if (isOpen) {
+				setShouldRender(true);
+			} else if (mode === 'contextual') {
+				// Delay unmounting to allow exit animation (300ms matches duration-300)
 				const timer = setTimeout(() => {
-					setMounted(true);
-				}, animationDelay);
+					setShouldRender(false);
+				}, 300);
 				return () => clearTimeout(timer);
-			} else if (mode === 'dock') {
-				setMounted(true);
 			}
-		}, [mode, isOpen, animationDelay]);
+		}, [mode, isOpen]);
 
-		// Reset mounted state when closed
-		React.useEffect(() => {
-			if (!isOpen) {
-				setMounted(false);
+		if (!shouldRender) return null;
+
+		// Calculate positioning styles based on position and offset
+		const getPositionStyles = () => {
+			const styles: React.CSSProperties = {};
+
+			switch (finalPosition) {
+				case 'top':
+					styles.top = `${offset}px`;
+					styles.maxWidth = maxWidth;
+					break;
+				case 'bottom':
+					styles.bottom = `${offset}px`;
+					styles.maxWidth = maxWidth;
+					break;
+				case 'left':
+					styles.left = `${offset}px`;
+					styles.maxHeight = maxHeight;
+					break;
+				case 'right':
+					styles.right = `${offset}px`;
+					styles.maxHeight = maxHeight;
+					break;
+				case 'top-left':
+					styles.top = `${offset}px`;
+					styles.left = `${offset}px`;
+					styles.maxWidth = maxWidth;
+					break;
+				case 'top-right':
+					styles.top = `${offset}px`;
+					styles.right = `${offset}px`;
+					styles.maxWidth = maxWidth;
+					break;
+				case 'bottom-left':
+					styles.bottom = `${offset}px`;
+					styles.left = `${offset}px`;
+					styles.maxWidth = maxWidth;
+					break;
+				case 'bottom-right':
+					styles.bottom = `${offset}px`;
+					styles.right = `${offset}px`;
+					styles.maxWidth = maxWidth;
+					break;
 			}
-		}, [isOpen]);
 
-		if (!isOpen) return null;
+			return styles;
+		};
+
+		// Animation classes based on position
+		const getAnimationClasses = () => {
+			if (mode !== 'contextual') return '';
+
+			switch (finalPosition) {
+				case 'bottom':
+				case 'bottom-left':
+				case 'bottom-right':
+					return 'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-bottom-10 data-[state=open]:slide-in-from-bottom-10 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 duration-300';
+				case 'top':
+				case 'top-left':
+				case 'top-right':
+					return 'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-top-10 data-[state=open]:slide-in-from-top-10 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 duration-300';
+				case 'left':
+					return 'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-left-10 data-[state=open]:slide-in-from-left-10 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 duration-300';
+				case 'right':
+					return 'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:slide-out-to-right-10 data-[state=open]:slide-in-from-right-10 data-[state=closed]:zoom-out-98 data-[state=open]:zoom-in-98 duration-300';
+				default:
+					return '';
+			}
+		};
 
 		return (
 			<div
 				ref={ref}
 				role='toolbar'
 				aria-label='Action bar'
-				style={{
-					bottom: `${bottomOffset}px`,
-					maxWidth,
-				}}
+				data-state={isOpen ? 'open' : 'closed'}
+				style={getPositionStyles()}
 				className={cn(
-					actionBarVariants({ size }),
-					'w-[calc(100%-2rem)] sm:w-auto sm:min-w-96',
+					actionBarVariants({ size, position: finalPosition }),
+					// Sizing based on orientation
+					isVertical ? 'w-auto min-h-[200px]' : 'w-[calc(100%-2rem)] sm:w-auto sm:min-w-[400px]',
 					// Contextual mode animations
-					mode === 'contextual' && [
-						!mounted && 'translate-y-[calc(100%+2rem)] opacity-0',
-						mounted && 'translate-y-0 opacity-100',
-					],
+					mode === 'contextual' && getAnimationClasses(),
 					className
 				)}
 				{...props}
 			>
-				<div className='flex h-full w-full   items-center justify-between gap-4 '>{children}</div>
+				<div
+					className={cn(
+						'flex h-full w-full gap-6',
+						isVertical
+							? 'flex-col items-center justify-start'
+							: 'flex-row items-center justify-between'
+					)}
+				>
+					{children}
+				</div>
 			</div>
 		);
 	}
@@ -184,10 +305,17 @@ ActionBar.displayName = 'ActionBar';
 
 const ActionBarHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({ className, children, ...props }, ref) => {
+		const { position } = useActionBar();
+		const isVertical = position === 'left' || position === 'right';
+
 		return (
 			<div
 				ref={ref}
-				className={cn('flex items-center gap-3', className)}
+				className={cn(
+					'flex gap-4',
+					isVertical ? 'flex-col items-center text-center' : 'items-center',
+					className
+				)}
 				{...props}
 			>
 				{children}
@@ -204,7 +332,7 @@ const ActionBarTitle = React.forwardRef<
 	return (
 		<h2
 			ref={ref}
-			className={cn('text-sm font-semibold leading-none', className)}
+			className={cn('text-base font-medium leading-tight', className)}
 			{...props}
 		/>
 	);
@@ -218,7 +346,7 @@ const ActionBarDescription = React.forwardRef<
 	return (
 		<p
 			ref={ref}
-			className={cn('text-sm text-muted-foreground', className)}
+			className={cn('text-sm text-muted-foreground leading-relaxed', className)}
 			{...props}
 		/>
 	);
@@ -227,10 +355,17 @@ ActionBarDescription.displayName = 'ActionBarDescription';
 
 const ActionBarActions = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({ className, children, ...props }, ref) => {
+		const { position } = useActionBar();
+		const isVertical = position === 'left' || position === 'right';
+
 		return (
 			<div
 				ref={ref}
-				className={cn('flex items-center gap-2', className)}
+				className={cn(
+					'flex gap-3',
+					isVertical ? 'flex-col items-center' : 'items-center',
+					className
+				)}
 				{...props}
 			>
 				{children}
@@ -263,7 +398,7 @@ const ActionBarClose = React.forwardRef<HTMLButtonElement, ActionBarCloseProps>(
 				type='button'
 				onClick={handleClick}
 				className={cn(
-					'inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+					'inline-flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-105',
 					className
 				)}
 				aria-label={srText}
@@ -279,12 +414,15 @@ ActionBarClose.displayName = 'ActionBarClose';
 
 const ActionBarSeparator = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({ className, ...props }, ref) => {
+		const { position } = useActionBar();
+		const isVertical = position === 'left' || position === 'right';
+
 		return (
 			<div
 				ref={ref}
 				role='separator'
-				aria-orientation='vertical'
-				className={cn('h-8 w-px bg-border', className)}
+				aria-orientation={isVertical ? 'horizontal' : 'vertical'}
+				className={cn('bg-border/60', isVertical ? 'h-px w-10' : 'h-10 w-px', className)}
 				{...props}
 			/>
 		);
@@ -294,10 +432,17 @@ ActionBarSeparator.displayName = 'ActionBarSeparator';
 
 const ActionBarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({ className, ...props }, ref) => {
+		const { position } = useActionBar();
+		const isVertical = position === 'left' || position === 'right';
+
 		return (
 			<div
 				ref={ref}
-				className={cn('flex flex-1 items-center gap-4', className)}
+				className={cn(
+					'flex flex-1 gap-6',
+					isVertical ? 'flex-col items-center' : 'items-center',
+					className
+				)}
 				{...props}
 			/>
 		);
@@ -310,7 +455,7 @@ const ActionBarLogo = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
 		return (
 			<div
 				ref={ref}
-				className={cn('flex shrink-0 items-center gap-2', className)}
+				className={cn('flex shrink-0 items-center gap-3', className)}
 				{...props}
 			/>
 		);
@@ -323,7 +468,7 @@ const ActionBarNav = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElem
 		return (
 			<nav
 				ref={ref}
-				className={cn('flex flex-1 items-center justify-center gap-1', className)}
+				className={cn('flex flex-1 items-center justify-center gap-2', className)}
 				{...props}
 			/>
 		);
@@ -348,7 +493,7 @@ const ActionBarTrigger = React.forwardRef<
 			type='button'
 			onClick={handleClick}
 			className={cn(
-				'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+				'inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95',
 				className
 			)}
 			{...props}
