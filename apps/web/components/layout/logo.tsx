@@ -1,12 +1,16 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { cn } from '@craft/ui/lib/utils';
+import { isUnsupportedBrowser } from '@craft/ui/utils/is-unsupported-browser';
 
 interface LogoProps {
 	size?: number;
 	className?: string;
 }
 
-const Logo = ({ size = 80, className = 'size-10 rounded-full bg-black' }: LogoProps) => {
+const Logo = ({ size = 80, className }: LogoProps) => {
+	const isUnsupported = useMemo(() => isUnsupportedBrowser(), []);
+
 	// Generate random elements but ensure they're consistent across renders
 	const [logoElements] = useState(() => {
 		return Array.from({ length: 15 }, (_, i) => {
@@ -33,9 +37,50 @@ const Logo = ({ size = 80, className = 'size-10 rounded-full bg-black' }: LogoPr
 		});
 	});
 
+	// Simple gradient logo for unsupported browsers
+	if (isUnsupported) {
+		return (
+			<div className={cn('logo', className)}>
+				<svg
+					xmlns='http://www.w3.org/2000/svg'
+					version='1.1'
+					width={size}
+					height={size}
+					viewBox='0 0 100 100'
+					className={cn(`size-${size} rounded-full`, className)}
+				>
+					<defs>
+						<linearGradient
+							id='gradient'
+							x1='0%'
+							y1='0%'
+							x2='100%'
+							y2='100%'
+						>
+							<stop
+								offset='0%'
+								stopColor='#3b82f6'
+							/>
+							<stop
+								offset='100%'
+								stopColor='#f97316'
+							/>
+						</linearGradient>
+					</defs>
+					<circle
+						cx='50'
+						cy='50'
+						r='40'
+						fill='url(#gradient)'
+					/>
+				</svg>
+			</div>
+		);
+	}
+
 	return (
 		<div
-			className='logo'
+			className={cn('logo', className)}
 			style={{
 				WebkitFilter: 'url("#goo")',
 
@@ -48,7 +93,7 @@ const Logo = ({ size = 80, className = 'size-10 rounded-full bg-black' }: LogoPr
 				width={size}
 				height={size}
 				viewBox='0 0 100 100'
-				className={className}
+				className={cn(`size-${size} rounded-full bg-black`, className)}
 			>
 				<defs>
 					<filter
@@ -72,6 +117,7 @@ const Logo = ({ size = 80, className = 'size-10 rounded-full bg-black' }: LogoPr
 					<circle
 						key={element.key}
 						cx={element.cx}
+						filter='url(#goo)'
 						cy={element.cy}
 						r='24%'
 						fill={element.color}

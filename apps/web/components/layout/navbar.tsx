@@ -3,6 +3,7 @@ import {
 	ActionBar,
 	ActionBarHeader,
 	ActionBarTitle,
+	ActionBarActions,
 } from '@craft/ui/components/crafted/action-bar';
 import {
 	DropdownMenu,
@@ -30,7 +31,7 @@ const Navbar = () => {
 	const CurrentIcon = currentLink ? currentLink.icon : HomeIcon;
 
 	return (
-		<ActionBar className='sm:min-w-fit p-1 h-fit'>
+		<ActionBar className='sm:min-w-fit p-1 h-fit rounded-full'>
 			<ActionBarHeader className='h-fit'>
 				<Logo className='size-8 rounded-full bg-black mr-1' />
 				<ActionBarTitle className=' font-normal'>

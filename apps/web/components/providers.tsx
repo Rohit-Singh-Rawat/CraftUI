@@ -10,12 +10,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
 			attribute='class'
 			defaultTheme='system'
 			enableSystem
-			disableTransitionOnChange
 			enableColorScheme
 		>
-		<ActionBarProvider mode='dock'>
-			{children}
-		</ActionBarProvider>
+			<ActionBarProvider mode='dock'>{children}</ActionBarProvider>
 		</NextThemesProvider>
 	);
 }
