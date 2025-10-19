@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, memo } from 'react';
 import { cn } from '@craft/ui/lib/utils';
 import { isUnsupportedBrowser } from '@craft/ui/utils/is-unsupported-browser';
 
@@ -8,7 +8,7 @@ interface LogoProps {
 	className?: string;
 }
 
-const Logo = ({ size = 80, className }: LogoProps) => {
+const Logo = memo(({ size = 80, className }: LogoProps) => {
 	const isUnsupported = useMemo(() => isUnsupportedBrowser(), []);
 
 	// Generate random elements but ensure they're consistent across renders
@@ -139,6 +139,8 @@ const Logo = ({ size = 80, className }: LogoProps) => {
 			</svg>
 		</div>
 	);
-};
+});
+
+Logo.displayName = 'Logo';
 
 export default Logo;
