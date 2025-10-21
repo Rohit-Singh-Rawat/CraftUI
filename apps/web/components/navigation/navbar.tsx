@@ -14,7 +14,7 @@ import {
 import { usePathname } from 'next/navigation';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { SecondBracketIcon, HomeIcon, UnfoldMoreIcon } from '@hugeicons/core-free-icons';
-import Logo from './logo';
+import Logo from '@/components/navigation/logo';
 import { Button } from '@craft/ui/components/button';
 
 const Navbar = () => {

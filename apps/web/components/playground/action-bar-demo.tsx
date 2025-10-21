@@ -44,9 +44,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@craft/ui/components/dropdown-menu';
-import ThemeSwitch from '../layout/theme-toggle';
-import Logo from '../layout/logo';
-import { DottedBorder } from '../layout/dotted-border';
+import ThemeSwitch from '../navigation/theme-toggle';
+import Logo from '../navigation/logo';
+import { DottedBorder } from '../ui/dotted-border';
 
 /**
  * DOCK MODE - Persistent bottom navigation

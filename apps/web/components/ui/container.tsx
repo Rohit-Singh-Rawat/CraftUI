@@ -6,5 +6,5 @@ interface ContainerProps {
 }
 
 export function Container({ children, className }: ContainerProps) {
-	return <div className={cn('rounded-3xl bg-secondary p-6 ', className)}>{children}</div>;
+	return <div className={cn('rounded-3xl bg-secondary p-6 z-20', className)}>{children}</div>;
 }

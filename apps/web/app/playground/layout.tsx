@@ -1,4 +1,4 @@
-import { Sidebar } from '@/components/layout/sidebar';
+import { Sidebar } from '@/components/navigation/sidebar';
 
 export default function PlaygroundLayout({ children }: { children: React.ReactNode }) {
 	return (

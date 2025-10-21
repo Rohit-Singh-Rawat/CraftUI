@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import ProgressiveBlur from '../animate/progessive-blur';
-import Logo from './logo';
+import ProgressiveBlur from '@/components/animate/progessive-blur';
+import Logo from '@/components/navigation/logo';
 import { cn } from '@craft/ui/lib/utils';
 
 interface NavLink {
