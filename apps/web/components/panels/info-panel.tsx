@@ -16,7 +16,7 @@ export function InfoPanel({ children, className, isMaximized = false }: InfoPane
 			className={cn(
 				'bg-background left-0 top-0 flex h-full flex-col justify-end rounded-2xl px-4',
 				'transition-all duration-300 ease-in-out',
-				'lg:fixed lg:h-screen lg:w-1/2 lg:left-20',
+				'lg:fixed lg:h-screen lg:w-[calc(50%-3rem)] lg:left-20',
 				'z-[1]',
 				className
 			)}

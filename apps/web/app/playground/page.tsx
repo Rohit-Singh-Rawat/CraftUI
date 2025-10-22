@@ -6,6 +6,9 @@ import PlayGround from '@/components/playground/playground';
 import { PreviewPanel } from '@/components/panels/preview-panel';
 import { InfoPanel } from '@/components/panels/info-panel';
 import { PanelToggleButton } from '@/components/panels/panel-toggle-button';
+import { CodeDrawer } from '@/components/panels/code-drawer';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { CodeIcon } from '@hugeicons/core-free-icons';
 
 const PlaygroundPage = () => {
 	const [isPanelMaximized, setIsPanelMaximized] = useState(true);
@@ -14,8 +17,21 @@ const PlaygroundPage = () => {
 		setIsPanelMaximized((prev) => !prev);
 	};
 
+	// Example component code
+	const exampleCode = `import { Button } from '@craft/ui/components/button';
+
+export function MyComponent() {
+  return (
+    <div className="p-4">
+      <Button variant="default">
+        Click me
+      </Button>
+    </div>
+  );
+}`;
+
 	return (
-		<main className='flex h-full w-full flex-1 flex-col lg:flex-row lg:justify-end '>
+		<main className='flex h-full w-full flex-1 flex-col lg:flex-row lg:justify-end relative'>
 			<PreviewPanel isMaximized={isPanelMaximized}>
 				<PlayGround />{' '}
 				<PanelToggleButton
@@ -31,6 +47,19 @@ const PlaygroundPage = () => {
 							heading='Component Info'
 							subheading='Details and documentation'
 						/>
+						<CodeDrawer
+							code={exampleCode}
+							fileName='my-component.tsx'
+						>
+							<button className='flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90'>
+								<HugeiconsIcon
+									icon={CodeIcon}
+									size={16}
+									strokeWidth={1.5}
+								/>
+								View Code
+							</button>
+						</CodeDrawer>
 					</div>
 					<div className='flex-1 overflow-y-auto'>
 						<div className='space-y-8'>
