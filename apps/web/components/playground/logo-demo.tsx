@@ -1,4 +1,4 @@
-import Logo from '../layout/logo';
+import Logo from '@/components/navigation/logo';
 
 const LogoDemo = () => {
 	return (
