@@ -1,0 +1,12 @@
+{
+	"extends": "@craft/typescript-config/react-library.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"rootDir": "./src",
+		"paths": {
+			"@workspace/ui/*": ["./src/*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist"]
+}
