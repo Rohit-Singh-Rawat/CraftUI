@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist_Mono, Doto } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
 import Navbar from '@/components/navigation/navbar';
 
-const geistSans = Geist({
-	variable: '--font-geist-sans',
-	subsets: ['latin'],
+const doto = Doto({
+	weight: ['400', '500', '700'],
+	variable: '--font-doto',
 });
 
 const geistMono = Geist_Mono({
@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${geistSans.className} ${geistMono.variable} antialiased`}>
+			<body className={`${doto.className} ${geistMono.variable} antialiased font-sans`}>
 				<Providers>
 					<Navbar />
 					{children}

@@ -229,14 +229,14 @@ function NavLinkItem({
 		>
 			<Link
 				href={link.href}
-				className='group relative flex h-px cursor-pointer items-center gap-3 py-2'
+				className='group relative flex h-px cursor-pointer items-center  py-2'
 				onMouseEnter={() => !isMobile && setHoveredLink(link.href)}
 				onMouseLeave={() => !isMobile && setHoveredLink(null)}
 				onClick={onClick}
 			>
 				<span
 					className={cn(
-						'inline-block h-[1px] bg-foreground/20 transition-all duration-300 ease-out',
+						'inline-block h-px bg-foreground/20 transition-all duration-300 ease-in-out',
 						!isMobile && 'group-hover:bg-emerald-500',
 						isCurrent && 'bg-emerald-500',
 						isMobile && 'w-[32px]',
@@ -246,10 +246,10 @@ function NavLinkItem({
 				/>
 				<span
 					className={cn(
-						'whitespace-nowrap transition-all ease-out flex items-center gap-2',
+						'whitespace-nowrap transition-all ease-in-out flex items-center pl-3 gap-2',
 						isMobile ? 'duration-300' : 'duration-500',
 						isCurrent
-							? 'text-emerald-500 opacity-0 group-hover/sidebar:opacity-100'
+							? 'text-emerald-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'
 							: isMobile
 							? 'opacity-100 group-hover:text-emerald-500'
 							: 'opacity-0 group-hover/sidebar:opacity-40 group-hover:text-emerald-500 group-hover:opacity-100 blur-md group-hover/sidebar:blur-none',
@@ -444,7 +444,13 @@ export function Sidebar() {
 				}}
 				onMouseLeave={() => setIsSidebarHovered(false)}
 			>
-				<Logo className='w-10 h-10 mt-[5vh] pl-2 ' />
+				<Link
+					href='/'
+					className='flex  mt-[5vh] pl-2  gap-4 items-center'
+				>
+					{' '}
+					<Logo className='w-10 h-10' /> <span className='text-2xl font-light  group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none' >Crafts</span>
+				</Link>
 				<motion.div className='relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]'>
 					<div className='relative flex h-fit w-full flex-col  '>
 						{/* <ProgressiveBlur position='top' height='150px' blurAmount='8px'  backgroundColor='var(--background)'/> */}
@@ -473,8 +479,12 @@ export function Sidebar() {
 						transition={{ duration: 0.3, ease: 'easeOut' }}
 						className='fixed left-0 top-0 z-30 h-[100dvh] max-w-[400px] p-4  md:hidden w-full'
 					>
-						<div className='bg-muted rounded-3xl p-4 h-full w-full overflow-hidden'>
-							<Logo className='w-10 h-10 mt-[5vh] pl-2 ' />
+						<div className='bg-muted rounded-3xl p-4 h-full w-full overflow-hidden'>	
+							<Link href='/' className='flex  mt-[5vh] pl-2  gap-4 items-center'>
+								{' '}
+								<Logo className='w-10 h-10' />{' '}
+								<span className='text-2xl font-light  group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none' >Crafts</span>
+							</Link>
 							<motion.div className='relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]'>
 								<div className='relative flex h-fit w-full flex-col  '>
 									{navigationData.map((section, sectionIndex) => (

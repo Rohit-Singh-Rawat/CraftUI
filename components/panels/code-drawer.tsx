@@ -50,8 +50,8 @@ export function CodeDrawer({
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
 						exit={{ y: '100%' }}
-						transition={{ type: 'easeInOut', duration: 0.3 }}
-						className='fixed top-0 left-0 p-3 pr-10 right-0 z-50 flex flex-col  lg:left-20 lg:right-auto lg:w-1/2 h-[100dvh]
+						transition={{ ease: 'easeInOut', duration: 0.3 }}
+						className='fixed top-0 left-0 p-3 pr-10 right-0 z-50 flex flex-col  lg:left-20 lg:right-auto lg:w-1/2 h-dvh
 						'
 					>
 						<div className='flex flex-col h-full bg-muted rounded-3xl shadow-2xl	'>
