@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 
 const actionBarVariants = cva(
 	'fixed z-50 p-3 border overflow-hidden border-border/50 bg-popover/95 backdrop-blur-md text-popover-foreground shadow-lg',

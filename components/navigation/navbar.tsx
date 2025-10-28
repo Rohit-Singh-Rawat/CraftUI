@@ -1,10 +1,5 @@
 'use client';
-import {
-	ActionBar,
-	ActionBarHeader,
-	ActionBarTitle,
-	ActionBarActions,
-} from '@/components/craft/action-bar';
+import { ActionBar, ActionBarHeader, ActionBarTitle, ActionBarActions } from '@/craft/components/action-bar';
 import {
 	DropdownMenu,
 	DropdownMenuContent,

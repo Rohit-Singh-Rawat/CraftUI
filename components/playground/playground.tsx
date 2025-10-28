@@ -1,6 +1,6 @@
 'use client';
 
-import ActionBarDemos from './action-bar-demo';
+import ActionBarDemos from '@/craft/example/action-bar-demo';
 
 const PlayGround = () => {
 	return (

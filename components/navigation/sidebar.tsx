@@ -4,14 +4,12 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
-import ProgressiveBlur from '@/components/animate/progessive-blur';
 import Logo from '@/components/navigation/logo';
 import { cn } from '@/lib/utils';
 
 interface NavLink {
 	label: string;
 	href: string;
-	tag?: 'new' | 'updated' | 'beta';
 }
 
 interface NavSection {
@@ -19,104 +17,8 @@ interface NavSection {
 	links: NavLink[];
 }
 
-const navigationData: NavSection[] = [
-	{
-		title: 'Components',
-		links: [
-			{ label: 'Action Bar', href: '/playground', tag: 'new' },
-			{
-				label: 'Gooey Search Bar',
-				href: '/playground/gooey-search-bar',
-				tag: 'new',
-			},
-			{
-				label: 'Hexagonal Background',
-				href: '/playground/hexagonal-bg',
-			},
-			{ label: 'Avatar Group', href: '/playground/avatar' },
-			{
-				label: 'Password Validation',
-				href: '/playground/password-validation',
-			},
-			{ label: 'Card Component', href: '/playground/card', tag: 'beta' },
-			{ label: 'Modal Dialog', href: '/playground/modal' },
-			{ label: 'Tooltip', href: '/playground/tooltip', tag: 'updated' },
-			{ label: 'Dropdown Menu', href: '/playground/dropdown' },
-		],
-	},
-	{
-		title: 'Buttons & Interactions',
-		links: [
-			{ label: 'Animated Buttons', href: '/playground/buttons' },
-			{ label: 'Toggle Switches', href: '/playground/toggles' },
-			{ label: 'Hover Effects', href: '/playground/hover-effects' },
-			{ label: 'Ripple Effect', href: '/playground/ripple', tag: 'new' },
-			{ label: 'Loading Buttons', href: '/playground/loading-buttons' },
-			{ label: 'Button Groups', href: '/playground/button-groups' },
-		],
-	},
-	{
-		title: 'Forms & Inputs',
-		links: [
-			{ label: 'Input Variants', href: '/playground/inputs' },
-			{ label: 'Form Elements', href: '/playground/forms' },
-			{ label: 'File Upload', href: '/playground/file-upload' },
-			{ label: 'Select Dropdown', href: '/playground/select', tag: 'updated' },
-			{ label: 'Radio Buttons', href: '/playground/radio' },
-			{ label: 'Checkboxes', href: '/playground/checkboxes' },
-			{ label: 'Date Picker', href: '/playground/date-picker', tag: 'beta' },
-		],
-	},
-	{
-		title: 'Navigation',
-		links: [
-			{ label: 'Tabs', href: '/playground/tabs' },
-			{ label: 'Breadcrumbs', href: '/playground/breadcrumbs' },
-			{ label: 'Pagination', href: '/playground/pagination' },
-			{ label: 'Navbar', href: '/playground/navbar', tag: 'new' },
-		],
-	},
-	{
-		title: 'Feedback',
-		links: [
-			{ label: 'Toast Notifications', href: '/playground/toast', tag: 'new' },
-			{ label: 'Alert Messages', href: '/playground/alerts' },
-			{ label: 'Progress Bars', href: '/playground/progress' },
-			{ label: 'Skeleton Loaders', href: '/playground/skeleton', tag: 'beta' },
-		],
-	},
-	{
-		title: 'Data Display',
-		links: [
-			{ label: 'Tables', href: '/playground/tables' },
-			{ label: 'Lists', href: '/playground/lists' },
-			{ label: 'Badges', href: '/playground/badges', tag: 'updated' },
-			{ label: 'Chips', href: '/playground/chips' },
-		],
-	},
-];
-
-// Reusable components
-type ProgressiveBlurProps = {
-	className?: string;
-	backgroundColor?: string;
-	position?: 'top' | 'bottom';
-	height?: string;
-	blurAmount?: string;
-};
-
-function TagBadge({ tag }: { tag: 'new' | 'updated' | 'beta' }) {
-	const tagStyles = {
-		new: 'bg-emerald-500/20 text-emerald-500',
-		updated: 'bg-blue-500/20 text-blue-500',
-		beta: 'bg-orange-500/20 text-orange-500',
-	};
-
-	return (
-		<span className={cn('text-[10px] px-1.5 py-0.5 rounded-md font-medium', tagStyles[tag])}>
-			{tag}
-		</span>
-	);
+interface SidebarProps {
+	navigationData: NavSection[];
 }
 
 function SectionDivider() {
@@ -125,7 +27,7 @@ function SectionDivider() {
 			<span className='bg-foreground/20 block h-[1px] w-[32px] transition-all duration-300' />
 			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2 transition-all duration-300' />
 			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2 transition-all duration-300' />
-			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2  transition-all duration-300' />
+			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2 transition-all duration-300' />
 		</>
 	);
 }
@@ -165,8 +67,8 @@ function SectionTitle({
 					)}
 				>
 					{title}
-				</span>{' '}
-			</div>{' '}
+				</span>
+			</div>
 			<motion.span
 				className='bg-foreground/20 block h-[1px] w-[32px] mb-2'
 				initial={{ scaleX: 0 }}
@@ -178,7 +80,7 @@ function SectionTitle({
 				style={{ transformOrigin: 'left' }}
 			/>
 			<motion.span
-				className='bg-foreground/20 block h-[1px] w-[32px] '
+				className='bg-foreground/20 block h-[1px] w-[32px]'
 				initial={{ scaleX: 0 }}
 				animate={{ scaleX: 1 }}
 				transition={{
@@ -229,7 +131,7 @@ function NavLinkItem({
 		>
 			<Link
 				href={link.href}
-				className='group relative flex h-px cursor-pointer items-center  py-2'
+				className='group relative flex h-px cursor-pointer items-center py-2'
 				onMouseEnter={() => !isMobile && setHoveredLink(link.href)}
 				onMouseLeave={() => !isMobile && setHoveredLink(null)}
 				onClick={onClick}
@@ -257,7 +159,6 @@ function NavLinkItem({
 					)}
 				>
 					{link.label}
-					{link.tag && <TagBadge tag={link.tag} />}
 				</span>
 			</Link>
 			<motion.span
@@ -271,7 +172,7 @@ function NavLinkItem({
 				style={{ transformOrigin: 'left' }}
 			/>
 			<motion.span
-				className='bg-foreground/20 block h-[1px] w-[32px] '
+				className='bg-foreground/20 block h-[1px] w-[32px]'
 				initial={{ scaleX: 0 }}
 				animate={{ scaleX: 1 }}
 				transition={{
@@ -292,6 +193,7 @@ function NavigationSection({
 	setHoveredLink,
 	onLinkClick,
 	currentPath,
+	isLastSection = false,
 }: {
 	section: NavSection;
 	sectionIndex: number;
@@ -300,6 +202,7 @@ function NavigationSection({
 	setHoveredLink: (href: string | null) => void;
 	onLinkClick?: () => void;
 	currentPath: string;
+	isLastSection?: boolean;
 }) {
 	return (
 		<motion.div
@@ -332,7 +235,7 @@ function NavigationSection({
 				/>
 			))}
 
-			{sectionIndex < navigationData.length - 1 && <SectionDivider />}
+			{!isLastSection && <SectionDivider />}
 		</motion.div>
 	);
 }
@@ -341,7 +244,7 @@ function MobileMenuButton({ isOpen, onClick }: { isOpen: boolean; onClick: () =>
 	return (
 		<button
 			onClick={onClick}
-			className='group fixed top-6 left-6 z-50 md:hidden p-2 rounded-2xl bg-foreground/5 backdrop-blur-md  hover:bg-foreground/10 transition-colors'
+			className='group fixed top-6 left-6 z-50 md:hidden p-2 rounded-2xl bg-foreground/5 backdrop-blur-md hover:bg-foreground/10 transition-colors'
 			aria-label='Toggle navigation menu'
 			aria-expanded={isOpen}
 		>
@@ -409,7 +312,7 @@ function Overlay({
 	);
 }
 
-export function Sidebar() {
+export function Sidebar({ navigationData }: SidebarProps) {
 	const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 	const [isSidebarHovered, setIsSidebarHovered] = useState(false);
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -438,7 +341,7 @@ export function Sidebar() {
 				initial={{ x: -20, opacity: 0 }}
 				animate={{ x: 0, opacity: 1 }}
 				transition={{ duration: 0.6, ease: 'easeOut' }}
-				className='fixed left-2 z-40 h-[100dvh] w-[300px] truncate-overflow p-4 pl-2 pr-2 group/sidebar hidden md:block '
+				className='fixed left-2 z-40 h-[100dvh] w-[300px] truncate-overflow p-4 pl-2 pr-2 group/sidebar hidden md:block'
 				onMouseEnter={() => {
 					setIsSidebarHovered(true);
 				}}
@@ -446,14 +349,15 @@ export function Sidebar() {
 			>
 				<Link
 					href='/'
-					className='flex  mt-[5vh] pl-2  gap-4 items-center'
+					className='flex mt-[5vh] pl-2 gap-4 items-center'
 				>
-					{' '}
-					<Logo className='w-10 h-10' /> <span className='text-2xl font-light  group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none' >Crafts</span>
+					<Logo className='w-10 h-10' />
+					<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'>
+						Crafts
+					</span>
 				</Link>
 				<motion.div className='relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]'>
-					<div className='relative flex h-fit w-full flex-col  '>
-						{/* <ProgressiveBlur position='top' height='150px' blurAmount='8px'  backgroundColor='var(--background)'/> */}
+					<div className='relative flex h-fit w-full flex-col'>
 						{navigationData.map((section, sectionIndex) => (
 							<NavigationSection
 								key={section.title}
@@ -463,6 +367,7 @@ export function Sidebar() {
 								hoveredLink={hoveredLink}
 								setHoveredLink={setHoveredLink}
 								currentPath={pathname}
+								isLastSection={sectionIndex === navigationData.length - 1}
 							/>
 						))}
 					</div>
@@ -477,16 +382,20 @@ export function Sidebar() {
 						animate={{ x: 0, opacity: 1 }}
 						exit={{ x: -320, opacity: 0 }}
 						transition={{ duration: 0.3, ease: 'easeOut' }}
-						className='fixed left-0 top-0 z-30 h-[100dvh] max-w-[400px] p-4  md:hidden w-full'
+						className='fixed left-0 top-0 z-30 h-[100dvh] max-w-[400px] p-4 md:hidden w-full'
 					>
-						<div className='bg-muted rounded-3xl p-4 h-full w-full overflow-hidden'>	
-							<Link href='/' className='flex  mt-[5vh] pl-2  gap-4 items-center'>
-								{' '}
-								<Logo className='w-10 h-10' />{' '}
-								<span className='text-2xl font-light  group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none' >Crafts</span>
+						<div className='bg-muted rounded-3xl p-4 h-full w-full overflow-hidden'>
+							<Link
+								href='/'
+								className='flex mt-[5vh] pl-2 gap-4 items-center'
+							>
+								<Logo className='w-10 h-10' />
+								<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'>
+									Crafts
+								</span>
 							</Link>
 							<motion.div className='relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]'>
-								<div className='relative flex h-fit w-full flex-col  '>
+								<div className='relative flex h-fit w-full flex-col'>
 									{navigationData.map((section, sectionIndex) => (
 										<NavigationSection
 											key={section.title}
@@ -497,6 +406,7 @@ export function Sidebar() {
 											setHoveredLink={setHoveredLink}
 											onLinkClick={() => setIsMobileMenuOpen(false)}
 											currentPath={pathname}
+											isLastSection={sectionIndex === navigationData.length - 1}
 										/>
 									))}
 								</div>

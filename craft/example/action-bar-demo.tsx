@@ -36,7 +36,7 @@ import {
 	ActionBarContent,
 	ActionBarTrigger,
 	ActionBarSeparator,
-} from '@/components/craft/action-bar';
+} from '@/craft/components/action-bar';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -44,7 +44,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import ThemeSwitch from '../navigation/theme-toggle';
+import ThemeSwitch from '@/components/navigation/theme-toggle';
 import Logo from '@/components/navigation/logo';
 import { DottedBorder } from '@/components/dotted-border';
 
