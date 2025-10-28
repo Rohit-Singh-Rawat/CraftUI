@@ -1,0 +1,107 @@
+---
+title: Action Bar
+category: Navigation
+description: Floating bottom action bar with dock and contextual modes
+---
+
+# Action Bar
+
+A versatile floating bottom action bar component with two distinct modes: **dock** (persistent navigation) and **contextual** (conditional display).
+
+## Features
+
+- 🎯 Two modes: Dock (persistent) and Contextual (conditional)
+- 🎨 Multiple variants: default, destructive, success, warning
+- 📱 Fully responsive design
+- ♿ Full ARIA support and keyboard navigation
+- 🎭 Smooth slide-up animations
+- 🎛️ Both controlled and uncontrolled patterns
+
+## Installation
+
+```bash
+# This component uses Radix UI primitives
+npm install @radix-ui/react-dialog
+```
+
+## Dock Mode
+
+Always visible persistent navigation, like mobile tab bars or macOS dock.
+
+```tsx
+import {
+  ActionBarProvider,
+  ActionBar,
+  ActionBarLogo,
+  ActionBarNav,
+  ActionBarActions,
+} from '@/craft/components/action-bar';
+
+<ActionBarProvider mode='dock'>
+  <ActionBar>
+    <ActionBarLogo>{/* Logo */}</ActionBarLogo>
+    <ActionBarNav>
+      <Button variant='ghost'>Home</Button>
+      <Button variant='ghost'>Search</Button>
+    </ActionBarNav>
+    <ActionBarActions>{/* User menu */}</ActionBarActions>
+  </ActionBar>
+</ActionBarProvider>
+```
+
+## Contextual Mode
+
+Appears based on conditions (selections, cart items, notifications).
+
+```tsx
+<ActionBarProvider
+  mode='contextual'
+  open={isOpen}
+  onOpenChange={setIsOpen}
+>
+  <ActionBar>
+    <ActionBarContent>
+      <ActionBarHeader>
+        <ActionBarTitle>2 items selected</ActionBarTitle>
+      </ActionBarHeader>
+    </ActionBarContent>
+    <ActionBarActions>
+      <Button size='sm'>Delete</Button>
+      <ActionBarClose />
+    </ActionBarActions>
+  </ActionBar>
+</ActionBarProvider>
+```
+
+## API Reference
+
+### ActionBarProvider Props
+
+- `mode?: "dock" | "contextual"` - Display mode (default: "contextual")
+- `open?: boolean` - Controlled state (contextual only)
+- `onOpenChange?: (open: boolean) => void` - State callback
+- `defaultOpen?: boolean` - Uncontrolled default (default: false)
+
+### ActionBar Props
+
+- `variant?: "default" | "destructive" | "success" | "warning"`
+- `size?: "default" | "sm" | "lg"`
+- `bottomOffset?: number` - Distance from bottom in px (default: 24)
+- `maxWidth?: string` - Max width (default: "640px")
+- `animationDelay?: number` - Animation delay in ms (default: 100)
+
+## Use Cases
+
+**Dock Mode:**
+- Mobile tab navigation
+- Persistent action buttons
+- Bottom navigation bars
+- Quick access menus
+
+**Contextual Mode:**
+- Shopping cart actions
+- Bulk selection tools
+- Undo/redo notifications
+- Success/error messages
+- Multi-step form controls
+
