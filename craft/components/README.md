@@ -6,7 +6,7 @@ Custom, production-ready UI components built specifically for rsrCrafts. Followi
 
 ### ActionBar
 
-Floating bottom action bar with two modes: **dock** (persistent nav) and **contextual** (conditional display).
+Flexible floating action bar with customizable positioning and two modes: **dock** (persistent) and **contextual** (conditional).
 
 #### Mode: Dock
 
@@ -19,9 +19,12 @@ import {
 	ActionBarLogo,
 	ActionBarNav,
 	ActionBarActions,
-} from '@/components/crafted/action-bar';
+} from '@/craft/components/action-bar';
 
-<ActionBarProvider mode='dock'>
+<ActionBarProvider
+	mode='dock'
+	position='bottom'
+>
 	<ActionBar>
 		<ActionBarLogo>{/* Logo */}</ActionBarLogo>
 		<ActionBarNav>
@@ -40,6 +43,7 @@ Appears based on conditions (selections, cart items, notifications).
 ```tsx
 <ActionBarProvider
 	mode='contextual'
+	position='bottom'
 	open={isOpen}
 	onOpenChange={setIsOpen}
 >
@@ -57,35 +61,52 @@ Appears based on conditions (selections, cart items, notifications).
 </ActionBarProvider>
 ```
 
+#### Positioning Options
+
+The ActionBar supports 8 positions: `top`, `bottom`, `left`, `right`, `top-left`, `top-right`, `bottom-left`, `bottom-right`. Layout automatically adjusts for vertical/horizontal orientation.
+
+```tsx
+<ActionBarProvider position='right'>
+	<ActionBar
+		offset={24}
+		maxHeight='calc(100vh - 2rem)'
+	>
+		{/* Vertical layout with centered items */}
+	</ActionBar>
+</ActionBarProvider>
+```
+
 **Sub-components:**
 
-- `ActionBarProvider` - Context provider (required)
-- `ActionBar` - Root container (floating, centered bottom)
+- `ActionBarProvider` - Context provider with mode and position (required)
+- `ActionBar` - Root floating container with position-aware layout
 - `ActionBarLogo` - Logo container (dock mode)
 - `ActionBarNav` - Navigation links (dock mode)
-- `ActionBarHeader`, `ActionBarTitle`, `ActionBarDescription` - Content
+- `ActionBarHeader`, `ActionBarTitle`, `ActionBarDescription` - Content headers
 - `ActionBarContent` - Flexible wrapper (contextual mode)
 - `ActionBarActions` - Button container
 - `ActionBarClose` - Pre-styled close button
-- `ActionBarSeparator` - Vertical divider
+- `ActionBarSeparator` - Divider (horizontal/vertical based on orientation)
 - `ActionBarTrigger` - Toggle button (contextual mode)
 
 **ActionBarProvider Props:**
 
 - `mode?: "dock" | "contextual"` - Display mode (default: "contextual")
+- `position?: "top" | "bottom" | "left" | "right" | "top-left" | "top-right" | "bottom-left" | "bottom-right"` - Bar position (default: "bottom")
 - `open?: boolean` - Controlled state (contextual only)
 - `onOpenChange?: (open: boolean) => void` - State callback
 - `defaultOpen?: boolean` - Uncontrolled default (default: false)
 
 **ActionBar Props:**
 
-- `variant?: "default" | "destructive" | "success" | "warning"`
-- `size?: "default" | "sm" | "lg"`
-- `bottomOffset?: number` - Distance from bottom in px (default: 24)
-- `maxWidth?: string` - Max width (default: "640px")
+- `size?: "sm" | "md" | "lg"` - Padding size (default: "md")
+- `position?: "top" | "bottom" | "left" | "right" | "top-left" | "top-right" | "bottom-left" | "bottom-right"` - Override provider position
+- `offset?: number` - Distance from edge in px (default: 16)
+- `maxWidth?: string` - Max width for horizontal positions (default: "640px")
+- `maxHeight?: string` - Max height for vertical positions (default: "calc(100vh - 2rem)")
 - `animationDelay?: number` - Animation delay in ms (default: 100)
 
-**Features:** Floating design, smooth slide-up animations, ARIA support, keyboard navigation, responsive, both controlled/uncontrolled patterns
+**Features:** Multi-position support with adaptive layouts, smooth directional animations, ARIA support, keyboard navigation, responsive design, both controlled/uncontrolled patterns
 
 ## Usage
 
