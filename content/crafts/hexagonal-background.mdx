@@ -1,0 +1,91 @@
+---
+title: Hexagonal Background
+category: Background
+description: An animated hexagonal pattern background with gradient colors and fade effects
+component: true
+---
+
+import HexagonalBackgroundDemo from '@/craft/example/hexagonal-background-demo';
+
+<HexagonalBackgroundDemo />
+
+## Installation
+
+```bash
+npm install react
+```
+
+## Usage
+
+```tsx
+import HexagonBackground from '@/craft/components/hexagonal-background';
+
+export default function Example() {
+	return (
+		<div className='relative h-screen w-full'>
+			<HexagonBackground
+				color='#5271ff'
+				cellSize='60px'
+				strokeWidth='2'
+				className='absolute inset-0'
+				fade={true}
+				fadePercentage={30}
+				opacity={0.3}
+			/>
+			<div className='relative flex h-full items-center justify-center'>
+				<h1 className='text-6xl font-bold'>Your Content</h1>
+			</div>
+		</div>
+	);
+}
+```
+
+## Props
+
+| Prop             | Type               | Default       | Description                          |
+| ---------------- | ------------------ | ------------- | ------------------------------------ |
+| `color`          | `string`           | `#5271ff`     | Primary color for the hexagons       |
+| `secondaryColor` | `string`           | Same as color | Secondary color for gradient effect  |
+| `cellSize`       | `string \| number` | `50px`        | Size of each hexagonal cell          |
+| `strokeWidth`    | `number \| string` | `3`           | Width of the hexagon strokes         |
+| `fade`           | `boolean`          | `true`        | Enable radial fade effect            |
+| `fadePercentage` | `number`           | `20`          | Percentage of fade effect (0-100)    |
+| `opacity`        | `number`           | `1`           | Overall opacity of the pattern (0-1) |
+| `className`      | `string`           | -             | Additional CSS classes               |
+
+## Examples
+
+### Custom Colors
+
+```tsx
+<HexagonBackground
+	color='#ff6b6b'
+	secondaryColor='#4ecdc4'
+	cellSize='80px'
+	strokeWidth='3'
+	opacity={0.5}
+/>
+```
+
+### No Fade Effect
+
+```tsx
+<HexagonBackground
+	color='hsl(var(--primary))'
+	cellSize='40px'
+	fade={false}
+	opacity={0.2}
+/>
+```
+
+### Dense Pattern
+
+```tsx
+<HexagonBackground
+	color='#6366f1'
+	cellSize='30px'
+	strokeWidth='1'
+	fadePercentage={40}
+	opacity={0.4}
+/>
+```

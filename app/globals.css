@@ -113,6 +113,7 @@
 	--color-sidebar-ring: var(--sidebar-ring);
 	--font-sans: var(--font-doto), system-ui, sans-serif;
 	--font-serif: var(--font-instrument-serif), serif;
+	--font-doto: var(--font-doto), sans-serif;
 }
 
 @layer base {
