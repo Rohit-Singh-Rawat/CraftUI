@@ -289,7 +289,7 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 			>
 				<div
 					className={cn(
-						'flex h-full w-full gap-6',
+						'flex h-full w-full gap-2',
 						isVertical
 							? 'flex-col items-center justify-start'
 							: 'flex-row items-center justify-between'

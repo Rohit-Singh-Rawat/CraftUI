@@ -5,6 +5,13 @@ import path from 'node:path';
 const COMPONENTS_DIR = path.join(process.cwd(), 'craft/components');
 const EXAMPLES_DIR = path.join(process.cwd(), 'craft/example');
 const CONTENT_DIR = path.join(process.cwd(), 'content/crafts');
+const IMAGES_DIR = path.join(process.cwd(), 'public/crafts');
+const IMAGES_DIR_ALT = path.join(process.cwd(), 'public/images/crafts');
+
+export interface CraftImage {
+	light: string;
+	dark: string;
+}
 
 export interface CraftEntry {
 	slug: string;
@@ -22,12 +29,14 @@ export interface CraftEntry {
 		path: string;
 		markdown: string;
 	};
+	image?: CraftImage;
 }
 
 export interface CraftMetadata {
 	slug: string;
 	title: string;
 	category?: string;
+	image?: CraftImage;
 }
 
 /**
@@ -99,6 +108,75 @@ function readContent(slug: string): { path: string; markdown: string } | null {
 			path: mdxPath,
 			markdown: fs.readFileSync(mdxPath, 'utf-8'),
 		};
+	}
+
+	return null;
+}
+
+/**
+ * Find images for craft from public/crafts/{slug}-light.{ext} and {slug}-dark.{ext}
+ */
+function findCraftImage(slug: string): CraftImage | null {
+	const extensions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'];
+	let lightImage: string | null = null;
+	let darkImage: string | null = null;
+
+	// Check public/images/crafts/{slug}/ directory
+	const slugImagesDir = path.join(IMAGES_DIR_ALT, slug);
+	if (fs.existsSync(slugImagesDir)) {
+		for (const ext of extensions) {
+			const lightPath = path.join(slugImagesDir, `${slug}-light.${ext}`);
+			const darkPath = path.join(slugImagesDir, `${slug}-dark.${ext}`);
+
+			if (fs.existsSync(lightPath)) {
+				lightImage = `/images/crafts/${slug}/${slug}-light.${ext}`;
+			}
+			if (fs.existsSync(darkPath)) {
+				darkImage = `/images/crafts/${slug}/${slug}-dark.${ext}`;
+			}
+
+			if (lightImage && darkImage) {
+				break;
+			}
+		}
+	}
+
+	// Fallback: Check public/crafts/{slug}/ directory
+	if (!lightImage || !darkImage) {
+		const slugCraftsDir = path.join(IMAGES_DIR, slug);
+		if (fs.existsSync(slugCraftsDir)) {
+			for (const ext of extensions) {
+				if (!lightImage) {
+					const lightPath = path.join(slugCraftsDir, `${slug}-light.${ext}`);
+					if (fs.existsSync(lightPath)) {
+						lightImage = `/crafts/${slug}/${slug}-light.${ext}`;
+					}
+				}
+				if (!darkImage) {
+					const darkPath = path.join(slugCraftsDir, `${slug}-dark.${ext}`);
+					if (fs.existsSync(darkPath)) {
+						darkImage = `/crafts/${slug}/${slug}-dark.${ext}`;
+					}
+				}
+
+				if (lightImage && darkImage) {
+					break;
+				}
+			}
+		}
+	}
+
+	// If we found both light and dark images, return them
+	if (lightImage && darkImage) {
+		return { light: lightImage, dark: darkImage };
+	}
+
+	// If we only found one, use it for both modes
+	if (lightImage) {
+		return { light: lightImage, dark: lightImage };
+	}
+	if (darkImage) {
+		return { light: darkImage, dark: darkImage };
 	}
 
 	return null;
@@ -188,6 +266,9 @@ export function getCraftBySlug(slug: string, metadata?: CraftMetadata): CraftEnt
 		category = extractCategoryFromMarkdown(content.markdown) || undefined;
 	}
 
+	// Determine image
+	const image = metadata?.image || findCraftImage(slug) || undefined;
+
 	return {
 		slug,
 		title,
@@ -195,6 +276,7 @@ export function getCraftBySlug(slug: string, metadata?: CraftMetadata): CraftEnt
 		component,
 		example: example || undefined,
 		content: content || undefined,
+		image,
 	};
 }
 

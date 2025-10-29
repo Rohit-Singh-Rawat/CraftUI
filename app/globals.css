@@ -112,7 +112,6 @@
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
 	--font-sans: var(--font-doto), system-ui, sans-serif;
-	--font-mono: var(--font-geist-mono), monospace;
 	--font-serif: var(--font-instrument-serif), serif;
 }
 

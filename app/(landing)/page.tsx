@@ -81,7 +81,7 @@ const Background = () => {
 			{Array.from({ length: 9 }).map((_, i) => (
 				<div
 					key={i}
-					className='flex-none h-full overflow-hidden relative w-px z-1 bg-linear-to-b from-white/0 via-white/10 via-80% to-white/0'
+					className='flex-none h-full overflow-hidden relative w-px z-1 bg-linear-to-b from-foreground/0 via-foreground/10 via-80% to-foreground/0 dark:from-foreground/0 '
 				/>
 			))}
 		</div>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist_Mono, Doto ,Instrument_Serif} from 'next/font/google';
+import { Inter, Doto ,Instrument_Serif} from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
 import Navbar from '@/components/navigation/navbar';
@@ -9,8 +9,8 @@ const doto = Doto({
 	variable: '--font-doto',
 });
 
-const geistMono = Geist_Mono({
-	variable: '--font-geist-mono',
+const inter = Inter({
+	variable: '--font-inter',
 	subsets: ['latin'],
 });
 
@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${doto.variable} ${geistMono.className} ${instrumentSerif.variable} antialiased font-sans`}>
+			<body className={`${doto.variable} ${inter.className} ${instrumentSerif.variable} antialiased font-sans`}>
 				<Providers>
 					<Navbar />
 					{children}

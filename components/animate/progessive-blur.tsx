@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 type ProgressiveBlurProps = {
 	className?: string;
@@ -19,7 +19,7 @@ const ProgressiveBlur = ({
 
 	return (
 		<div
-			className={`pointer-events-none absolute left-0 w-full select-none ${className}`}
+			className={`pointer-events-none absolute left-0 z-10 w-full select-none ${className}`}
 			style={{
 				[isTop ? 'top' : 'bottom']: 0,
 				height,

@@ -24,10 +24,10 @@ interface SidebarProps {
 function SectionDivider() {
 	return (
 		<>
-			<span className='bg-foreground/20 block h-[1px] w-[32px] transition-all duration-300' />
-			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2 transition-all duration-300' />
-			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2 transition-all duration-300' />
-			<span className='bg-foreground/20 block h-[1px] w-[32px] mt-2 transition-all duration-300' />
+			<span className='bg-foreground/20 block h-px mt-2 w-[32px] transition-all duration-300' />
+			<span className='bg-foreground/20 block h-px w-[32px] mt-2 transition-all duration-300' />
+			<span className='bg-foreground/20 block h-px w-[32px] mt-2 transition-all duration-300' />
+			<span className='bg-foreground/20 block h-px w-[32px] my-2 transition-all duration-300' />
 		</>
 	);
 }
@@ -139,8 +139,8 @@ function NavLinkItem({
 				<span
 					className={cn(
 						'inline-block h-px bg-foreground/20 transition-all duration-300 ease-in-out',
-						!isMobile && 'group-hover:bg-emerald-500',
-						isCurrent && 'bg-emerald-500',
+						!isMobile && 'group-hover:bg-orange-500',
+						isCurrent && 'bg-orange-500',
 						isMobile && 'w-[32px]',
 						!isMobile && (hoveredLink === link.href || isCurrent) && 'w-[55px]',
 						!isMobile && !(hoveredLink === link.href || isCurrent) && 'w-[32px]'
@@ -151,11 +151,11 @@ function NavLinkItem({
 						'whitespace-nowrap transition-all ease-in-out flex items-center pl-3 gap-2',
 						isMobile ? 'duration-300' : 'duration-500',
 						isCurrent
-							? 'text-emerald-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'
+							? 'text-orange-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'
 							: isMobile
-							? 'opacity-100 group-hover:text-emerald-500'
-							: 'opacity-0 group-hover/sidebar:opacity-40 group-hover:text-emerald-500 group-hover:opacity-100 blur-md group-hover/sidebar:blur-none',
-						!isMobile && 'group-hover:text-emerald-500 group-hover:opacity-100'
+							? 'opacity-100 group-hover:text-orange-500'
+							: 'opacity-0 group-hover/sidebar:opacity-40 group-hover:text-orange-500 group-hover:opacity-100 blur-md group-hover/sidebar:blur-none',
+						!isMobile && 'group-hover:text-orange-500 group-hover:opacity-100'
 					)}
 				>
 					{link.label}
@@ -352,7 +352,7 @@ export function Sidebar({ navigationData }: SidebarProps) {
 					className='flex mt-[5vh] pl-2 gap-4 items-center'
 				>
 					<Logo className='w-10 h-10' />
-					<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'>
+					<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none font-serif'>
 						Crafts
 					</span>
 				</Link>
@@ -390,7 +390,7 @@ export function Sidebar({ navigationData }: SidebarProps) {
 								className='flex mt-[5vh] pl-2 gap-4 items-center'
 							>
 								<Logo className='w-10 h-10' />
-								<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'>
+								<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none font-serif'>
 									Crafts
 								</span>
 							</Link>
