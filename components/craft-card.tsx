@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import type { CraftImage } from '@/diary';
+import { CircleIcon, SquareIcon, TriangleIcon } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 
 interface CraftCardProps {
 	slug: string;
@@ -36,8 +38,24 @@ export function CraftCard({ slug, title, image }: CraftCardProps) {
 							className='object-cover'
 						/>
 					) : (
-						<div className='flex h-full w-full items-center justify-center bg-background'>
-							<span className='text-sm text-muted-foreground'>Preview</span>
+						<div className='flex h-full w-full items-center justify-center bg-background flex-col gap-2'>
+							<div className='flex items-center justify-center gap-2 text-muted-foreground/50'>
+								<HugeiconsIcon
+									icon={TriangleIcon}
+									size={24}
+									fill='currentColor'
+								/>
+								<HugeiconsIcon
+									icon={CircleIcon}
+									size={24}
+									fill='currentColor'
+								/>
+								<HugeiconsIcon
+									icon={SquareIcon}
+									size={24}
+									fill='currentColor'
+								/>
+							</div>
 						</div>
 					)}
 					{image && !mounted && (
