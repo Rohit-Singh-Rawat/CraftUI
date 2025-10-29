@@ -2,6 +2,12 @@ import { getCraftsByCategory } from '@/diary';
 import { craftRegistry } from '@/registry';
 import { CraftCard } from '@/components/craft-card';
 import ProgrssiveBlur from '@/components/animate/progessive-blur';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Craft Diary',
+	description: 'A curated collection of meticulously crafted elements organized by category.',
+};
 
 export default function DiaryPage() {
 	const craftsByCategory = getCraftsByCategory(craftRegistry);
@@ -12,7 +18,6 @@ export default function DiaryPage() {
 				position='top'
 				height='100px'
 				backgroundColor='var(--background)'
-
 			/>
 			<ProgrssiveBlur
 				position='bottom'

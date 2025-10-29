@@ -280,7 +280,7 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
 				className={cn(
 					actionBarVariants({ size, position: finalPosition }),
 					// Sizing based on orientation
-					isVertical ? 'w-auto min-h-[200px]' : 'w-[calc(100%-2rem)] sm:w-auto sm:min-w-[400px]',
+					isVertical ? 'w-auto min-h-[200px]' : 'max-w-[calc(100%-2rem)] sm:w-auto sm:min-w-[400px]',
 					// Contextual mode animations
 					mode === 'contextual' && getAnimationClasses(),
 					className

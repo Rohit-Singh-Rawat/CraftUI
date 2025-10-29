@@ -7,10 +7,34 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { CodeIcon, ArrowLeft02Icon } from '@hugeicons/core-free-icons';
 import { SplitPanelLayout } from '@/components/layouts/split-panel-layout';
 import { CodeDrawer } from '@/components/panels/code-drawer';
+import type { Metadata } from 'next';
 
 export function generateStaticParams() {
 	const slugs = getAllCraftSlugs();
 	return slugs.map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const resolvedParams = await params;
+	const craft = getCraftBySlug(resolvedParams.slug, craftRegistry[resolvedParams.slug]);
+
+	if (!craft) {
+		return {
+			title: 'Craft Not Found - Craft Diary',
+			description: 'The requested craft could not be found.',
+		};
+	}
+
+	return {
+		title: `${craft.title} - Craft Diary`,
+		description: craft.category
+			? `${craft.title} - ${craft.category} component from Craft Diary collection.`
+			: `${craft.title} - A crafted component from Craft Diary collection.`,
+	};
 }
 
 export default async function CraftPage({ params }: { params: Promise<{ slug: string }> }) {

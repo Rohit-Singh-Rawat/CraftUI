@@ -25,9 +25,9 @@ export function CraftCard({ slug, title, image }: CraftCardProps) {
 	return (
 		<Link
 			href={`/crafts/${slug}`}
-			className='group relative flex min-w-0 flex-1 flex-col bg-muted/50 bg-clip-padding before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_2px_1px_theme(--color-black/4%)] after:pointer-events-none after:absolute after:-inset-[5px] after:-z-1 after:rounded-[calc(var(--radius-2xl)+4px)] after:border after:border-border/50 after:bg-clip-padding max-lg:before:hidden lg:rounded-2xl lg:border dark:after:bg-background/72'
+			className='group relative flex min-w-0 flex-1 flex-col bg-muted/50 bg-clip-padding before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)] before:shadow-[0_1px_2px_1px_theme(--color-black/4%)] after:pointer-events-none after:absolute after:-inset-[5px] after:-z-1 after:rounded-[calc(var(--radius-2xl)+4px)] after:border after:border-border/50 after:bg-clip-padding max-lg:before:hidden rounded-2xl border dark:after:bg-background/72'
 		>
-			<div className='-m-px border bg-background  before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)]  lg:rounded-t-2xl lg:rounded-b-xl  dark:before:shadow-[0_-1px_theme(--color-white/8%)] overflow-hidden'>
+			<div className='-m-px border bg-background  before:pointer-events-none before:absolute before:inset-0 before:rounded-[calc(var(--radius-2xl)-1px)]  rounded-t-2xl rounded-b-xl  dark:before:shadow-[0_-1px_theme(--color-white/8%)] overflow-hidden'>
 				<div className='aspect-video bg-background rounded-xl overflow-hidden relative '>
 					{image && mounted ? (
 						<Image
@@ -65,7 +65,7 @@ export function CraftCard({ slug, title, image }: CraftCardProps) {
 					)}
 				</div>
 			</div>
-			<div className='px-4 py-4 lg:rounded-b-2xl lg:px-6 '>
+			<div className='px-4 py-4 rounded-b-2xl lg:px-6 '>
 				<h3 className='font-serif text-xl'>{title}</h3>
 			</div>
 		</Link>
