@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { motion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowShrink01Icon, ArrowExpand01Icon } from '@hugeicons/core-free-icons';
@@ -9,14 +10,21 @@ interface PanelToggleButtonProps {
 	isMaximized: boolean;
 	onToggle: () => void;
 	className?: string;
+	side?: 'left' | 'right';
 }
 
-export function PanelToggleButton({ isMaximized, onToggle, className }: PanelToggleButtonProps) {
+export function PanelToggleButton({
+	isMaximized,
+	onToggle,
+	className,
+	side = 'left',
+}: PanelToggleButtonProps): React.ReactElement {
 	return (
 		<motion.button
 			onClick={onToggle}
 			className={cn(
-				'absolute right-4 top-4 z-30 rounded-xl bg-background/80 p-2.5 shadow-lg backdrop-blur-sm transition-colors hover:bg-background/90',
+				'absolute top-16 z-30 panel-toggle-button panel-button rounded-l-xl bg-background p-2.5 shadow-none backdrop-blur-sm transition-colors hover:bg-background/90',
+				side === 'left' ? 'right-0' : 'left-4',
 				className
 			)}
 			whileHover={{ scale: 1.05 }}

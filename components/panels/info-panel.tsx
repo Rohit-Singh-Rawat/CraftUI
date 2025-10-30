@@ -7,17 +7,24 @@ interface InfoPanelProps {
 	children: React.ReactNode;
 	className?: string;
 	isMaximized?: boolean;
+	side?: 'left' | 'right';
 }
 
-export function InfoPanel({ children, className, isMaximized = false }: InfoPanelProps) {
+export function InfoPanel({
+	children,
+	className,
+	isMaximized = false,
+	side = 'right',
+}: InfoPanelProps): React.ReactElement {
 	return (
 		<div
 			data-maximized={isMaximized}
 			className={cn(
-				'bg-background left-0 top-0 flex h-full flex-col justify-end rounded-2xl px-4',
+				'bg-background top-0 flex h-full flex-col justify-end  rounded-2xl px-4',
 				'transition-all duration-300 ease-in-out',
-				'lg:fixed lg:h-screen lg:w-[calc(50%-3rem)] lg:left-20',
-				'z-[1]',
+				'lg:fixed lg:h-screen lg:w-[calc(50%-3rem)]',
+				side === 'left' ? 'left-0 lg:left-20' : 'right-0 lg:right-0',
+				'z-1',
 				className
 			)}
 		>

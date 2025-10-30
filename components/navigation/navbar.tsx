@@ -47,7 +47,11 @@ const Navbar = () => {
 	const CurrentIcon = currentLink ? currentLink.icon : HomeIcon;
 
 	return (
-		<ActionBar className='sm:min-w-fit p-1 h-fit rounded-full'>
+		<ActionBar
+			className={`sm:min-w-fit p-1 h-fit rounded-full ${
+				pathname.includes('/crafts/action-bar') ? 'hidden' : ''
+			}`}
+		>
 			<ActionBarHeader className='h-fit '>
 				<Logo className='size-8 rounded-full bg-black mr-1' />
 				<ActionBarTitle className=' font-normal font-serif text-lg'>Crafts</ActionBarTitle>

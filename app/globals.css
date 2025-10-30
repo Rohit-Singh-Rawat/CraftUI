@@ -186,3 +186,48 @@
 html {
 	scroll-behavior: smooth;
 }
+
+.panel-button:after,
+.panel-button:before {
+	content: '';
+	display: block;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	background-color: transparent;
+	right: -10px;
+}
+
+.panel-button:after {
+	border-right: 10px solid var(--background);
+	border-top: 10px solid var(--background);
+	border-top-right-radius: 20px;
+	bottom: -10px;
+	-webkit-clip-path: inset(0 0 10px 10px);
+	clip-path: inset(10px 10px 0 0);
+}
+
+.panel-button:before {
+	border-right: 10px solid var(--background);
+	border-bottom: 10px solid var(--background);
+	border-bottom-right-radius: 20px;
+	top: -10px;
+	-webkit-clip-path: inset(0 10px 10px 0);
+	clip-path: inset(0 10px 10px 0);
+}
+
+/* Hide pseudo-elements for middle buttons in a group */
+.panel-button:not([data-first]):not([data-last]):before,
+.panel-button:not([data-first]):not([data-last]):after {
+	display: none;
+}
+
+/* Only show top curve on first button */
+.panel-button:not([data-first]):before {
+	display: none;
+}
+
+/* Only show bottom curve on last button */
+.panel-button:not([data-last]):after {
+	display: none;
+}

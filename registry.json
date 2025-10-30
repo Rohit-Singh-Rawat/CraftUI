@@ -1,0 +1,59 @@
+{
+	"$schema": "https://ui.shadcn.com/schema/registry.json",
+	"name": "@craft",
+	"homepage": "https://craft.yoursite.com",
+	"items": [
+		{
+			"name": "action-bar",
+			"type": "registry:component",
+			"title": "Action Bar",
+			"description": "Flexible floating action bar with dock and contextual modes",
+			"registryDependencies": ["button"],
+			"files": [
+				{
+					"path": "craft/components/action-bar.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "gooey-search-bar",
+			"type": "registry:component",
+			"title": "Gooey Search Bar",
+			"description": "Animated search bar with gooey blob effects",
+			"registryDependencies": ["input", "button"],
+			"files": [
+				{
+					"path": "craft/components/gooey-search-bar.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "hexagonal-background",
+			"type": "registry:component",
+			"title": "Hexagonal Background",
+			"description": "A customizable hexagonal pattern background component",
+			"files": [
+				{
+					"path": "craft/components/hexagonal-background.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
+			"name": "password-validation",
+			"type": "registry:component",
+			"title": "Password Validation",
+			"description": "Animated password validation component with customizable rules",
+			"registryDependencies": ["badge"],
+			"dependencies": ["motion"],
+			"files": [
+				{
+					"path": "craft/components/password-validation.tsx",
+					"type": "registry:component"
+				}
+			]
+		}
+	]
+}

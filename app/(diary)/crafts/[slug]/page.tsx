@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Heading } from '@/components/heading';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { CodeIcon, ArrowLeft02Icon } from '@hugeicons/core-free-icons';
-import { SplitPanelLayout } from '@/components/layouts/split-panel-layout';
-import { CodeDrawer } from '@/components/panels/code-drawer';
+import { ArrowLeft02Icon } from '@hugeicons/core-free-icons';
+import { CraftLayoutClient } from '@/components/layouts/craft-layout-client';
+import { getRegistryItem } from '@/lib/registry';
 import type { Metadata } from 'next';
 
 export function generateStaticParams() {
@@ -45,16 +45,18 @@ export default async function CraftPage({ params }: { params: Promise<{ slug: st
 		notFound();
 	}
 
+	// Get registry item for component preview
+	const registryItem = getRegistryItem(resolvedParams.slug);
+
 	return (
-		<main className='flex h-full w-full flex-1 flex-col lg:flex-row lg:justify-end relative'>
-			<SplitPanelLayout
-				previewContent={
-					<div className='flex h-full w-full items-center justify-center p-8'>
-						<div className='text-center space-y-4'>
-							<p className='text-muted-foreground'>Component preview will render here</p>
-						</div>
-					</div>
-				}
+		<main className='flex h-full w-full flex-1 flex-col lg:flex-row lg:justify-start relative'>
+			<CraftLayoutClient
+				previewName={resolvedParams.slug}
+				previewComponent={registryItem}
+				componentCode={craft.component?.code}
+				componentFileName={craft.component?.path.split('/').pop() || 'component.tsx'}
+				exampleCode={craft.example?.code}
+				exampleFileName={craft.example?.path.split('/').pop() || 'example.tsx'}
 				infoContent={
 					<div className='flex h-full flex-col p-6'>
 						<div className='flex items-start justify-between mb-6 gap-4'>
@@ -74,38 +76,6 @@ export default async function CraftPage({ params }: { params: Promise<{ slug: st
 									heading={craft.title}
 									subheading={craft.category || 'Component'}
 								/>
-							</div>
-							<div className='flex gap-2 shrink-0'>
-								{craft.component && (
-									<CodeDrawer
-										code={craft.component.code}
-										fileName={craft.component.path.split('/').pop() || 'component.tsx'}
-									>
-										<button className='flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90'>
-											<HugeiconsIcon
-												icon={CodeIcon}
-												size={16}
-												strokeWidth={1.5}
-											/>
-											Component
-										</button>
-									</CodeDrawer>
-								)}
-								{craft.example && (
-									<CodeDrawer
-										code={craft.example.code}
-										fileName={craft.example.path.split('/').pop() || 'example.tsx'}
-									>
-										<button className='flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium transition-colors hover:bg-accent'>
-											<HugeiconsIcon
-												icon={CodeIcon}
-												size={16}
-												strokeWidth={1.5}
-											/>
-											Example
-										</button>
-									</CodeDrawer>
-								)}
 							</div>
 						</div>
 
