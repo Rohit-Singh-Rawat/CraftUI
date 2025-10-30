@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Tooltip } from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export interface PanelButtonConfig {
 	id: string;
@@ -33,26 +33,27 @@ export function PanelButtons({
 			)}
 		>
 			{buttons.map((button, index) => (
-				<Tooltip
-					key={button.id}
-					content={button.tooltip}
-					side={side === 'left' ? 'right' : 'left'}
-				>
-					<motion.button
-						onClick={button.onClick}
-						data-first={index === 0}
-						data-last={index === buttons.length - 1}
-						className={cn(
-							'panel-button bg-background p-2.5 shadow-none backdrop-blur-sm transition-colors ',
-							button.active && 'bg-background/90',
-							index === 0 && 'rounded-tl-xl',
-							index === buttons.length - 1 && 'rounded-bl-xl',
-							index !== 0 && index !== buttons.length - 1 && 'rounded-none'
-						)}
-						aria-label={button.tooltip}
-					>
-						{button.icon}
-					</motion.button>
+				<Tooltip key={button.id}>
+					<TooltipTrigger asChild>
+						<motion.button
+							onClick={button.onClick}
+							data-first={index === 0}
+							data-last={index === buttons.length - 1}
+							className={cn(
+								'panel-button bg-background p-2.5 cursor-pointer shadow-none backdrop-blur-sm transition-colors ',
+								button.active && 'bg-background/90',
+								index === 0 && 'rounded-tl-xl',
+								index === buttons.length - 1 && 'rounded-bl-xl',
+								index !== 0 && index !== buttons.length - 1 && 'rounded-none'
+							)}
+							aria-label={button.tooltip}
+						>
+							{button.icon}
+						</motion.button>
+					</TooltipTrigger>
+					<TooltipContent side={side === 'left' ? 'right' : 'left'}>
+						<p>{button.tooltip}</p>
+					</TooltipContent>
 				</Tooltip>
 			))}
 		</div>

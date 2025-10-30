@@ -14,7 +14,7 @@ export function CodeIcon(props: CodeIconProps) {
 		>
 			<g
 				fill='none'
-				stroke='white'
+				stroke='var(--primary)'
 				strokeLinecap='round'
 				strokeWidth='1.5'
 			>
