@@ -14,8 +14,8 @@ export function CodeIcon(props: CodeIconProps) {
 		>
 			<g
 				fill='none'
-				stroke='var(--primary)'
 				strokeLinecap='round'
+				className='group-hover:stroke-primary stroke-muted-foreground transition-colors duration-300'
 				strokeWidth='1.5'
 			>
 				<path

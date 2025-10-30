@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Doto ,Instrument_Serif} from 'next/font/google';
-import './globals.css';
+import '../styles/globals.css';
 import { Providers } from '@/components/providers';
 import Navbar from '@/components/navigation/navbar';
 

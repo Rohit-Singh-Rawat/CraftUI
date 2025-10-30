@@ -3,8 +3,10 @@
 import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Copy01Icon, Download01Icon, Cancel01Icon } from '@hugeicons/core-free-icons';
+import { Copy01Icon, Download01Icon, Cancel01Icon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { cn } from '@/lib/utils';
+import ProgrssiveBlur from '../animate/progessive-blur';
+import { CodeSnippet } from './code-snippet';
 
 interface CodeDrawerProps {
 	children: React.ReactNode;
@@ -20,7 +22,7 @@ export function CodeDrawer({
 	children,
 	code,
 	fileName = 'component.tsx',
-	language = 'tsx',
+	language = 'typescript',
 	side = 'left',
 	open: controlledOpen,
 	onOpenChange,
@@ -69,7 +71,7 @@ export function CodeDrawer({
 						<motion.div
 							initial={{ y: '100%' }}
 							animate={{ y: 0 }}
-							exit={{ y: '100%' }}
+							exit={{ y: '100%', filter: 'blur(4px)' }}
 							transition={{ ease: 'easeInOut', duration: 0.3 }}
 							className={cn(
 								'fixed z-10 flex flex-col h-dvh',
@@ -80,64 +82,104 @@ export function CodeDrawer({
 								side === 'left' ? 'lg:left-20 lg:right-auto' : 'lg:left-auto lg:right-0'
 							)}
 						>
-							<div className='flex flex-col h-full bg-muted rounded-t-3xl lg:rounded-3xl shadow-2xl overflow-hidden'>
+							<div className='flex flex-col h-full bg-muted rounded-t-3xl lg:rounded-3xl overflow-hidden'>
 								{/* Header */}
-								<div className='flex items-center justify-between border-b px-4 py-3 lg:px-6 lg:py-4 flex-shrink-0'>
-								<div className='flex items-center gap-2'>
-									<h2 className='text-base lg:text-lg font-semibold'>{fileName}</h2>
-								</div>
-								<div className='flex items-center gap-1 lg:gap-2'>
-									<button
-										onClick={handleCopy}
-										className={cn(
-											'flex items-center gap-1 lg:gap-2 rounded-md px-2 py-1.5 lg:px-3 lg:py-2 text-xs lg:text-sm font-medium transition-colors',
-											'hover:bg-background/80',
-											copied && 'text-green-600'
-										)}
-										title='Copy code'
-									>
-										<HugeiconsIcon
-											icon={Copy01Icon}
-											size={16}
-											strokeWidth={1.5}
-										/>
-										<span className='hidden sm:inline'>{copied ? 'Copied!' : 'Copy'}</span>
-									</button>
-									<button
-										onClick={handleDownload}
-										className='flex items-center gap-1 lg:gap-2 rounded-md px-2 py-1.5 lg:px-3 lg:py-2 text-xs lg:text-sm font-medium transition-colors hover:bg-background/80'
-										title='Download code'
-									>
-										<HugeiconsIcon
-											icon={Download01Icon}
-											size={16}
-											strokeWidth={1.5}
-										/>
-										<span className='hidden sm:inline'>Download</span>
-									</button>
-									<button
-										onClick={(): void => setIsOpen(false)}
-										className='flex items-center gap-1 lg:gap-2 rounded-md px-2 py-1.5 lg:px-3 lg:py-2 text-xs lg:text-sm font-medium transition-colors hover:bg-background/80'
-										title='Close'
-									>
-										<HugeiconsIcon
-											icon={Cancel01Icon}
-											size={16}
-											strokeWidth={1.5}
-										/>
-										<span className='hidden sm:inline'>Close</span>
-									</button>
-								</div>
-							</div>
+								<div className='flex items-center justify-between  px-4 py-3 lg:px-6 lg:py-4 shrink-0'>
+									<div className='flex items-center gap-2'>
+										<h2 className='text-sm font-light'>Source Code</h2>
+									</div>
+									<div className='flex items-center gap-1 lg:gap-2'>
+										<button
+											onClick={handleCopy}
+											className={cn(
+												'flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20 relative',
+												copied ? 'text-green-600' : ''
+											)}
+											title='Copy code'
+										>
+											<span className='sr-only'>Copy code</span>
+											<AnimatePresence mode='popLayout'>
+												{copied ? (
+													<motion.div
+														key='tick'
+														initial={{ opacity: 0 }}
+														animate={{ opacity: 1 }}
+														exit={{ opacity: 0, filter: 'blur(6px)' }}
+														transition={{ duration: 0.3, ease: 'easeInOut' }}
+													>
+														<HugeiconsIcon
+															icon={Tick02Icon}
+															size={16}
+															strokeWidth={1.5}
+															className='text-primary'
+														/>
+													</motion.div>
+												) : (
+													<motion.div
+														key='copy'
+														initial={{ opacity: 0 }}
+														animate={{ opacity: 1 }}
+														exit={{ opacity: 0, filter: 'blur(4px)' }}
+														transition={{ duration: 0.3, ease: 'easeInOut' }}
+													>
+														<HugeiconsIcon
+															icon={Copy01Icon}
+															size={16}
+															strokeWidth={1.5}
+															className='group-hover:text-primary transition-colors duration-300 text-muted-foreground'
+														/>
+													</motion.div>
+												)}
+											</AnimatePresence>
+										</button>
 
-							{/* Code Content */}
-							<div className='flex-1 overflow-auto p-4 lg:p-6'>
-								<pre className='bg-background rounded-lg p-3 lg:p-4 overflow-x-auto'>
-									<code className='text-xs lg:text-sm font-mono'>{code}</code>
-								</pre>
+										<button
+											onClick={handleDownload}
+											className='flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20'
+											title='Download code'
+										>
+											<span className='sr-only'>Download code</span>
+											<HugeiconsIcon
+												icon={Download01Icon}
+												size={16}
+												strokeWidth={1.5}
+												className='group-hover:text-primary transition-colors duration-300 text-muted-foreground'
+											/>
+										</button>
+
+										<button
+											onClick={(): void => setIsOpen(false)}
+											className='flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20'
+											title='Close'
+										>
+											<span className='sr-only'>Close</span>
+											<HugeiconsIcon
+												icon={Cancel01Icon}
+												size={16}
+												strokeWidth={1.5}
+												className='group-hover:text-primary transition-colors duration-300 text-muted-foreground'
+											/>
+										</button>
+									</div>
+								</div>
+
+								{/* Code Content */}
+								<div className=' p-4 lg:p-6  relative h-full lg:pt-0 pt-0'>
+									{' '}
+									<ProgrssiveBlur
+										backgroundColor='var(--secondary)'
+										position='top'
+										height='30px'
+									/>
+									<div className='flex-1 overflow-auto h-full '>
+										<CodeSnippet
+											code={code}
+											language={language}
+										/>
+									</div>
+								</div>
 							</div>
-						</div>
-					</motion.div>
+						</motion.div>
 					</>
 				)}
 			</AnimatePresence>

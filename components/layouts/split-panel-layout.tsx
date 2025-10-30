@@ -30,9 +30,9 @@ export function SplitPanelLayout({
 		{
 			id: 'toggle',
 			icon: isMaximized ? (
-				<MinimizeIcon className='w-5 h-5' />
+				<MinimizeIcon className='w-5 h-5 text-muted-foreground hover:text-primary transition-colors duration-300' />
 			) : (
-				<MaximizeIcon className='w-5 h-5' />
+				<MaximizeIcon className='w-4.5 h-4.5 text-muted-foreground hover:text-primary transition-colors duration-300' />
 			),
 			tooltip: isMaximized ? 'Collapse panel' : 'Expand panel',
 			onClick: togglePanel,
