@@ -231,3 +231,7 @@ html {
 .panel-button:not([data-last]):after {
 	display: none;
 }
+
+.center-content {
+	@apply flex items-center justify-center;
+}

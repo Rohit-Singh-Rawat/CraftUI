@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 		'Explore our curated collection of meticulously crafted UI components and design elements.',
 };
 
-export default function DiaryLayout({ children }: { children: React.ReactNode }) {
-	const craftsByCategory = getCraftsByCategory(craftRegistry);
+export default async function DiaryLayout({ children }: { children: React.ReactNode }) {
+	const craftsByCategory = await getCraftsByCategory(craftRegistry);
 
 	// Transform crafts into navigation data structure
 	const navigationData = Object.entries(craftsByCategory).map(([category, crafts]) => ({

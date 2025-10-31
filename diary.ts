@@ -1,5 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import React from 'react';
+import { mdxComponents } from '@/mdx-components';
+import { compileMDX } from 'next-mdx-remote/rsc';
+import { Doc } from './types/types';
 
 // Directory paths
 const COMPONENTS_DIR = path.join(process.cwd(), 'craft/components');
@@ -28,6 +32,17 @@ export interface CraftEntry {
 	content?: {
 		path: string;
 		markdown: string;
+		body: React.ReactElement;
+		frontmatter: {
+			title?: string;
+			description?: string;
+			category?: string;
+			published?: boolean;
+			featured?: boolean;
+			component?: boolean;
+			author?: string;
+			[key: string]: unknown;
+		};
 	};
 	image?: CraftImage;
 }
@@ -85,9 +100,23 @@ function readExample(slug: string): { path: string; code: string } | null {
 }
 
 /**
- * Read markdown content from content/crafts/{slug}.md or {slug}.mdx
+ * Read and compile markdown content from content/crafts/{slug}.md or {slug}.mdx
  */
-function readContent(slug: string): { path: string; markdown: string } | null {
+async function readContent(slug: string): Promise<{
+	path: string;
+	markdown: string;
+	body: React.ReactElement;
+	frontmatter: {
+		title?: string;
+		description?: string;
+		category?: string;
+		published?: boolean;
+		featured?: boolean;
+		component?: boolean;
+		author?: string;
+		[key: string]: unknown;
+	};
+} | null> {
 	if (!fs.existsSync(CONTENT_DIR)) {
 		return null;
 	}
@@ -96,21 +125,41 @@ function readContent(slug: string): { path: string; markdown: string } | null {
 	const mdPath = path.join(CONTENT_DIR, `${slug}.md`);
 	const mdxPath = path.join(CONTENT_DIR, `${slug}.mdx`);
 
-	if (fs.existsSync(mdPath)) {
-		return {
-			path: mdPath,
-			markdown: fs.readFileSync(mdPath, 'utf-8'),
-		};
-	}
-
+	let filePath: string | null = null;
 	if (fs.existsSync(mdxPath)) {
-		return {
-			path: mdxPath,
-			markdown: fs.readFileSync(mdxPath, 'utf-8'),
-		};
+		filePath = mdxPath;
+	} else if (fs.existsSync(mdPath)) {
+		filePath = mdPath;
+	} else {
+		return null;
 	}
 
-	return null;
+	const source = fs.readFileSync(filePath, 'utf-8');
+
+	// Use the Next.js component mappings
+	const components = mdxComponents();
+
+	const { content, frontmatter } = await compileMDX({
+		source,
+		options: { parseFrontmatter: true },
+		components,
+	});
+
+	return {
+		path: filePath,
+		markdown: source,
+		body: content,
+		frontmatter: {
+			title: frontmatter.title ? String(frontmatter.title) : undefined,
+			description: frontmatter.description ? String(frontmatter.description) : undefined,
+			category: frontmatter.category ? String(frontmatter.category) : undefined,
+			published: frontmatter.published ? Boolean(frontmatter.published) : undefined,
+			featured: frontmatter.featured ? Boolean(frontmatter.featured) : undefined,
+			component: frontmatter.component ? Boolean(frontmatter.component) : undefined,
+			author: frontmatter.author ? String(frontmatter.author) : undefined,
+			...frontmatter,
+		},
+	};
 }
 
 /**
@@ -204,7 +253,15 @@ function extractTitleFromComponent(code: string): string | null {
 /**
  * Extract category from markdown frontmatter
  */
-function extractCategoryFromMarkdown(markdown: string): string | null {
+function extractCategoryFromMarkdown(
+	markdown: string,
+	frontmatter?: { category?: string }
+): string | null {
+	// Try frontmatter first
+	if (frontmatter?.category) {
+		return String(frontmatter.category);
+	}
+
 	const frontmatterMatch = markdown.match(/^---\s*\n([\s\S]*?)\n---/);
 	if (!frontmatterMatch) {
 		return null;
@@ -217,8 +274,15 @@ function extractCategoryFromMarkdown(markdown: string): string | null {
 /**
  * Extract title from markdown frontmatter or first H1
  */
-function extractTitleFromMarkdown(markdown: string): string | null {
+function extractTitleFromMarkdown(
+	markdown: string,
+	frontmatter?: { title?: string }
+): string | null {
 	// Try frontmatter first
+	if (frontmatter?.title) {
+		return String(frontmatter.title);
+	}
+
 	const frontmatterMatch = markdown.match(/^---\s*\n([\s\S]*?)\n---/);
 	if (frontmatterMatch) {
 		const titleMatch = frontmatterMatch[1].match(/title:\s*["']?([^"'\n]+)["']?/);
@@ -235,19 +299,25 @@ function extractTitleFromMarkdown(markdown: string): string | null {
 /**
  * Get a single craft entry by slug
  */
-export function getCraftBySlug(slug: string, metadata?: CraftMetadata): CraftEntry | null {
+export async function getCraftBySlug(
+	slug: string,
+	metadata?: CraftMetadata
+): Promise<CraftEntry | null> {
 	const component = readComponent(slug);
 	if (!component) {
 		return null;
 	}
 
 	const example = readExample(slug);
-	const content = readContent(slug);
+	const content = await readContent(slug);
 
-	// Determine title
+	// Determine title - prioritize frontmatter from compiled MDX
 	let title = metadata?.title;
+	if (!title && content?.frontmatter?.title) {
+		title = String(content.frontmatter.title);
+	}
 	if (!title && content) {
-		title = extractTitleFromMarkdown(content.markdown) || undefined;
+		title = extractTitleFromMarkdown(content.markdown, content.frontmatter) || undefined;
 	}
 	if (!title && component) {
 		title = extractTitleFromComponent(component.code) || undefined;
@@ -260,10 +330,13 @@ export function getCraftBySlug(slug: string, metadata?: CraftMetadata): CraftEnt
 			.join(' ');
 	}
 
-	// Determine category
+	// Determine category - prioritize frontmatter from compiled MDX
 	let category = metadata?.category;
+	if (!category && content?.frontmatter?.category) {
+		category = String(content.frontmatter.category);
+	}
 	if (!category && content) {
-		category = extractCategoryFromMarkdown(content.markdown) || undefined;
+		category = extractCategoryFromMarkdown(content.markdown, content.frontmatter) || undefined;
 	}
 
 	// Determine image
@@ -283,13 +356,15 @@ export function getCraftBySlug(slug: string, metadata?: CraftMetadata): CraftEnt
 /**
  * Get all craft entries
  */
-export function getAllCrafts(metadataMap?: Record<string, CraftMetadata>): CraftEntry[] {
+export async function getAllCrafts(
+	metadataMap?: Record<string, CraftMetadata>
+): Promise<CraftEntry[]> {
 	const slugs = getAllCraftSlugs();
 	const crafts: CraftEntry[] = [];
 
 	for (const slug of slugs) {
 		const metadata = metadataMap?.[slug];
-		const craft = getCraftBySlug(slug, metadata);
+		const craft = await getCraftBySlug(slug, metadata);
 		if (craft) {
 			crafts.push(craft);
 		}
@@ -301,10 +376,10 @@ export function getAllCrafts(metadataMap?: Record<string, CraftMetadata>): Craft
 /**
  * Get crafts grouped by category
  */
-export function getCraftsByCategory(
+export async function getCraftsByCategory(
 	metadataMap?: Record<string, CraftMetadata>
-): Record<string, CraftEntry[]> {
-	const crafts = getAllCrafts(metadataMap);
+): Promise<Record<string, CraftEntry[]>> {
+	const crafts = await getAllCrafts(metadataMap);
 	const byCategory: Record<string, CraftEntry[]> = {};
 
 	for (const craft of crafts) {
@@ -321,11 +396,11 @@ export function getCraftsByCategory(
 /**
  * Search crafts by query (searches in title, slug, category)
  */
-export function searchCrafts(
+export async function searchCrafts(
 	query: string,
 	metadataMap?: Record<string, CraftMetadata>
-): CraftEntry[] {
-	const crafts = getAllCrafts(metadataMap);
+): Promise<CraftEntry[]> {
+	const crafts = await getAllCrafts(metadataMap);
 	const lowercaseQuery = query.toLowerCase();
 
 	return crafts.filter(
@@ -339,8 +414,10 @@ export function searchCrafts(
 /**
  * Get all unique categories
  */
-export function getAllCategories(metadataMap?: Record<string, CraftMetadata>): string[] {
-	const crafts = getAllCrafts(metadataMap);
+export async function getAllCategories(
+	metadataMap?: Record<string, CraftMetadata>
+): Promise<string[]> {
+	const crafts = await getAllCrafts(metadataMap);
 	const categories = new Set<string>();
 
 	for (const craft of crafts) {

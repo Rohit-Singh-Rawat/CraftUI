@@ -4,19 +4,21 @@ import React from 'react';
 import { useTheme } from 'next-themes';
 import { Highlight, PrismTheme } from 'prism-react-renderer';
 import themes from '@/styles/prism-theme.json';
+import { cn } from '@/lib/utils';
 
 interface CodeSnippetProps {
 	code: string;
 	language?: string;
+	className?: string;
 }
 
-export const CodeSnippet: React.FC<CodeSnippetProps> = ({ code, language = 'typescript' }) => {
+export const CodeSnippet: React.FC<CodeSnippetProps> = ({ code, language = 'typescript', className }) => {
 	const { resolvedTheme } = useTheme();
 	const isDark = resolvedTheme === 'dark';
-	const theme = (isDark ? themes.dark : themes.light) as PrismTheme;
+	const theme = (isDark ? themes.dark : themes.light) as PrismTheme;	
 
 	return (
-		<div className='py-5'>
+		<div className={cn('py-5', className)}>
 			<Highlight
 				theme={theme}
 				code={code.trim()}

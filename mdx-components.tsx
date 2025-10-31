@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import React, { Children } from 'react';
 import { ExternalLinkIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 
@@ -6,6 +6,12 @@ import { cn } from '@/lib/utils';
 import 'katex/dist/katex.min.css';
 import Link from 'next/link';
 import { BlockMath, InlineMath } from 'react-katex';
+import { Label } from '@/components/ui/label';
+import { CodeSnippet } from '@/components/panels/code-snippet';
+import { CodeBlock } from '@/components/mdx/code-block';
+import { DependencyCard, DependenciesContainer } from '@/components/mdx/dependency-card';
+import { DependencySection } from '@/components/mdx/dependency-section';
+import { PropsTable, PropsTableRow } from '@/components/mdx/props-table';
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
 	return {
@@ -13,7 +19,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 			<h1
 				id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
 				className={cn(
-					'text-[44px] font-calendas tracking-tighter text-pretty leading-tight',
+					'text-sm text-muted-foreground font-normal mt-20  tracking-tight text-pretty leading-tight mb-4 uppercase',
 					className
 				)}
 				{...props}
@@ -22,27 +28,21 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 			</h1>
 		),
 		h2: ({ className, children, ...props }: React.ComponentProps<'h2'>) => (
-			<>
-				<h2
-					id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-					className={cn(
-						'text-3xl md:text-4xl font-medium mb-0 py-0 mt-14 tracking-tight',
-						className
-					)}
-					{...props}
-				>
-					{children}
-				</h2>
-				<hr className='mt-2.5' />
-			</>
+			<h2
+				id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
+				className={cn(
+					'text-sm text-muted-foreground font-normal mb-4 mt-20 py-0  tracking-tight uppercase',
+					className
+				)}
+				{...props}
+			>
+				{children}
+			</h2>
 		),
 		h3: ({ className, children, ...props }: React.ComponentProps<'h3'>) => (
 			<h3
 				id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-				className={cn(
-					'text-xl md:text-2xl font-medium py-0 mt-12 [h2+hr+&]:mt-0 tracking-tight',
-					className
-				)}
+				className={cn('text-xl md:text-2xl font-medium py-0 mt-12 tracking-tight', className)}
 				{...props}
 			>
 				{children}
@@ -60,22 +60,27 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 				{children}
 			</h4>
 		),
-		a: ({ className, children, ...props }: React.HTMLAttributes<HTMLAnchorElement>) => (
-			<a
-				className={cn(
-					'font-medium text-base md:text-lg  text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition inline-flex items-center leading-0',
-					className
-				)}
-				{...props}
-			>
-				{children}
-				<ExternalLinkIcon
-					className='ml-1 mt-0.5'
-					size={14}
-					strokeWidth={2.5}
-				/>
-			</a>
-		),
+		a: ({ className, children, href, ...props }: React.ComponentProps<'a'>) => {
+			return (
+				<a
+					href={href}
+					className={cn(
+						'font-medium text-base md:text-lg text-blue dark:text-blue-400',
+						'inline-flex items-center gap-1.5 group',
+						'transition-colors duration-200 ease-out',
+						'hover:text-blue-600 dark:hover:text-blue-300',
+						'relative after:absolute after:bottom-0 after:left-0',
+						'after:w-0 after:h-[1.5px] after:bg-blue-600 dark:after:bg-blue-300',
+						'after:transition-all after:duration-200 after:ease-out',
+						'hover:after:w-full',
+						className
+					)}
+					{...props}
+				>
+					<span className='relative '>{children}</span>
+				</a>
+			);
+		},
 		Link: ({ className, href, children, ...props }: React.ComponentProps<typeof Link>) => (
 			<Link
 				href={href}
@@ -90,7 +95,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 		),
 		p: ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
 			<p
-				className={cn('text-base md:text-lg text-pretty', className)}
+				className={cn('text-lg font-normal  text-pretty mb-6 leading-relaxed', className)}
 				{...props}
 			/>
 		),
@@ -132,7 +137,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 		inlineMath: ({ children }) => <InlineMath>{children}</InlineMath>,
 		blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
 			<blockquote
-				className={cn('mt-2 border-l-1 pl-0 px-6', className)}
+				className={cn('mt-2 border-l pl-0 px-6', className)}
 				style={{ fontVariationSettings: "'slnt' -10" }}
 				{...props}
 			/>
@@ -153,15 +158,53 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 				{...props}
 			/>
 		),
-		code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-			<code
-				className={cn(
-					'font-fira-mono text-xs md:text-sm px-0.5 py-px md:px-1 md:py-0.5 border border-border rounded-md leading-6 bg-muted sm:whitespace-pre box-decoration-clone',
-					className
-				)}
-				{...props}
-			/>
-		),
+		pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
+			// Extract code and language from the code element inside pre
+			const codeElement = React.Children.toArray(children).find(
+				(child) => React.isValidElement(child) && child.type === 'code'
+			) as React.ReactElement<{ className?: string; children?: React.ReactNode }> | undefined;
+
+			if (codeElement) {
+				const className = codeElement.props.className || '';
+				const languageMatch = className.match(/language-(\w+)/);
+				const language = languageMatch ? languageMatch[1] : 'typescript';
+				const codeString =
+					typeof codeElement.props.children === 'string'
+						? codeElement.props.children
+						: String(codeElement.props.children || '');
+				return (
+					<CodeBlock
+						code={codeString}
+						language={language}
+					/>
+				);
+			}
+			// Fallback to default pre styling
+			return <pre {...props}>{children}</pre>;
+		},
+		code: ({ className, children, ...props }: React.HTMLAttributes<HTMLElement>) => {
+			// Inline code (not in a pre tag)
+			return (
+				<code
+					className={cn(
+						'font-fira-mono text-xs md:text-sm px-0.5 py-px md:px-1 md:py-0.5 border border-border rounded-md leading-6 bg-muted sm:whitespace-pre box-decoration-clone',
+						className
+					)}
+					{...props}
+				>
+					{children}
+				</code>
+			);
+		},
+		// Custom components
+		Label,
+		DependencyCard,
+		DependenciesContainer,
+		DependencySection,
+		PropsTable,
+		PropsTableRow,
+		CodeBlock,
+		CodeSnippet,
 		...components,
 	};
 }

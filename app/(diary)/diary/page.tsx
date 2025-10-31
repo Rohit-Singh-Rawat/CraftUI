@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 	description: 'A curated collection of meticulously crafted elements organized by category.',
 };
 
-export default function DiaryPage() {
-	const craftsByCategory = getCraftsByCategory(craftRegistry);
+export default async function DiaryPage() {
+	const craftsByCategory = await getCraftsByCategory(craftRegistry);
 
 	return (
 		<main className='flex h-full w-full flex-1 flex-col items-center overflow-y-auto '>

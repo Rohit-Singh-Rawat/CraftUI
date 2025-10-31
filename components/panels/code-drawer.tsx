@@ -7,6 +7,9 @@ import { Copy01Icon, Download01Icon, Cancel01Icon, Tick02Icon } from '@hugeicons
 import { cn } from '@/lib/utils';
 import ProgrssiveBlur from '../animate/progessive-blur';
 import { CodeSnippet } from './code-snippet';
+import DownloadIcon from '../icons/download';
+import CopyIcon from '../icons/copy';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface CodeDrawerProps {
 	children: React.ReactNode;
@@ -74,9 +77,9 @@ export function CodeDrawer({
 							exit={{ y: '100%', filter: 'blur(4px)' }}
 							transition={{ ease: 'easeInOut', duration: 0.3 }}
 							className={cn(
-								'fixed z-10 flex flex-col h-dvh',
+								'fixed lg:z-10 flex flex-col h-dvh',
 								// Mobile: drawer from bottom with padding
-								'bottom-0 left-0 right-0 max-h-[85vh] rounded-t-3xl',
+								'bottom-0 z-50 left-0 right-0 max-h-[85vh] rounded-t-3xl',
 								// Desktop: fixed split panel
 								'lg:top-0 lg:bottom-auto lg:max-h-none lg:h-dvh lg:rounded-3xl lg:p-3 lg:w-[calc(50%-3rem)]',
 								side === 'left' ? 'lg:left-20 lg:right-auto' : 'lg:left-auto lg:right-0'
@@ -89,77 +92,88 @@ export function CodeDrawer({
 										<h2 className='text-sm font-light'>Source Code</h2>
 									</div>
 									<div className='flex items-center gap-1 lg:gap-2'>
-										<button
-											onClick={handleCopy}
-											className={cn(
-												'flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20 relative',
-												copied ? 'text-green-600' : ''
-											)}
-											title='Copy code'
-										>
-											<span className='sr-only'>Copy code</span>
-											<AnimatePresence mode='popLayout'>
-												{copied ? (
-													<motion.div
-														key='tick'
-														initial={{ opacity: 0 }}
-														animate={{ opacity: 1 }}
-														exit={{ opacity: 0, filter: 'blur(6px)' }}
-														transition={{ duration: 0.3, ease: 'easeInOut' }}
-													>
-														<HugeiconsIcon
-															icon={Tick02Icon}
-															size={16}
-															strokeWidth={1.5}
-															className='text-primary'
-														/>
-													</motion.div>
-												) : (
-													<motion.div
-														key='copy'
-														initial={{ opacity: 0 }}
-														animate={{ opacity: 1 }}
-														exit={{ opacity: 0, filter: 'blur(4px)' }}
-														transition={{ duration: 0.3, ease: 'easeInOut' }}
-													>
-														<HugeiconsIcon
-															icon={Copy01Icon}
-															size={16}
-															strokeWidth={1.5}
-															className='group-hover:text-primary transition-colors duration-300 text-muted-foreground'
-														/>
-													</motion.div>
-												)}
-											</AnimatePresence>
-										</button>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<button
+													onClick={handleCopy}
+													className={cn(
+														'flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20 relative',
+														copied ? 'text-green-600' : ''
+													)}
+													title='Copy code'
+												>
+													<span className='sr-only'>Copy code</span>
+													<AnimatePresence mode='popLayout'>
+														{copied ? (
+															<motion.div
+																key='tick'
+																initial={{ opacity: 0 }}
+																animate={{ opacity: 1 }}
+																exit={{ opacity: 0, filter: 'blur(6px)' }}
+																transition={{ duration: 0.3, ease: 'easeInOut' }}
+															>
+																<HugeiconsIcon
+																	icon={Tick02Icon}
+																	size={16}
+																	strokeWidth={1.5}
+																	className='text-primary'
+																/>
+															</motion.div>
+														) : (
+															<motion.div
+																key='copy'
+																initial={{ opacity: 0 }}
+																animate={{ opacity: 1 }}
+																exit={{ opacity: 0, filter: 'blur(4px)' }}
+																transition={{ duration: 0.3, ease: 'easeInOut' }}
+															>
+																<CopyIcon className='group-hover:text-primary transition-all duration-300 text-muted-foreground size-4 stroke-[1.5] relative' />
+															</motion.div>
+														)}
+													</AnimatePresence>
+												</button>
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>{copied ? 'Copied!' : 'Copy code'}</p>
+											</TooltipContent>
+										</Tooltip>
 
-										<button
-											onClick={handleDownload}
-											className='flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20'
-											title='Download code'
-										>
-											<span className='sr-only'>Download code</span>
-											<HugeiconsIcon
-												icon={Download01Icon}
-												size={16}
-												strokeWidth={1.5}
-												className='group-hover:text-primary transition-colors duration-300 text-muted-foreground'
-											/>
-										</button>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<button
+													onClick={handleDownload}
+													className='flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20'
+													title='Download code'
+												>
+													<span className='sr-only'>Download code</span>
+													<DownloadIcon className='group-hover:text-primary transition-all duration-300 text-muted-foreground size-4 stroke-[1.5]' />
+												</button>
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>Download code</p>
+											</TooltipContent>
+										</Tooltip>
 
-										<button
-											onClick={(): void => setIsOpen(false)}
-											className='flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20'
-											title='Close'
-										>
-											<span className='sr-only'>Close</span>
-											<HugeiconsIcon
-												icon={Cancel01Icon}
-												size={16}
-												strokeWidth={1.5}
-												className='group-hover:text-primary transition-colors duration-300 text-muted-foreground'
-											/>
-										</button>
+										<Tooltip>
+											<TooltipTrigger asChild>
+												<button
+													onClick={(): void => setIsOpen(false)}
+													className='flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20 '
+													title='Close'
+												>
+													<span className='sr-only'>Close</span>
+													<HugeiconsIcon
+														icon={Cancel01Icon}
+														size={16}
+														strokeWidth={1.5}
+														className='group-hover:text-primary transition-all duration-300 text-muted-foreground group-hover:rotate-90 rotate-0 ease-in-out'
+													/>
+												</button>
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>Close</p>
+											</TooltipContent>
+										</Tooltip>
 									</div>
 								</div>
 

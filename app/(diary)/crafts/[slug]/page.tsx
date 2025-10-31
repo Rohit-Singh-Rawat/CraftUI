@@ -8,6 +8,7 @@ import { ArrowLeft02Icon } from '@hugeicons/core-free-icons';
 import { CraftLayoutClient } from '@/components/layouts/craft-layout-client';
 import { getRegistryItem } from '@/lib/registry';
 import type { Metadata } from 'next';
+import ProgressiveBlur from '@/components/animate/progessive-blur';
 
 export function generateStaticParams() {
 	const slugs = getAllCraftSlugs();
@@ -20,7 +21,7 @@ export async function generateMetadata({
 	params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
 	const resolvedParams = await params;
-	const craft = getCraftBySlug(resolvedParams.slug, craftRegistry[resolvedParams.slug]);
+	const craft = await getCraftBySlug(resolvedParams.slug, craftRegistry[resolvedParams.slug]);
 
 	if (!craft) {
 		return {
@@ -39,7 +40,7 @@ export async function generateMetadata({
 
 export default async function CraftPage({ params }: { params: Promise<{ slug: string }> }) {
 	const resolvedParams = await params;
-	const craft = getCraftBySlug(resolvedParams.slug, craftRegistry[resolvedParams.slug]);
+	const craft = await getCraftBySlug(resolvedParams.slug, craftRegistry[resolvedParams.slug]);
 
 	if (!craft) {
 		notFound();
@@ -58,20 +59,9 @@ export default async function CraftPage({ params }: { params: Promise<{ slug: st
 				exampleCode={craft.example?.code}
 				exampleFileName={craft.example?.path.split('/').pop() || 'example.tsx'}
 				infoContent={
-					<div className='flex h-full flex-col p-6'>
+					<div className='flex h-full flex-col py-6'>
 						<div className='flex items-start justify-between mb-6 gap-4'>
-							<div className='flex-1'>
-								<Link
-									href='/diary'
-									className='text-sm text-muted-foreground hover:text-foreground mb-3 inline-flex items-center gap-1'
-								>
-									<HugeiconsIcon
-										icon={ArrowLeft02Icon}
-										size={14}
-										strokeWidth={2}
-									/>
-									Back to Diary
-								</Link>
+							<div className='flex-1 px-6	'>
 								<Heading
 									heading={craft.title}
 									subheading={craft.category || 'Component'}
@@ -79,80 +69,26 @@ export default async function CraftPage({ params }: { params: Promise<{ slug: st
 							</div>
 						</div>
 
-						<div className='flex-1 overflow-y-auto'>
-							<div className='space-y-8'>
+						<div className=' relative h-full'>
+							<ProgressiveBlur
+								position='top'
+								height='100px'
+								blurAmount='2px'
+								backgroundColor='var(--background)'
+							/>
+							<ProgressiveBlur
+								position='bottom'
+								height='100px'
+								blurAmount='2px'
+								backgroundColor='var(--background)'
+							/>
+							<div className='flex-1 overflow-y-auto h-full px-6 pb-20'>
 								{/* Documentation */}
 								{craft.content && (
-									<section>
-										<div className='prose prose-sm dark:prose-invert max-w-none'>
-											<pre className='whitespace-pre-wrap text-sm bg-muted/50 p-4 rounded-lg border'>
-												{craft.content.markdown}
-											</pre>
-										</div>
-									</section>
+									<div className='prose prose-sm dark:prose-invert max-w-none'>
+										{craft.content.body}
+									</div>
 								)}
-
-								{/* Component Info */}
-								<section>
-									<h3 className='text-lg font-semibold mb-3'>Component Details</h3>
-									<div className='space-y-3'>
-										<div className='border rounded-lg p-4'>
-											<p className='text-sm font-medium mb-1'>File Location</p>
-											<code className='text-xs font-mono text-muted-foreground'>
-												{craft.component.path.replace(process.cwd(), '')}
-											</code>
-										</div>
-										{craft.example && (
-											<div className='border rounded-lg p-4'>
-												<p className='text-sm font-medium mb-1'>Example Location</p>
-												<code className='text-xs font-mono text-muted-foreground'>
-													{craft.example.path.replace(process.cwd(), '')}
-												</code>
-											</div>
-										)}
-										{craft.content && (
-											<div className='border rounded-lg p-4'>
-												<p className='text-sm font-medium mb-1'>Documentation</p>
-												<code className='text-xs font-mono text-muted-foreground'>
-													{craft.content.path.replace(process.cwd(), '')}
-												</code>
-											</div>
-										)}
-									</div>
-								</section>
-
-								{/* Installation */}
-								<section>
-									<h3 className='text-lg font-semibold mb-3'>Installation</h3>
-									<div className='bg-muted/50 rounded-lg p-4'>
-										<pre className='text-xs font-mono overflow-x-auto'>
-											{`# Copy the component file\ncp craft/components/${
-												craft.slug
-											}.tsx your-project/components/\n\n# Or import directly\nimport { ${extractComponentName(
-												craft.component.code
-											)} } from '@/craft/components/${craft.slug}';`}
-										</pre>
-									</div>
-								</section>
-
-								{/* Related Links */}
-								<section className='pb-8'>
-									<h3 className='text-lg font-semibold mb-3'>Quick Actions</h3>
-									<div className='space-y-2'>
-										<Link
-											href='/diary'
-											className='block text-primary hover:underline text-sm'
-										>
-											→ Browse all components
-										</Link>
-										<Link
-											href='/playground'
-											className='block text-primary hover:underline text-sm'
-										>
-											→ Try in playground
-										</Link>
-									</div>
-								</section>
 							</div>
 						</div>
 					</div>
@@ -160,9 +96,4 @@ export default async function CraftPage({ params }: { params: Promise<{ slug: st
 			/>
 		</main>
 	);
-}
-
-function extractComponentName(code: string): string {
-	const match = code.match(/export\s+(?:const|function)\s+(\w+)/);
-	return match ? match[1] : 'Component';
 }

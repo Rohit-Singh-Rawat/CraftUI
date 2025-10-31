@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Doto ,Instrument_Serif} from 'next/font/google';
+import { Inter, Doto, Instrument_Serif } from 'next/font/google';
 import '../styles/globals.css';
 import { Providers } from '@/components/providers';
 import Navbar from '@/components/navigation/navbar';
@@ -33,7 +33,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${doto.variable} ${inter.className} ${instrumentSerif.variable} antialiased font-sans`}>
+			<body
+				className={`${doto.variable} ${inter.className} ${instrumentSerif.variable} antialiased font-sans`}
+			>
 				<Providers>
 					<Navbar />
 					{children}
