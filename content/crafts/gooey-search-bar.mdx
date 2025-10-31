@@ -1,44 +1,82 @@
 ---
 title: Gooey Search Bar
 category: Input
-description: An animated search bar with gooey morphing effects
+description: A playful search bar with fluid gooey morphing effects and smooth expandable animations
 ---
 
 # Gooey Search Bar
 
-A visually striking search bar component with smooth gooey morphing animations that create a fluid, playful user experience.
+A visually striking search bar component with smooth gooey morphing animations that create a fluid, playful user experience. Features expandable search interface, SVG filter effects for the gooey appearance, and smooth animations powered by Framer Motion.
 
-## Features
+## Craft Story
 
-- 🎨 Smooth gooey morphing animations
-- 🔍 Expandable search interface
-- 🎭 Modern and playful design
-- 📱 Responsive layout
-- ⚡ Performance optimized animations
+I saw this gooey search bar effect somewhere online and thought it looked really unique. The way it morphs and flows when you interact with it was unlike anything I'd seen in standard component libraries.
 
-## Installation
+I wanted to understand how that gooey effect worked, so I started experimenting with SVG filters. The key was learning about `feGaussianBlur` and `feColorMatrix` filters that create that liquid, morphing appearance. Once I figured out the filter combination, I built the component with smooth expandable animations and integrated it all together.
 
-This component uses Framer Motion for animations:
+<DependencySection
+	dependencies={[
+		{
+			name: 'motion',
+			href: 'https://motion.dev/',
+		},
+		{
+			name: 'lucide-react',
+			href: 'https://lucide.dev/',
+		},
+	]}
+/>
 
-```bash
-npm install motion
-```
+## How to Use
 
-## Usage
+<CodeBlock
+	code={`import { GooeySearchBar } from '@/craft/components/gooey-search-bar';
+import { useState } from 'react';
 
-```tsx
-import { GooeySearchBar } from '@/craft/components/gooey-search-bar';
+function MyComponent() {
+	const [searchQuery, setSearchQuery] = useState('');
 
-<GooeySearchBar placeholder="Search..." />
-```
+	const handleSearch = (query: string) => {
+		setSearchQuery(query);
+		// Perform search logic
+	};
+
+	return (
+		<GooeySearchBar
+			placeholder='Search...'
+			onSearch={handleSearch}
+		/>
+	);
+}`}
+	language='tsx'
+/>
 
 ## Props
 
-- `placeholder?: string` - Placeholder text for the search input
-- `onSearch?: (query: string) => void` - Callback when search is submitted
-- `className?: string` - Additional CSS classes
+<PropsTable>
+	<PropsTableRow
+		prop='placeholder'
+		description='Placeholder text for the search input'
+		defaultValue='"Type to search..."'
+	/>
+	<PropsTableRow
+		prop='onSearch'
+		description='Callback function called when search query changes'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='searchData'
+		description='Array of strings to search through (optional, uses default data if not provided)'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='className'
+		description='Additional CSS classes'
+		defaultValue='-'
+	/>
+</PropsTable>
 
-## Styling
+## Attribution
 
-The component uses CSS filter effects to create the gooey morphing appearance. You can customize the colors and animation timing through CSS variables or by modifying the component styles.
+Gooey effect inspired by SVG filter techniques. Implementation uses Framer Motion for smooth animations and Lucide React for icons.
 

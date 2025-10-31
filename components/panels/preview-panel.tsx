@@ -10,12 +10,17 @@ interface PreviewPanelProps {
 	side?: 'left' | 'right';
 }
 
-export function PreviewPanel({ children, className, isMaximized = false, side = 'left' }: PreviewPanelProps): React.ReactElement {
+export function PreviewPanel({
+	children,
+	className,
+	isMaximized = false,
+	side = 'left',
+}: PreviewPanelProps): React.ReactElement {
 	return (
 		<section
 			data-maximized={isMaximized}
 			className={cn(
-				'relative z-12 grid h-full grid-cols-1 flex-col items-center justify-center p-3',
+				'relative z-12 grid h-full min-h-dvh grid-cols-1 flex-col items-center justify-center p-3',
 				'transition-all duration-300 ease-in-out',
 				'w-full lg:flex',
 				side === 'left' ? 'lg:ml-0' : 'lg:mr-0',

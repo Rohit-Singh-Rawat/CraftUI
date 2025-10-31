@@ -1,24 +1,25 @@
 ---
 title: Hexagonal Background
 category: Background
-description: An animated hexagonal pattern background with gradient colors and fade effects
-component: true
+description: An elegant hexagonal pattern background with gradient colors and fade effects, built with SVG paths
 ---
 
-import HexagonalBackgroundDemo from '@/craft/example/hexagonal-background-demo';
+# Hexagonal Background
 
-<HexagonalBackgroundDemo />
+A customizable hexagonal pattern background component built with SVG paths. Features gradient colors, radial fade effects, and seamless tiling. Perfect for adding subtle geometric texture to any design.
 
-## Installation
+## Craft Story
 
-```bash
-npm install react
-```
+I kept seeing circle, dot, and square pattern backgrounds everywhere online, but never a hexagonal one. I got curious about how these SVG-based backgrounds worked, so I started experimenting and learning the fundamentals.
 
-## Usage
+The tricky part was figuring out the optimal hexagonal pattern. If you use complete hexagons, they overlap in certain places, so I had to find the right pattern that tiles seamlessly. After some trial and error, I figured out the exact arrangement that works perfectly.
 
-```tsx
-import HexagonBackground from '@/craft/components/hexagonal-background';
+Then I had to learn how to draw SVG lines using paths. Once I understood the path syntax and how to calculate the coordinates for the hexagonal grid, I built the pattern using SVG and made it tile seamlessly across any container.
+
+## How to Use
+
+<CodeBlock
+	code={`import HexagonBackground from '@/craft/components/hexagonal-background';
 
 export default function Example() {
 	return (
@@ -37,55 +38,55 @@ export default function Example() {
 			</div>
 		</div>
 	);
-}
-```
+}`}
+	language='tsx'
+/>
 
 ## Props
 
-| Prop             | Type               | Default       | Description                          |
-| ---------------- | ------------------ | ------------- | ------------------------------------ |
-| `color`          | `string`           | `#5271ff`     | Primary color for the hexagons       |
-| `secondaryColor` | `string`           | Same as color | Secondary color for gradient effect  |
-| `cellSize`       | `string \| number` | `50px`        | Size of each hexagonal cell          |
-| `strokeWidth`    | `number \| string` | `3`           | Width of the hexagon strokes         |
-| `fade`           | `boolean`          | `true`        | Enable radial fade effect            |
-| `fadePercentage` | `number`           | `20`          | Percentage of fade effect (0-100)    |
-| `opacity`        | `number`           | `1`           | Overall opacity of the pattern (0-1) |
-| `className`      | `string`           | -             | Additional CSS classes               |
+<PropsTable>
+	<PropsTableRow
+		prop='color'
+		description='Primary color for the hexagons'
+		defaultValue='#5271ff'
+	/>
+	<PropsTableRow
+		prop='secondaryColor'
+		description='Secondary color for gradient effect'
+		defaultValue='Same as color'
+	/>
+	<PropsTableRow
+		prop='cellSize'
+		description='Size of each hexagonal cell'
+		defaultValue='50px'
+	/>
+	<PropsTableRow
+		prop='strokeWidth'
+		description='Width of the hexagon strokes'
+		defaultValue='3'
+	/>
+	<PropsTableRow
+		prop='fade'
+		description='Enable radial fade effect'
+		defaultValue='true'
+	/>
+	<PropsTableRow
+		prop='fadePercentage'
+		description='Percentage of fade effect (0-100)'
+		defaultValue='20'
+	/>
+	<PropsTableRow
+		prop='opacity'
+		description='Overall opacity of the pattern (0-1)'
+		defaultValue='1'
+	/>
+	<PropsTableRow
+		prop='className'
+		description='Additional CSS classes'
+		defaultValue='-'
+	/>
+</PropsTable>
 
-## Examples
+## Attribution
 
-### Custom Colors
-
-```tsx
-<HexagonBackground
-	color='#ff6b6b'
-	secondaryColor='#4ecdc4'
-	cellSize='80px'
-	strokeWidth='3'
-	opacity={0.5}
-/>
-```
-
-### No Fade Effect
-
-```tsx
-<HexagonBackground
-	color='hsl(var(--primary))'
-	cellSize='40px'
-	fade={false}
-	opacity={0.2}
-/>
-```
-
-### Dense Pattern
-
-```tsx
-<HexagonBackground
-	color='#6366f1'
-	cellSize='30px'
-	strokeWidth='1'
-	fadePercentage={40}
-	opacity={0.4}
-/>
-```
+Built with SVG path patterns, inspired by geometric background designs and optimized for seamless tiling.

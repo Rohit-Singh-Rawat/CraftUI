@@ -11,7 +11,7 @@ const PasswordValidationDemo = () => {
 	const [showPassword, setShowPassword] = React.useState(false);
 
 	return (
-		<div className='flex items-center justify-center w-full min-h-screen p-6'>
+		<div className='flex items-center justify-center w-full h-full p-6'>
 			<div className='w-full max-w-md space-y-2'>
 				<Label
 					htmlFor='password'

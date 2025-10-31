@@ -33,23 +33,31 @@ export function ComponentLoader<TProps extends object = object>({
 		.split('/')
 		.pop();
 
-	const Component = dynamic(() => import(`@/craft/example/${demoPath}`).catch(() => () => null), {
-		loading: () => (
-			<div
-				data-comp-loading='true'
-				className='peer flex min-h-20 items-center justify-center'
-			>
-				<span className='sr-only'>Loading component...</span>
-				<HugeiconsIcon
-					icon={Loading03Icon}
-					className='-ms-1 animate-spin text-input'
-					size={24}
-					aria-hidden='true'
-				/>
-			</div>
-		),
-		ssr: false,
-	});
+	const Component = dynamic(
+		() =>
+			import(`@/craft/example/${demoPath}`).catch(() => () => (
+				<div className='flex h-full w-full items-center justify-center'>
+					<p className='text-sm text-muted-foreground'>Coming soon...</p>
+				</div>
+			)),
+		{
+			loading: () => (
+				<div
+					data-comp-loading='true'
+					className='peer flex min-h-20 items-center justify-center'
+				>
+					<span className='sr-only'>Loading component...</span>
+					<HugeiconsIcon
+						icon={Loading03Icon}
+						className='-ms-1 animate-spin text-input'
+						size={24}
+						aria-hidden='true'
+					/>
+				</div>
+			),
+			ssr: false,
+		}
+	);
 
 	return <Component {...(props as TProps)} />;
 }

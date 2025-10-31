@@ -42,7 +42,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
 		h3: ({ className, children, ...props }: React.ComponentProps<'h3'>) => (
 			<h3
 				id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-				className={cn('text-xl md:text-2xl font-medium py-0 mt-12 tracking-tight', className)}
+				className={cn('text-foreground font-medium py-0 mt-12 tracking-tight', className)}
 				{...props}
 			>
 				{children}

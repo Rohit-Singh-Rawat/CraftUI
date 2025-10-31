@@ -1,107 +1,162 @@
 ---
 title: Action Bar
 category: Navigation
-description: Floating bottom action bar with dock and contextual modes
+description: A versatile floating action bar with dock and contextual modes - perfect for navigation, selections, and notifications
 ---
 
 # Action Bar
 
-A versatile floating bottom action bar component with two distinct modes: **dock** (persistent navigation) and **contextual** (conditional display).
+A versatile floating action bar component with two distinct modes: **dock** (persistent navigation) and **contextual** (conditional display). Supports 8 different positions, smooth animations, and fully responsive layouts. Perfect for mobile navigation, bulk actions, shopping carts, and contextual notifications.
 
-## Features
+## Craft Story
 
-- 🎯 Two modes: Dock (persistent) and Contextual (conditional)
-- 🎨 Multiple variants: default, destructive, success, warning
-- 📱 Fully responsive design
-- ♿ Full ARIA support and keyboard navigation
-- 🎭 Smooth slide-up animations
-- 🎛️ Both controlled and uncontrolled patterns
+I kept saving examples of floating action bars from various apps that really helped with action-based interactions. They were perfect for bulk selections, shopping carts, and contextual notifications. But when I went looking for something similar in component libraries, I couldn't find anything that fit the bill.
 
-## Installation
+So I decided to build my own. While making it, I thought about making it as reusable as possible - supporting different positions, dock mode for persistent navigation, and contextual mode for conditional actions. The result is something flexible enough to handle all those saved references and more.
 
-```bash
-# This component uses Radix UI primitives
-npm install @radix-ui/react-dialog
-```
+<DependencySection
+	dependencies={[
+		{
+			name: 'lucide-react',
+			href: 'https://lucide.dev/',
+		},
+		{
+			name: 'class-variance-authority',
+			href: 'https://cva.style/',
+		},
+	]}
+/>
 
-## Dock Mode
+## How to Use
 
-Always visible persistent navigation, like mobile tab bars or macOS dock.
-
-```tsx
-import {
-  ActionBarProvider,
-  ActionBar,
-  ActionBarLogo,
-  ActionBarNav,
-  ActionBarActions,
+<CodeBlock
+	code={`import {
+	ActionBarProvider,
+	ActionBar,
+	ActionBarHeader,
+	ActionBarTitle,
+	ActionBarActions,
+	ActionBarClose,
 } from '@/craft/components/action-bar';
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 
-<ActionBarProvider mode='dock'>
-  <ActionBar>
-    <ActionBarLogo>{/* Logo */}</ActionBarLogo>
-    <ActionBarNav>
-      <Button variant='ghost'>Home</Button>
-      <Button variant='ghost'>Search</Button>
-    </ActionBarNav>
-    <ActionBarActions>{/* User menu */}</ActionBarActions>
-  </ActionBar>
-</ActionBarProvider>
-```
+function MyComponent() {
+const [isOpen, setIsOpen] = useState(false);
 
-## Contextual Mode
+    return (
+    	<ActionBarProvider
+    		mode='contextual'
+    		open={isOpen}
+    		onOpenChange={setIsOpen}
+    	>
+    		<ActionBar>
+    			<ActionBarHeader>
+    				<ActionBarTitle>2 items selected</ActionBarTitle>
+    			</ActionBarHeader>
+    			<ActionBarActions>
+    				<Button size='sm'>Delete</Button>
+    				<ActionBarClose />
+    			</ActionBarActions>
+    		</ActionBar>
+    	</ActionBarProvider>
+    );
 
-Appears based on conditions (selections, cart items, notifications).
+}`}
+language='tsx'
+/>
 
-```tsx
-<ActionBarProvider
-  mode='contextual'
-  open={isOpen}
-  onOpenChange={setIsOpen}
->
-  <ActionBar>
-    <ActionBarContent>
-      <ActionBarHeader>
-        <ActionBarTitle>2 items selected</ActionBarTitle>
-      </ActionBarHeader>
-    </ActionBarContent>
-    <ActionBarActions>
-      <Button size='sm'>Delete</Button>
-      <ActionBarClose />
-    </ActionBarActions>
-  </ActionBar>
-</ActionBarProvider>
-```
+## Props
 
-## API Reference
+### ActionBarProvider
 
-### ActionBarProvider Props
+<PropsTable>
+	<PropsTableRow
+		prop='mode'
+		description='Display mode: "dock" for persistent navigation or "contextual" for conditional display'
+		defaultValue='"contextual"'
+	/>
+	<PropsTableRow
+		prop='position'
+		description='Position of the action bar: "top", "bottom", "left", "right", "top-left", "top-right", "bottom-left", "bottom-right"'
+		defaultValue='"bottom"'
+	/>
+	<PropsTableRow
+		prop='open'
+		description='Controlled open state (only for contextual mode)'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='onOpenChange'
+		description='Callback when open state changes (only for contextual mode)'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='defaultOpen'
+		description='Default open state for uncontrolled (only for contextual mode)'
+		defaultValue='false'
+	/>
+</PropsTable>
 
-- `mode?: "dock" | "contextual"` - Display mode (default: "contextual")
-- `open?: boolean` - Controlled state (contextual only)
-- `onOpenChange?: (open: boolean) => void` - State callback
-- `defaultOpen?: boolean` - Uncontrolled default (default: false)
+### ActionBar
 
-### ActionBar Props
+<PropsTable>
+	<PropsTableRow
+		prop='size'
+		description='Size variant: "sm", "md", or "lg"'
+		defaultValue='"md"'
+	/>
+	<PropsTableRow
+		prop='position'
+		description='Position override (inherits from provider if not specified)'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='animationDelay'
+		description='Animation delay in milliseconds (only for contextual mode)'
+		defaultValue='100'
+	/>
+	<PropsTableRow
+		prop='offset'
+		description='Offset from the edge in pixels. For top/bottom: affects vertical spacing. For left/right: affects horizontal spacing. For corners: affects both axes'
+		defaultValue='16'
+	/>
+	<PropsTableRow
+		prop='maxWidth'
+		description='Maximum width for horizontal positions (top, bottom, corners)'
+		defaultValue='"640px"'
+	/>
+	<PropsTableRow
+		prop='maxHeight'
+		description='Maximum height for vertical positions (left, right)'
+		defaultValue='"calc(100vh - 2rem)"'
+	/>
+	<PropsTableRow
+		prop='className'
+		description='Additional CSS classes'
+		defaultValue='-'
+	/>
+</PropsTable>
 
-- `variant?: "default" | "destructive" | "success" | "warning"`
-- `size?: "default" | "sm" | "lg"`
-- `bottomOffset?: number` - Distance from bottom in px (default: 24)
-- `maxWidth?: string` - Max width (default: "640px")
-- `animationDelay?: number` - Animation delay in ms (default: 100)
+### ActionBarClose
 
-## Use Cases
+<PropsTable>
+	<PropsTableRow
+		prop='srText'
+		description='Screen reader text for the close button'
+		defaultValue='"Close"'
+	/>
+	<PropsTableRow
+		prop='className'
+		description='Additional CSS classes'
+		defaultValue='-'
+	/>
+</PropsTable>
 
-**Dock Mode:**
-- Mobile tab navigation
-- Persistent action buttons
-- Bottom navigation bars
-- Quick access menus
+### Other Components
 
-**Contextual Mode:**
-- Shopping cart actions
-- Bulk selection tools
-- Undo/redo notifications
-- Success/error messages
-- Multi-step form controls
+`ActionBarHeader`, `ActionBarTitle`, `ActionBarDescription`, `ActionBarActions`, `ActionBarContent`, `ActionBarLogo`, `ActionBarNav`, `ActionBarSeparator`, and `ActionBarTrigger` all accept standard HTML attributes and optional `className` prop.
 
+## Attribution
+
+Implementation inspired by [shadcn/ui](https://ui.shadcn.com) component patterns and modern mobile navigation interfaces.
