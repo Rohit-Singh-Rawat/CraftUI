@@ -3,12 +3,9 @@ import { Cancel01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { generateMetadata } from '@/lib/utils';
 
-export const metadata: Metadata = {
-	title: 'Craft Diary - A Collection of Digital Crafts',
-	description:
-		'A diary of crafts including CSS, SVG, motion, and more. Explore meticulously crafted UI components and design elements.',
-};
+export const metadata: Metadata = generateMetadata();
 
 export default function Page() {
 	return (

@@ -3,11 +3,12 @@ import { craftRegistry } from '@/registry';
 import { CraftCard } from '@/components/craft-card';
 import ProgrssiveBlur from '@/components/animate/progessive-blur';
 import type { Metadata } from 'next';
+import { generateMetadata } from '@/lib/utils';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = generateMetadata({
 	title: 'Craft Diary',
 	description: 'A curated collection of meticulously crafted elements organized by category.',
-};
+});
 
 export default async function DiaryPage() {
 	const craftsByCategory = await getCraftsByCategory(craftRegistry);

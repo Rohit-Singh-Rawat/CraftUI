@@ -9,6 +9,7 @@ import { CraftLayoutClient } from '@/components/layouts/craft-layout-client';
 import { getRegistryItem } from '@/lib/registry';
 import type { Metadata } from 'next';
 import ProgressiveBlur from '@/components/animate/progessive-blur';
+import { generateMetadata as generateSEO } from '@/lib/utils';
 
 export function generateStaticParams() {
 	const slugs = getAllCraftSlugs();
@@ -24,18 +25,24 @@ export async function generateMetadata({
 	const craft = await getCraftBySlug(resolvedParams.slug, craftRegistry[resolvedParams.slug]);
 
 	if (!craft) {
-		return {
-			title: 'Craft Not Found - Craft Diary',
+		return generateSEO({
+			title: 'Craft Not Found',
 			description: 'The requested craft could not be found.',
-		};
+		});
 	}
 
-	return {
-		title: `${craft.title} - Craft Diary`,
+	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://craft.rohitsinghrawat.com';
+
+	return generateSEO({
+		title: craft.title,
 		description: craft.category
 			? `${craft.title} - ${craft.category} component from Craft Diary collection.`
 			: `${craft.title} - A crafted component from Craft Diary collection.`,
-	};
+		keywords: craft.category ? [craft.category.toLowerCase()] : undefined,
+		image: craft.image?.light || '/images/og/opengraph.png',
+		url: `${baseUrl}/crafts/${resolvedParams.slug}`,
+		type: 'article',
+	});
 }
 
 export default async function CraftPage({ params }: { params: Promise<{ slug: string }> }) {

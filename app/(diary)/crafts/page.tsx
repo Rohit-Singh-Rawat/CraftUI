@@ -1,11 +1,11 @@
 import { redirect } from 'next/navigation';
 import { craftRegistry } from '@/registry';
-import type { Metadata } from 'next';
+import { generateMetadata as generateSEOMetadata } from '@/lib/utils';
 
-export const metadata: Metadata = {
-	title: 'Crafts - Craft Diary',
+export const metadata = generateSEOMetadata({
+	title: 'Crafts',
 	description: 'Explore our collection of crafted UI components and design elements.',
-};
+});
 
 export default function CraftsPage() {
 	const crafts = Object.values(craftRegistry);
