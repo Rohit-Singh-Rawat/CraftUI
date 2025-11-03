@@ -1,0 +1,71 @@
+@property --top-mask-height {
+	syntax: '<length>';
+	inherits: true;
+	initial-value: 0px;
+}
+
+@property --bottom-mask-height {
+	syntax: '<length>';
+	inherits: true;
+	initial-value: 80px;
+}
+
+.viewable-scroll {
+	--mask-height: 80px;
+	--scroll-buffer: 2rem;
+	/* Set up the mask layers */
+	mask-image: linear-gradient(to top, transparent, var(--foreground) 90%),
+		linear-gradient(to bottom, transparent 0%, var(--foreground) 100%),
+		linear-gradient(var(--background), var(--background));
+
+	mask-size: 100% var(--top-mask-height), 100% var(--bottom-mask-height), 100% 100%;
+	mask-repeat: no-repeat, no-repeat, no-repeat;
+	mask-position: 0 0, 0 100%, 0 0;
+	/* Exclude the gradient areas from the solid mask */
+	mask-composite: exclude;
+
+	animation-name: show-top-mask, hide-bottom-mask;
+	animation-timeline: scroll(self), scroll(self);
+	animation-range: 0 var(--scroll-buffer), calc(100% - var(--scroll-buffer)) 100%;
+	animation-fill-mode: both;
+}
+
+@keyframes show-top-mask {
+	to {
+		--top-mask-height: var(--mask-height);
+	}
+}
+
+@keyframes hide-bottom-mask {
+	to {
+		--bottom-mask-height: 0px;
+	}
+}
+
+/* SVG Stroke Drawing Animation */
+@property --draw-progress {
+	syntax: '<number>';
+	inherits: true;
+	initial-value: 100;
+}
+
+.svg-stroke-demo-content {
+	--path-length: 100;
+
+	animation-name: draw-stroke;
+	animation-timeline: scroll(self);
+	animation-range: normal;
+	animation-fill-mode: both;
+	animation-timing-function: ease-in-out;
+}
+
+.svg-stroke-demo-content .draw-path {
+	stroke-dasharray: var(--path-length);
+	stroke-dashoffset: var(--draw-progress);
+}
+
+@keyframes draw-stroke {
+	100% {
+		--draw-progress: 0;
+	}
+}

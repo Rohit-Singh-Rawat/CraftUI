@@ -54,6 +54,22 @@
 					"type": "registry:component"
 				}
 			]
+		},
+		{
+			"name": "scroll-timeline",
+			"type": "registry:demo",
+			"title": "Scroll-Driven Animations",
+			"description": "Pure CSS scroll-driven animations using animation-timeline, CSS masking, and @property",
+			"files": [
+				{
+					"path": "craft/components/scroll-timeline.tsx",
+					"type": "registry:component"
+				},
+				{
+					"path": "styles/animate-timeline.css",
+					"type": "registry:style"
+				}
+			]
 		}
 	]
 }

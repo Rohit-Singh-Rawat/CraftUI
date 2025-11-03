@@ -1,0 +1,167 @@
+---
+title: Scroll-Driven Animations
+category: CSS
+description: Pure CSS scroll-driven animations using animation-timeline, CSS masking, and @property
+---
+
+# Scroll-Driven Animations
+
+Pure CSS scroll-driven animations that respond to scroll position without any JavaScript. Features progressive blur indicators and SVG stroke drawing, all powered by modern CSS features like `animation-timeline`, `animation-range`, CSS masking, and `@property`.
+
+## Craft Story
+
+I came across [Soren's post about animation-timeline](https://x.com/sorenblank/status/1982192826956849243) and thought it was the perfect opportunity to dive deep into modern CSS scroll-driven animations. What started as curiosity about a single CSS property turned into a deep exploration of:
+
+- How CSS masking works with multiple layers and `mask-composite`
+- How `animation-timeline: scroll()` links animations to scroll progress
+- How `animation-range` lets you control exactly when animations play during scroll
+- How `animation-fill-mode` controls animation state before and after the timeline
+- How `@property` makes CSS custom properties animatable with proper syntax definitions
+
+No JavaScript, no event listeners, no scroll event handlers. Just pure CSS doing what it does best.
+
+## The Magic Behind It
+
+### Progressive Blur with Masking
+
+The progressive blur effect uses CSS masking with three layers:
+
+1. **Top gradient mask** - Fades content in at the top
+2. **Bottom gradient mask** - Fades content out at the bottom
+3. **Solid background mask** - Shows the main content
+
+Here's how the masking works:
+
+<CodeBlock
+code={`mask-image: 
+  linear-gradient(to top, transparent, var(--foreground) 90%),
+  linear-gradient(to bottom, transparent 0%, var(--foreground) 100%),
+  linear-gradient(var(--background), var(--background));
+
+mask-size: 
+  100% var(--top-mask-height), 
+  100% var(--bottom-mask-height), 
+  100% 100%;
+
+mask-composite: exclude;`}
+language="css"
+/>
+
+The `mask-composite: exclude` is key - it subtracts the gradient areas from the solid mask, creating the blur zones. Think of it like cutting holes in a piece of paper where you want the gradients to show through.
+
+### Animating Mask Heights with @property
+
+To animate the mask heights, we need to register them as animatable custom properties:
+
+<CodeBlock
+code={`@property --top-mask-height {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --bottom-mask-height {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 80px;
+}`}
+language="css"
+/>
+
+Without `@property`, CSS custom properties can't be animated because the browser doesn't know their type. The `syntax` field tells the browser "this is a length value, so you can interpolate it smoothly." This is crucial when animating CSS variables - without `@property`, they're treated as strings and can't be interpolated.
+
+### Linking Animation to Scroll
+
+This is where `animation-timeline` shines:
+
+<CodeBlock
+code={`animation-name: show-top-mask, hide-bottom-mask;
+animation-timeline: scroll(self), scroll(self);
+animation-range: 0 var(--scroll-buffer), calc(100% - var(--scroll-buffer)) 100%;
+animation-fill-mode: both;`}
+language="css"
+/>
+
+- `animation-timeline: scroll(self)` - Links each animation to the element's own scroll progress. You can also use `scroll()` to watch the nearest ancestor scrollbar, or `scroll(nearest)` to find the nearest scroll container.
+- `animation-range` - Controls when each animation plays during the scroll. It accepts several value types:
+  - **`normal`** (default) - Animates for the entire scroll range
+  - **Percentage values** - `0% 50%` means animate from start to 50% of scroll
+  - **Named timeline ranges** - `entry`, `exit`, `entry-crossing`, `exit-crossing`, `cover`
+  - **Length values** - `0px 200px` animates from 0px to 200px of scroll
+  - **Combinations** - `entry 10%`, `exit-crossing 50%`, etc.
+  
+  In our example:
+  - Top mask: from `0` to `var(--scroll-buffer)` (first 2rem of scroll)
+  - Bottom mask: from `calc(100% - var(--scroll-buffer))` to `100%` (last 2rem of scroll)
+
+- `animation-fill-mode: both` - Keeps the animation state before and after the timeline. Can also be:
+  - `none` - No styles applied before/after
+  - `forwards` - Keeps final keyframe state after animation
+  - `backwards` - Applies first keyframe state before animation starts
+  - `both` - Applies both forwards and backwards (most useful for scroll animations)
+
+The `animation-range` is brilliant - instead of animating for the full scroll, you can specify exactly when during the scroll journey each animation should happen. Combined with `animation-fill-mode: both`, the styles persist even when you're not actively scrolling through that range.
+
+### SVG Stroke Drawing
+
+For the SVG stroke effect, we animate the `stroke-dashoffset` property:
+
+<CodeBlock
+code={`@property --draw-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 101;
+}
+
+.svg-stroke-demo-content {
+  animation-name: draw-stroke;
+  animation-timeline: scroll(self);
+  animation-range: normal;
+  animation-fill-mode: both;
+}
+
+.svg-stroke-demo-content .draw-path {
+  stroke-dasharray: var(--path-length);
+  stroke-dashoffset: var(--draw-progress);
+}
+
+@keyframes draw-stroke {
+  100% {
+    --draw-progress: 0;
+  }
+}`}
+language="css"
+/>
+
+The `stroke-dasharray` creates a dashed stroke the length of the entire path, and `stroke-dashoffset` shifts it. By animating from `101` (hidden) to `0` (fully visible), the stroke "draws" itself as you scroll. Notice we use `animation-range: normal` here, which means the animation plays for the entire scroll range - perfect for a continuous drawing effect.
+
+## Key Learnings
+
+**`@property` is essential for animating CSS variables**  
+Without it, custom properties are just strings. With it, they become first-class animatable values with proper interpolation.
+
+**Masking is layers, not just one gradient**  
+You can stack multiple masks and use `mask-composite` to combine them in powerful ways. It's like Photoshop layers in CSS.
+
+**`animation-range` gives you precision control**  
+Instead of "animate during scroll," you can say "animate from 10% to 30% of scroll" or use named ranges like `entry` and `exit`. This lets you create complex, choreographed scroll experiences where different animations play at different scroll positions.
+
+**`animation-fill-mode` keeps your styles persistent**  
+With `both`, the animation state persists before and after the scroll range. This means your masked elements stay masked even when you're not actively scrolling through the animation range - essential for scroll indicators.
+
+**`scroll(self)` vs `scroll()`**  
+`scroll(self)` watches the element's own scrollbar, while `scroll()` watches the nearest ancestor scrollbar. Choose based on what you're trying to achieve.
+
+## Browser Support
+
+These features require modern browsers with support for:
+- CSS `@property` (Chrome 85+, Edge 85+, Safari 16.4+)
+- `animation-timeline` (Chrome 115+, Edge 115+, Safari 17.4+)
+- CSS masking (widely supported)
+
+For older browsers, the content will still be visible without the scroll effects - progressive enhancement at work.
+
+## Attribution
+
+Inspired by [Soren's exploration](https://x.com/sorenblank/status/1982192826956849243) of `animation-timeline` and the amazing [Scroll-driven Animations](https://scroll-driven-animations.style/) site.
+

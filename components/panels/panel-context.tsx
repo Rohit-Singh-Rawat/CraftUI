@@ -13,16 +13,23 @@ import {
 
 type RestartFn = () => void;
 
+export interface CodeFile {
+	code: string;
+	fileName: string;
+	language?: string;
+}
+
 interface PanelContextValue {
 	readonly isMaximized: boolean;
 	readonly togglePanel: () => void;
 	readonly restart: () => void;
 	readonly setRestartFn: (fn: RestartFn) => void;
 	readonly codeDrawerOpen: boolean;
-	readonly selectedCode: string;
-	readonly selectedFileName: string;
+	readonly codeFiles: CodeFile[];
+	readonly selectedFileIndex: number;
 	readonly toggleCodeDrawer: () => void;
-	readonly setCodeDrawerCode: (code: string, fileName: string) => void;
+	readonly setCodeDrawerFiles: (files: CodeFile[]) => void;
+	readonly setSelectedFileIndex: (index: number) => void;
 	readonly setCodeDrawerOpen: (open: boolean) => void;
 	readonly hasCode: boolean;
 }
@@ -35,6 +42,7 @@ interface PanelProviderProps {
 	readonly componentFileName?: string;
 	readonly exampleCode?: string;
 	readonly exampleFileName?: string;
+	readonly additionalFiles?: CodeFile[];
 }
 
 export function PanelProvider({
@@ -43,14 +51,15 @@ export function PanelProvider({
 	componentFileName,
 	exampleCode,
 	exampleFileName,
+	additionalFiles = [],
 }: PanelProviderProps): React.ReactElement {
 	const [isMaximized, setIsMaximized] = useState<boolean>(true);
 	const restartRef = useRef<RestartFn | undefined>(undefined);
 	const [codeDrawerOpen, setCodeDrawerOpen] = useState<boolean>(false);
-	const [selectedCode, setSelectedCode] = useState<string>('');
-	const [selectedFileName, setSelectedFileName] = useState<string>('');
+	const [codeFiles, setCodeFiles] = useState<CodeFile[]>([]);
+	const [selectedFileIndex, setSelectedFileIndex] = useState<number>(0);
 
-	const hasCode: boolean = Boolean(componentCode || exampleCode);
+	const hasCode: boolean = Boolean(componentCode || exampleCode || additionalFiles.length > 0);
 
 	// Auto-minimize when code drawer opens
 	useEffect((): void => {
@@ -75,20 +84,52 @@ export function PanelProvider({
 		if (codeDrawerOpen) {
 			setCodeDrawerOpen(false);
 		} else {
-			if (componentCode) {
-				setSelectedCode(componentCode);
-				setSelectedFileName(componentFileName ?? 'component.tsx');
-			} else if (exampleCode) {
-				setSelectedCode(exampleCode);
-				setSelectedFileName(exampleFileName ?? 'example.tsx');
-			}
-			setCodeDrawerOpen(true);
-		}
-	}, [codeDrawerOpen, componentCode, componentFileName, exampleCode, exampleFileName]);
+			const files: CodeFile[] = [];
 
-	const setCodeDrawerCode = useCallback((code: string, fileName: string): void => {
-		setSelectedCode(code);
-		setSelectedFileName(fileName);
+			// Helper to extract just filename from path
+			const getFileName = (path: string | undefined, defaultName: string): string => {
+				if (!path) return defaultName;
+				return path.split('/').pop() || path.split('\\').pop() || defaultName;
+			};
+
+			if (componentCode) {
+				files.push({
+					code: componentCode,
+					fileName: getFileName(componentFileName, 'component.tsx'),
+					language: 'typescript',
+				});
+			}
+
+			if (exampleCode) {
+				files.push({
+					code: exampleCode,
+					fileName: getFileName(exampleFileName, 'example.tsx'),
+					language: 'typescript',
+				});
+			}
+
+			if (additionalFiles.length > 0) {
+				files.push(...additionalFiles);
+			}
+
+			if (files.length > 0) {
+				setCodeFiles(files);
+				setSelectedFileIndex(0);
+				setCodeDrawerOpen(true);
+			}
+		}
+	}, [
+		codeDrawerOpen,
+		componentCode,
+		componentFileName,
+		exampleCode,
+		exampleFileName,
+		additionalFiles,
+	]);
+
+	const setCodeDrawerFiles = useCallback((files: CodeFile[]): void => {
+		setCodeFiles(files);
+		setSelectedFileIndex(0);
 	}, []);
 
 	const value: PanelContextValue = useMemo(
@@ -98,10 +139,11 @@ export function PanelProvider({
 			restart,
 			setRestartFn,
 			codeDrawerOpen,
-			selectedCode,
-			selectedFileName,
+			codeFiles,
+			selectedFileIndex,
 			toggleCodeDrawer,
-			setCodeDrawerCode,
+			setCodeDrawerFiles,
+			setSelectedFileIndex,
 			setCodeDrawerOpen,
 			hasCode,
 		}),
@@ -111,10 +153,10 @@ export function PanelProvider({
 			restart,
 			setRestartFn,
 			codeDrawerOpen,
-			selectedCode,
-			selectedFileName,
+			codeFiles,
+			selectedFileIndex,
 			toggleCodeDrawer,
-			setCodeDrawerCode,
+			setCodeDrawerFiles,
 			hasCode,
 		]
 	);

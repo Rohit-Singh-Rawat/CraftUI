@@ -16,6 +16,11 @@ export const craftRegistry: Record<string, CraftMetadata> = {
     title: "Gooey Search Bar",
     category: "Input",
   },
+  "scroll-timeline": {
+    slug: "scroll-timeline",
+    title: "Scroll-Driven Animations",
+    category: "CSS",
+  },
   // Add more crafts as you create them
   // "my-component": {
   //   slug: "my-component",
