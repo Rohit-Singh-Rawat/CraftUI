@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync, statSync } from 'fs';
 import { join } from 'path';
 
 export interface RegistryItem {
@@ -23,8 +23,29 @@ export interface Registry {
 }
 
 let registryCache: Registry | null = null;
+let registryCacheTime: number | null = null;
+
+export function clearRegistryCache(): void {
+	registryCache = null;
+	registryCacheTime = null;
+}
 
 export function getRegistry(): Registry {
+	// In development, check if registry.json has been modified
+	if (registryCache && registryCacheTime) {
+		if (process.env.NODE_ENV === 'development') {
+			try {
+				const registryPath = join(process.cwd(), 'registry.json');
+				const stats = statSync(registryPath);
+				if (stats.mtimeMs > registryCacheTime) {
+					clearRegistryCache();
+				}
+			} catch {
+				// File doesn't exist or can't be read, use cache
+			}
+		}
+	}
+
 	if (registryCache) {
 		return registryCache;
 	}
@@ -50,6 +71,7 @@ export function getRegistry(): Registry {
 		}));
 
 		registryCache = registry;
+		registryCacheTime = Date.now();
 		return registryCache;
 	} catch (error) {
 		console.error('Failed to load registry.json:', error);

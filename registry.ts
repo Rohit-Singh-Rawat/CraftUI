@@ -21,6 +21,11 @@ export const craftRegistry: Record<string, CraftMetadata> = {
     title: "Scroll-Driven Animations",
     category: "CSS",
   },
+  "fluid-asset-preview": {
+    slug: "fluid-asset-preview",
+    title: "Fluid Asset Preview",
+    category: "X Inspirations",
+  },
   // Add more crafts as you create them
   // "my-component": {
   //   slug: "my-component",

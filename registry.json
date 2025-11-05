@@ -70,6 +70,19 @@
 					"type": "registry:style"
 				}
 			]
+		},
+		{
+			"name": "fluid-asset-preview",
+			"type": "registry:component",
+			"title": "Fluid Asset Preview",
+			"description": "A fluid, animated asset preview component with smooth morphing dropdown menu inspired by modern design patterns",
+			"dependencies": ["motion", "@hugeicons/react"],
+			"files": [
+				{
+					"path": "craft/components/fluid-asset-preview.tsx",
+					"type": "registry:component"
+				}
+			]
 		}
 	]
 }

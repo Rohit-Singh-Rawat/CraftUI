@@ -1,0 +1,41 @@
+---
+title: Fluid Asset Preview
+category: X Inspirations
+description: A fluid, animated asset preview component with smooth morphing dropdown menu inspired by modern design patterns.
+---
+
+## Inspiration
+
+This component was inspired by a design shared on X (formerly Twitter) by [@ayushsoni_io](https://x.com/ayushsoni_io/status/1985645474771321194). The original design featured a clean, fluid asset preview card with an elegant morphing action menu.
+
+## Features
+
+- **Fluid morphing animation** - The link button smoothly transforms into a dropdown menu using Framer Motion's `layoutId`
+- **Smooth transitions** - All interactions use spring-based animations for natural feel
+- **Accessible** - Full keyboard support (Escape to close) and ARIA labels
+- **Responsive** - Adapts to different screen sizes while maintaining visual hierarchy
+- **Customizable** - Supports thumbnails, file types, and custom actions
+
+## Usage
+
+<CodeBlock
+	code={`import { FluidAssetPreview } from '@/craft/components/fluid-asset-preview';
+
+<FluidAssetPreview
+  fileName="document.pdf"
+  fileDate="January 15, 2024"
+  thumbnailUrl="/path/to/thumbnail.png"
+  fileType="pdf"
+  onLinkClick={() => console.log('Link clicked')}
+/>`}
+	language='tsx'
+/>
+
+## Design Notes
+
+The component features a unique split design:
+- **Left side**: Contains the thumbnail and file information with a rounded left edge
+- **Right side**: Action buttons with a fluid connection using CSS clip-path for the curved edge
+
+The dropdown menu uses Framer Motion's layout animation to create a seamless morphing effect from the link button, creating a delightful micro-interaction that feels natural and polished.
+
