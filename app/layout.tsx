@@ -4,6 +4,7 @@ import '../styles/globals.css';
 import { Providers } from '@/components/providers';
 import Navbar from '@/components/navigation/navbar';
 import { generateMetadata } from '@/lib/utils';
+import { Analytics as VercelAnalytics } from '@vercel/analytics/next';
 
 const doto = Doto({
 	weight: ['400', '500', '700'],
@@ -36,6 +37,7 @@ export default function RootLayout({
 					<Navbar />
 					{children}
 				</Providers>
+				<VercelAnalytics />
 			</body>
 		</html>
 	);

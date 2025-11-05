@@ -1,11 +1,12 @@
 'use client';
 
-import AssetPreviewDemo from './asset-preview-demo';
+import FluidAssetPreviewDemo from "@/craft/example/fluid-asset-preview-demo";
+
 
 const PlayGround = () => {
 	return (
 		<div className='w-full h-full flex items-center justify-center u gap-5 flex-col'>
-			<AssetPreviewDemo />
+			<FluidAssetPreviewDemo />
 		</div>
 	);
 };

@@ -181,7 +181,7 @@ export function FluidAssetPreview({
 						/>
 					</motion.button>
 
-					<AnimatePresence>
+					<AnimatePresence mode='sync'>
 						{isOpen && (
 							<>
 								{/* Backdrop */}
@@ -207,6 +207,9 @@ export function FluidAssetPreview({
 										scale: 0.3,
 										backdropFilter: 'blur(10px)',
 										translateY: '100px',
+										animationDuration: '0.2s',
+										animationTimingFunction: 'ease-in-out',
+										animationFillMode: 'forwards',
 									}}
 									transition={{ type: 'spring', stiffness: 300, damping: 30 }}
 									role='menu'
