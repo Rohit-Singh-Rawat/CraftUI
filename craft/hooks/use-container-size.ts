@@ -40,9 +40,9 @@ export type UseContainerSizeOptions = {
  */
 export function useContainerSize(
 	options: UseContainerSizeOptions = {}
-): [React.RefObject<HTMLDivElement>, ContainerSize] {
+): [React.RefObject<HTMLDivElement | null>, ContainerSize] {
 	const { fullWidthThreshold = breakpoints.lg, initialWidth = 0 } = options;
-	const containerRef = useRef<HTMLDivElement>(null);
+	const containerRef = useRef<HTMLDivElement | null>(null);
 	const [size, setSize] = useState<ContainerSize>({
 		width: initialWidth,
 		height: 0,
@@ -80,4 +80,3 @@ export function useContainerSize(
 }
 
 export default useContainerSize;
-
