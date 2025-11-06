@@ -1,0 +1,198 @@
+---
+title: Clock
+category: X Inspirations
+description: A beautiful, customizable analog clock component with timezone support, multiple variants, and digital overlay.
+---
+
+## Inspiration
+
+I saw a post of a clock design and thought of building a clock—why not? This component brings that inspiration to life with a fully customizable analog clock that supports multiple timezones, custom styling, and beautiful variants.
+
+## Features
+
+- **Multiple variants** - Choose from mesh background or clean default styles
+- **Timezone support** - Display time from any IANA timezone (e.g., 'America/New_York', 'Asia/Tokyo')
+- **Custom time** - Set a static custom time for demonstrations or testing
+- **Highly customizable** - Control tick marks, hand colors, numbers, borders, and more
+- **Digital overlay** - Optional digital time and weekday display with flexible positioning
+- **Responsive sizing** - Scales proportionally from a base 320px design
+- **Smooth animations** - Real-time updates with configurable refresh rates
+
+## Usage
+
+<CodeBlock
+	code={`import { Clock } from '@/craft/components/clock';
+
+// Basic clock with mesh variant
+<Clock variant="mesh" size={320} />
+
+// Clock with timezone
+<Clock 
+  variant="default" 
+  timezone="America/New_York"
+  showNumbers="cardinal"
+/>
+
+// Fully customized clock
+<Clock
+  variant="mesh"
+  size={200}
+  showNumbers="all"
+  rounded={1}
+  borderWidth={2}
+  borderColor="rgba(255,255,255,0.8)"
+  tickHourColor="rgba(255,255,255,0.8)"
+  handHourColor="#fff"
+  handSecondColor="#ff0000"
+  showDigital={{
+    position: "center",
+    uppercase: true,
+    showTimezone: true
+  }}
+/>`}
+	language='tsx'
+/>
+
+## Props
+
+<PropsTable>
+	<PropsTableRow
+		prop='variant'
+		description='Visual style variant'
+		type="'mesh' | 'default'"
+		defaultValue='"mesh"'
+	/>
+	<PropsTableRow
+		prop='size'
+		description='Clock diameter in pixels'
+		type='number'
+		defaultValue='320'
+	/>
+	<PropsTableRow
+		prop='className'
+		description='Additional CSS classes'
+		type='string'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='rounded'
+		description='Border radius (0 = square, 1 = circle)'
+		type='number'
+		defaultValue='1'
+	/>
+	<PropsTableRow
+		prop='borderWidth'
+		description='Border width in pixels'
+		type='number'
+		defaultValue='1'
+	/>
+	<PropsTableRow
+		prop='borderColor'
+		description='Border color (CSS color value)'
+		type='string'
+		defaultValue='"rgba(255,255,255,0.12)"'
+	/>
+	<PropsTableRow
+		prop='showNumbers'
+		description='Which numbers to display: "all" for 1-12, "cardinal" for 12/3/6/9, array for custom hours, or false to hide'
+		type="'all' | 'cardinal' | number[] | false"
+		defaultValue='"cardinal"'
+	/>
+	<PropsTableRow
+		prop='tickHourLengthPx'
+		description='Hour tick length in pixels (at 320px design, scales automatically)'
+		type='number'
+		defaultValue='10'
+	/>
+	<PropsTableRow
+		prop='tickMinuteLengthPx'
+		description='Minute tick length in pixels (at 320px design, scales automatically)'
+		type='number'
+		defaultValue='5'
+	/>
+	<PropsTableRow
+		prop='tickHourWidthPx'
+		description='Hour tick width in pixels (at 320px design, scales automatically)'
+		type='number'
+		defaultValue='2'
+	/>
+	<PropsTableRow
+		prop='tickMinuteWidthPx'
+		description='Minute tick width in pixels (at 320px design, scales automatically)'
+		type='number'
+		defaultValue='1'
+	/>
+	<PropsTableRow
+		prop='tickHourColor'
+		description='Color for hour tick marks'
+		type='string'
+		defaultValue='"rgba(255,255,255,0.7)"'
+	/>
+	<PropsTableRow
+		prop='tickMinuteColor'
+		description='Color for minute tick marks'
+		type='string'
+		defaultValue='"rgba(255,255,255,0.35)"'
+	/>
+	<PropsTableRow
+		prop='handHourColor'
+		description='Color for the hour hand'
+		type='string'
+		defaultValue='"#fff"'
+	/>
+	<PropsTableRow
+		prop='handMinuteColor'
+		description='Color for the minute hand'
+		type='string'
+		defaultValue='"#fff"'
+	/>
+	<PropsTableRow
+		prop='handSecondColor'
+		description='Color for the second hand'
+		type='string'
+		defaultValue='"#fff"'
+	/>
+	<PropsTableRow
+		prop='numberColor'
+		description='Color for number labels'
+		type='string'
+		defaultValue='"rgba(255,255,255,0.75)"'
+	/>
+	<PropsTableRow
+		prop='numberFontSizePx'
+		description='Font size for numbers in pixels (at 320px design, scales automatically)'
+		type='number'
+		defaultValue='12'
+	/>
+	<PropsTableRow
+		prop='timezone'
+		description='IANA timezone identifier (e.g., "America/New_York", "Europe/London", "Asia/Tokyo"). If not provided, uses local time'
+		type='string'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='customTime'
+		description='Custom Date object. If provided, clock shows this time (static). Overrides timezone'
+		type='Date'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='showDigital'
+		description='Digital time/day overlay. Can be boolean or object with position, uppercase, color, fontSizePx, and showTimezone options'
+		type='boolean | { position?: "center" | "top" | "bottom" | "left" | "right"; uppercase?: boolean; color?: string; fontSizePx?: number; showTimezone?: boolean }'
+		defaultValue='false'
+	/>
+	<PropsTableRow
+		prop='digitalClassName'
+		description='Additional CSS classes for the digital overlay'
+		type='string'
+		defaultValue='-'
+	/>
+</PropsTable>
+
+## Design Notes
+
+The clock uses SVG for crisp rendering at any size. All measurements are based on a 320px design and scale proportionally. The component supports both analog and digital time displays, making it perfect for dashboards, world clocks, or any time-sensitive UI.
+
+The mesh variant features a beautiful gradient background with grain texture, while the default variant uses your theme's background color for seamless integration.
+

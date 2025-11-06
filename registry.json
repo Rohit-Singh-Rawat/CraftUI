@@ -83,6 +83,22 @@
 					"type": "registry:component"
 				}
 			]
+		},
+		{
+			"name": "clock",
+			"type": "registry:component",
+			"title": "Clock",
+			"description": "A beautiful, customizable analog clock component with timezone support, multiple variants, and digital overlay",
+			"files": [
+				{
+					"path": "craft/components/clock.tsx",
+					"type": "registry:component"
+				},
+				{
+					"path": "craft/hooks/use-clock.ts",
+					"type": "registry:hook"
+				}
+			]
 		}
 	]
 }

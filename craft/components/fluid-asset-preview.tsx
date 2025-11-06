@@ -44,7 +44,7 @@ export function FluidAssetPreview({
 
 	return (
 		<motion.article
-			className='flex items-stretch h-fit min-w-[300px]'
+			className='flex items-stretch h-fit md:min-w-[300px]  w-full'
 			role='article'
 			aria-label={`File preview: ${fileName}`}
 			initial={{ opacity: 0 }}
@@ -53,7 +53,7 @@ export function FluidAssetPreview({
 			transition={{ duration: 0.3, ease: 'easeInOut' }}
 		>
 			{/* Left side: Logo/Image */}
-			<div className='flex items-center gap-3 flex-1 w-full pr-20 bg-background p-2 rounded-xl rounded-tr-none'>
+			<div className='flex items-center gap-3 flex-1 w-full  bg-background p-2 rounded-xl rounded-tr-none'>
 				<motion.div
 					className='w-12 h-12 shrink-0 bg-gray-200 rounded-md overflow-hidden'
 					role='img'

@@ -140,8 +140,8 @@ function NavLinkItem({
 					className={cn(
 						'inline-block h-px bg-foreground/20 transition-all duration-300 ease-in-out',
 						!isMobile && 'group-hover:bg-orange-500',
-						isCurrent && 'bg-orange-500',
-						isMobile && 'w-[32px]',
+						isCurrent && 'bg-orange-500 w-[55px]',
+
 						!isMobile && (hoveredLink === link.href || isCurrent) && 'w-[55px]',
 						!isMobile && !(hoveredLink === link.href || isCurrent) && 'w-[32px]'
 					)}
@@ -150,10 +150,10 @@ function NavLinkItem({
 					className={cn(
 						'whitespace-nowrap transition-all ease-in-out flex items-center pl-3 gap-2',
 						isMobile ? 'duration-300' : 'duration-500',
-						isCurrent
-							? 'text-orange-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none'
-							: isMobile
+						isMobile
 							? 'opacity-100 group-hover:text-orange-500'
+							: isCurrent
+							? 'text-orange-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out  group-hover/sidebar:blur-none'
 							: 'opacity-0 group-hover/sidebar:opacity-40 group-hover:text-orange-500 group-hover:opacity-100 blur-md group-hover/sidebar:blur-none',
 						!isMobile && 'group-hover:text-orange-500 group-hover:opacity-100'
 					)}
