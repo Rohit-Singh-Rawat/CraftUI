@@ -85,6 +85,19 @@
 			]
 		},
 		{
+			"name": "animated-tabs",
+			"type": "registry:component",
+			"title": "Animated Tabs",
+			"description": "Animated pill tabs with synchronized content transitions for storytelling-heavy layouts",
+			"dependencies": ["motion"],
+			"files": [
+				{
+					"path": "craft/components/animated-tabs.tsx",
+					"type": "registry:component"
+				}
+			]
+		},
+		{
 			"name": "clock",
 			"type": "registry:component",
 			"title": "Clock",

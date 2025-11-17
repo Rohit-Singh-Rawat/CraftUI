@@ -1,24 +1,27 @@
 ---
 title: Clock
-category: X Inspirations
+category: Inspiration
 description: A beautiful, customizable analog clock component with timezone support, multiple variants, and digital overlay.
 ---
 
-## Inspiration
+# Clock
+
+Analog + optional digital clock with mesh aesthetics, timezone support, and total control over ticks, hands, and overlays.
+
+## Craft Story
 
 I saw a post of a clock design and thought of building a clock—why not? This component brings that inspiration to life with a fully customizable analog clock that supports multiple timezones, custom styling, and beautiful variants.
 
-## Features
+<DependencySection
+	dependencies={[
+		{
+			name: 'use-clock hook',
+			href: '@/craft/hooks/use-clock',
+		},
+	]}
+/>
 
-- **Multiple variants** - Choose from mesh background or clean default styles
-- **Timezone support** - Display time from any IANA timezone (e.g., 'America/New_York', 'Asia/Tokyo')
-- **Custom time** - Set a static custom time for demonstrations or testing
-- **Highly customizable** - Control tick marks, hand colors, numbers, borders, and more
-- **Digital overlay** - Optional digital time and weekday display with flexible positioning
-- **Responsive sizing** - Scales proportionally from a base 320px design
-- **Smooth animations** - Real-time updates with configurable refresh rates
-
-## Usage
+## How to Use
 
 <CodeBlock
 	code={`import { Clock } from '@/craft/components/clock';
@@ -189,10 +192,4 @@ I saw a post of a clock design and thought of building a clock—why not? This c
 		defaultValue='-'
 	/>
 </PropsTable>
-
-## Design Notes
-
-The clock uses SVG for crisp rendering at any size. All measurements are based on a 320px design and scale proportionally. The component supports both analog and digital time displays, making it perfect for dashboards, world clocks, or any time-sensitive UI.
-
-The mesh variant features a beautiful gradient background with grain texture, while the default variant uses your theme's background color for seamless integration.
 

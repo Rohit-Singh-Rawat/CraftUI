@@ -1,22 +1,25 @@
 ---
 title: Fluid Asset Preview
-category: X Inspirations
+category: Inspiration
 description: A fluid, animated asset preview component with smooth morphing dropdown menu inspired by modern design patterns.
 ---
 
-## Inspiration
+# Fluid Asset Preview
+
+Morphing asset card with a split layout, rolling dropdown, and animated CTA so files feel alive instead of static.
+
+## Craft Story
 
 This component was inspired by a design shared on X (formerly Twitter) by [@ayushsoni_io](https://x.com/ayushsoni_io/status/1985645474771321194). The original design featured a clean, fluid asset preview card with an elegant morphing action menu.
 
-## Features
+<DependencySection
+	dependencies={[
+		{ name: 'motion', href: 'https://motion.dev/' },
+		{ name: '@hugeicons/react', href: 'https://hugeicons.com/' },
+	]}
+/>
 
-- **Fluid morphing animation** - The link button smoothly transforms into a dropdown menu using Framer Motion's `layoutId`
-- **Smooth transitions** - All interactions use spring-based animations for natural feel
-- **Accessible** - Full keyboard support (Escape to close) and ARIA labels
-- **Responsive** - Adapts to different screen sizes while maintaining visual hierarchy
-- **Customizable** - Supports thumbnails, file types, and custom actions
-
-## Usage
+## How to Use
 
 <CodeBlock
 	code={`import { FluidAssetPreview } from '@/craft/components/fluid-asset-preview';
@@ -31,11 +34,38 @@ This component was inspired by a design shared on X (formerly Twitter) by [@ayus
 	language='tsx'
 />
 
-## Design Notes
+## Props
 
-The component features a unique split design:
-- **Left side**: Contains the thumbnail and file information with a rounded left edge
-- **Right side**: Action buttons with a fluid connection using CSS clip-path for the curved edge
-
-The dropdown menu uses Framer Motion's layout animation to create a seamless morphing effect from the link button, creating a delightful micro-interaction that feels natural and polished.
+<PropsTable>
+	<PropsTableRow
+		prop='fileName'
+		description='Display name for the asset. Shown in the left panel and used for accessible labels.'
+		type='string'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='fileDate'
+		description='Timestamp or descriptive date string rendered beneath the title.'
+		type='string'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='thumbnailUrl'
+		description='Optional thumbnail image. Falls back to a gradient block with the file type label.'
+		type='string'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='fileType'
+		description='Short extension label (e.g., pdf, fig). Used for the fallback badge when no thumbnail is provided.'
+		type='string'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='onLinkClick'
+		description='Callback fired when the link-out button is pressed. Ideal for deep-linking into your asset system.'
+		type='() => void'
+		defaultValue='-'
+	/>
+</PropsTable>
 

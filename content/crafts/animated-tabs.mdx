@@ -1,0 +1,100 @@
+---
+title: Animated Tabs
+category: Inspiration
+description: Animated pill tabs with shared layout transitions, blur fades, and a roomy content stage for storytelling-heavy sections.
+---
+
+# Animated Tabs
+
+Animated pill navigation paired with a blur-fade content stage so you can tell long-form product stories without switching sections.
+
+## Craft Story
+
+I saw a hero section on Doppler.com that stacked headline, stats, and integrations onto one cinematic surface, so I re-created the interaction with a springy pill, shared `layoutId`, blur-in copy, and a generous content stage tuned for narrative-heavy launches.
+
+<DependencySection
+	dependencies={[
+		{
+			name: 'motion',
+			href: 'https://motion.dev/',
+		},
+	]}
+/>
+
+## How to Use
+
+<CodeBlock
+	code={`import AnimatedTabs from '@/craft/components/animated-tabs';
+
+const tabs = [
+{
+label: 'Security',
+title: 'Secure secrets',
+content: (
+
+<div className="space-y-3">
+<p className="text-base text-muted-foreground">
+Narrative copy with compliance callouts, breach data, and a CTA stack.
+</p>
+<div className="grid gap-2 md:grid-cols-3">
+<div className="rounded-xl border border-border bg-background/80 p-3">
+<p className="text-xs uppercase tracking-wide text-muted-foreground">Uptime</p>
+<p className="text-2xl font-serif">99.99%</p>
+</div>
+{/* ...more stat cards */}
+</div>
+</div>
+),
+},
+{
+label: 'Integrations',
+title: 'Central hub',
+content: <p>Logos, badges, and webhook copy go here.</p>,
+},
+];
+
+export function StoryTabs() {
+  return (
+    <AnimatedTabs
+      tabs={tabs}
+      containerClassName="mx-auto"
+      tabClassName="font-serif text-sm md:text-base"
+      activeTabClassName="bg-primary/5 border border-border/40"
+      contentClassName="bg-muted/40 backdrop-blur-xl"
+    />
+  );
+}`}
+	language='tsx'
+/>
+
+## Props
+
+### AnimatedTabs
+
+<PropsTable>
+	<PropsTableRow
+		prop='tabs'
+		description='Array of tab objects (`{ label, title, content }`). `content` accepts any React node, so you can inject marketing copy, media, or custom layouts.'
+		defaultValue='[]'
+	/>
+	<PropsTableRow
+		prop='containerClassName'
+		description='Custom classes for the outer section. Perfect for width constraints, background treatments, or responsive padding tweaks.'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='tabClassName'
+		description='Shared classes for each tab button. Useful for typography, casing, spacing, or setting up your own hover states.'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='activeTabClassName'
+		description='Classes applied to the animated pill highlight. Combine with borders, gradients, or shadows to match your brand.'
+		defaultValue='-'
+	/>
+	<PropsTableRow
+		prop='contentClassName'
+		description='Classes for the content surface. Use it to set min-heights, glassmorphism, borders, or layout primitives.'
+		defaultValue='-'
+	/>
+</PropsTable>

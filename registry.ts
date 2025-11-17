@@ -24,12 +24,17 @@ export const craftRegistry: Record<string, CraftMetadata> = {
   "fluid-asset-preview": {
     slug: "fluid-asset-preview",
     title: "Fluid Asset Preview",
-    category: "X Inspirations",
+    category: "Inspiration",
+  },
+  "animated-tabs": {
+    slug: "animated-tabs",
+    title: "Animated Tabs",
+    category: "Inspiration",
   },
   "clock": {
     slug: "clock",
     title: "Clock",
-    category: "X Inspirations",
+    category: "Inspiration",
   },
   // Add more crafts as you create them
   // "my-component": {
