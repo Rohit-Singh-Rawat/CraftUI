@@ -1,104 +1,106 @@
-import { readFileSync, statSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, statSync } from "fs";
+import { join } from "path";
 
 export interface RegistryItem {
-	name: string;
-	type: string;
-	title: string;
-	description?: string;
-	registryDependencies?: string[];
-	dependencies?: string[];
-	files: Array<{
-		path: string;
-		type: string;
-		content?: string;
-	}>;
+  name: string;
+  type: string;
+  title: string;
+  description?: string;
+  registryDependencies?: string[];
+  dependencies?: string[];
+  files: Array<{
+    path: string;
+    type: string;
+    content?: string;
+  }>;
 }
 
 export interface Registry {
-	$schema: string;
-	name: string;
-	homepage: string;
-	items: RegistryItem[];
+  $schema: string;
+  name: string;
+  homepage: string;
+  items: RegistryItem[];
 }
 
 let registryCache: Registry | null = null;
 let registryCacheTime: number | null = null;
 
 export function clearRegistryCache(): void {
-	registryCache = null;
-	registryCacheTime = null;
+  registryCache = null;
+  registryCacheTime = null;
 }
 
 export function getRegistry(): Registry {
-	// In development, check if registry.json has been modified
-	if (registryCache && registryCacheTime) {
-		if (process.env.NODE_ENV === 'development') {
-			try {
-				const registryPath = join(process.cwd(), 'registry.json');
-				const stats = statSync(registryPath);
-				if (stats.mtimeMs > registryCacheTime) {
-					clearRegistryCache();
-				}
-			} catch {
-				// File doesn't exist or can't be read, use cache
-			}
-		}
-	}
+  // In development, check if registry.json has been modified
+  if (registryCache && registryCacheTime) {
+    if (process.env.NODE_ENV === "development") {
+      try {
+        const registryPath = join(process.cwd(), "registry.json");
+        const stats = statSync(registryPath);
+        if (stats.mtimeMs > registryCacheTime) {
+          clearRegistryCache();
+        }
+      } catch {
+        // File doesn't exist or can't be read, use cache
+      }
+    }
+  }
 
-	if (registryCache) {
-		return registryCache;
-	}
+  if (registryCache) {
+    return registryCache;
+  }
 
-	try {
-		const registryPath = join(process.cwd(), 'registry.json');
-		const registryContent = readFileSync(registryPath, 'utf-8');
-		const registry = JSON.parse(registryContent) as Registry;
+  try {
+    const registryPath = join(process.cwd(), "registry.json");
+    const registryContent = readFileSync(registryPath, "utf-8");
+    const registry = JSON.parse(registryContent) as Registry;
 
-		// Populate file content for each item
-		registry.items = registry.items.map((item) => ({
-			...item,
-			files: item.files.map((file) => {
-				try {
-					const filePath = join(process.cwd(), file.path);
-					const content = readFileSync(filePath, 'utf-8');
-					return { ...file, content };
-				} catch (error) {
-					console.error(`Failed to load file ${file.path}:`, error);
-					return file;
-				}
-			}),
-		}));
+    // Populate file content for each item
+    registry.items = registry.items.map((item) => ({
+      ...item,
+      files: item.files.map((file) => {
+        try {
+          const filePath = join(process.cwd(), file.path);
+          const content = readFileSync(filePath, "utf-8");
+          return { ...file, content };
+        } catch (error) {
+          console.error(`Failed to load file ${file.path}:`, error);
+          return file;
+        }
+      }),
+    }));
 
-		registryCache = registry;
-		registryCacheTime = Date.now();
-		return registryCache;
-	} catch (error) {
-		console.error('Failed to load registry.json:', error);
-		return {
-			$schema: 'https://ui.shadcn.com/schema/registry.json',
-			name: '@craft',
-			homepage: '',
-			items: [],
-		};
-	}
+    registryCache = registry;
+    registryCacheTime = Date.now();
+    return registryCache;
+  } catch (error) {
+    console.error("Failed to load registry.json:", error);
+    return {
+      $schema: "https://ui.shadcn.com/schema/registry.json",
+      name: "@craft",
+      homepage: "",
+      items: [],
+    };
+  }
 }
 
 export function getRegistryItem(name: string): RegistryItem | undefined {
-	const registry = getRegistry();
-	return registry.items.find((item) => item.name === name);
+  const registry = getRegistry();
+  return registry.items.find((item) => item.name === name);
 }
 
 export function getRegistryItemCode(name: string): string | null {
-	const item = getRegistryItem(name);
-	if (!item || !item.files?.length) {
-		return null;
-	}
+  const item = getRegistryItem(name);
+  if (!item || !item.files?.length) {
+    return null;
+  }
 
-	const mainFile = item.files.find((file) => file.type === 'registry:component') || item.files[0];
-	if (!mainFile) {
-		return null;
-	}
+  const mainFile =
+    item.files.find((file) => file.type === "registry:component") ||
+    item.files[0];
+  if (!mainFile) {
+    return null;
+  }
 
-	return mainFile.content || null;
+  return mainFile.content || null;
 }

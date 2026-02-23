@@ -1,0 +1,16 @@
+﻿.claude/settings.local.json
+components/animated-compass.tsx
+components/landing-compass.tsx
+components/landing-hero.tsx
+components/landing-ruler.tsx
+components/pointer-tracker.tsx
+content/crafts/brave-search.mdx
+craft/components/brave-search.tsx
+craft/example/brave-search-demo.tsx
+craft/example/search-glitch-demo.tsx
+public/images/crafts/brave-search/brave-search-dark.png
+public/images/crafts/brave-search/brave-search-light.png
+public/images/noise.png
+status.txt
+status_mod.txt
+status_untracked.txt

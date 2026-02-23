@@ -1,420 +1,427 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
-import Logo from '@/components/navigation/logo';
-import { cn } from '@/lib/utils';
+import Link from "next/link";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { usePathname } from "next/navigation";
+import Logo from "@/components/navigation/logo";
+import { cn } from "@/lib/utils";
 
 interface NavLink {
-	label: string;
-	href: string;
+  label: string;
+  href: string;
 }
 
 interface NavSection {
-	title: string;
-	links: NavLink[];
+  title: string;
+  links: NavLink[];
 }
 
 interface SidebarProps {
-	navigationData: NavSection[];
+  navigationData: NavSection[];
 }
 
 function SectionDivider() {
-	return (
-		<>
-			<span className='bg-foreground/20 block h-px mt-2 w-[32px] transition-all duration-300' />
-			<span className='bg-foreground/20 block h-px w-[32px] mt-2 transition-all duration-300' />
-			<span className='bg-foreground/20 block h-px w-[32px] mt-2 transition-all duration-300' />
-			<span className='bg-foreground/20 block h-px w-[32px] my-2 transition-all duration-300' />
-		</>
-	);
+  return (
+    <>
+      <span className="bg-foreground/20 block h-px mt-2 w-[32px] transition-all duration-300" />
+      <span className="bg-foreground/20 block h-px w-[32px] mt-2 transition-all duration-300" />
+      <span className="bg-foreground/20 block h-px w-[32px] mt-2 transition-all duration-300" />
+      <span className="bg-foreground/20 block h-px w-[32px] my-2 transition-all duration-300" />
+    </>
+  );
 }
 
 function SectionTitle({
-	title,
-	sectionIndex,
-	isMobile = false,
+  title,
+  sectionIndex,
+  isMobile = false,
 }: {
-	title: string;
-	sectionIndex: number;
-	isMobile?: boolean;
+  title: string;
+  sectionIndex: number;
+  isMobile?: boolean;
 }) {
-	const delayMultiplier = isMobile ? 0.05 : 0.1;
-	const baseDelay = isMobile ? 0.1 : 0.2;
-	const duration = isMobile ? 0.2 : 0.3;
+  const delayMultiplier = isMobile ? 0.05 : 0.1;
+  const baseDelay = isMobile ? 0.1 : 0.2;
+  const duration = isMobile ? 0.2 : 0.3;
 
-	return (
-		<>
-			<div className='group relative flex h-px cursor-default items-center gap-3 mb-2'>
-				<motion.span
-					className='bg-foreground inline-block h-[1px]'
-					initial={{ width: 0 }}
-					animate={{ width: 32 }}
-					transition={{
-						duration: isMobile ? 0.3 : 0.4,
-						delay: sectionIndex * delayMultiplier + baseDelay,
-						ease: 'easeOut',
-					}}
-				/>
-				<span
-					className={cn(
-						'whitespace-nowrap text-foreground font-medium',
-						isMobile
-							? 'opacity-100'
-							: 'blur-md group-hover/sidebar:blur-none opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 ease-out'
-					)}
-				>
-					{title}
-				</span>
-			</div>
-			<motion.span
-				className='bg-foreground/20 block h-[1px] w-[32px] mb-2'
-				initial={{ scaleX: 0 }}
-				animate={{ scaleX: 1 }}
-				transition={{
-					duration,
-					delay: sectionIndex * delayMultiplier + baseDelay,
-				}}
-				style={{ transformOrigin: 'left' }}
-			/>
-			<motion.span
-				className='bg-foreground/20 block h-[1px] w-[32px]'
-				initial={{ scaleX: 0 }}
-				animate={{ scaleX: 1 }}
-				transition={{
-					duration,
-					delay: sectionIndex * delayMultiplier + baseDelay,
-				}}
-				style={{ transformOrigin: 'left' }}
-			/>
-		</>
-	);
+  return (
+    <>
+      <div className="group relative flex h-px cursor-default items-center gap-3 mb-2">
+        <motion.span
+          className="bg-foreground inline-block h-[1px]"
+          initial={{ width: 0 }}
+          animate={{ width: 32 }}
+          transition={{
+            duration: isMobile ? 0.3 : 0.4,
+            delay: sectionIndex * delayMultiplier + baseDelay,
+            ease: "easeOut",
+          }}
+        />
+        <span
+          className={cn(
+            "whitespace-nowrap text-foreground font-medium",
+            isMobile && "opacity-100",
+            !isMobile && "blur-md group-hover/sidebar:blur-none opacity-0 group-hover/sidebar:opacity-100 transition-all duration-500 ease-out"
+          )}
+        >
+          {title}
+        </span>
+      </div>
+      <motion.span
+        className={cn("block h-[1px] w-[32px] mb-2", isMobile ? "bg-foreground/50" : "bg-foreground/20")}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{
+          duration,
+          delay: sectionIndex * delayMultiplier + baseDelay,
+        }}
+        style={{ transformOrigin: "left" }}
+      />
+      <motion.span
+        className={cn("block h-[1px] w-[32px]", isMobile ? "bg-foreground/50" : "bg-foreground/20")}
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{
+          duration,
+          delay: sectionIndex * delayMultiplier + baseDelay,
+        }}
+        style={{ transformOrigin: "left" }}
+      />
+    </>
+  );
 }
 
 function NavLinkItem({
-	link,
-	sectionIndex,
-	linkIndex,
-	isMobile = false,
-	hoveredLink,
-	setHoveredLink,
-	onClick,
-	currentPath,
+  link,
+  sectionIndex,
+  linkIndex,
+  isMobile = false,
+  hoveredLink,
+  setHoveredLink,
+  onClick,
+  currentPath,
 }: {
-	link: NavLink;
-	sectionIndex: number;
-	linkIndex: number;
-	isMobile?: boolean;
-	hoveredLink: string | null;
-	setHoveredLink: (href: string | null) => void;
-	onClick?: () => void;
-	currentPath: string;
+  link: NavLink;
+  sectionIndex: number;
+  linkIndex: number;
+  isMobile?: boolean;
+  hoveredLink: string | null;
+  setHoveredLink: (href: string | null) => void;
+  onClick?: () => void;
+  currentPath: string;
 }) {
-	const delayMultiplier = isMobile ? 0.05 : 0.1;
-	const linkDelayMultiplier = isMobile ? 0.03 : 0.05;
-	const baseDelay = isMobile ? 0.2 : 0.3;
-	const duration = isMobile ? 0.2 : 0.3;
-	const isCurrent = currentPath === link.href;
+  const delayMultiplier = isMobile ? 0.05 : 0.1;
+  const linkDelayMultiplier = isMobile ? 0.03 : 0.05;
+  const baseDelay = isMobile ? 0.2 : 0.3;
+  const duration = isMobile ? 0.2 : 0.3;
+  const isCurrent = currentPath === link.href;
 
-	return (
-		<motion.div
-			key={link.href}
-			initial={{ opacity: 0, x: -10 }}
-			animate={{ opacity: 1, x: 0 }}
-			transition={{
-				duration,
-				delay: sectionIndex * delayMultiplier + linkIndex * linkDelayMultiplier + baseDelay,
-				ease: 'easeOut',
-			}}
-		>
-			<Link
-				href={link.href}
-				className='group relative flex h-px cursor-pointer items-center py-2'
-				onMouseEnter={() => !isMobile && setHoveredLink(link.href)}
-				onMouseLeave={() => !isMobile && setHoveredLink(null)}
-				onClick={onClick}
-			>
-				<span
-					className={cn(
-						'inline-block h-px bg-foreground/20 transition-all duration-300 ease-in-out',
-						!isMobile && 'group-hover:bg-orange-500',
-						isCurrent && 'bg-orange-500 w-[55px]',
-
-						!isMobile && (hoveredLink === link.href || isCurrent) && 'w-[55px]',
-						!isMobile && !(hoveredLink === link.href || isCurrent) && 'w-[32px]'
-					)}
-				/>
-				<span
-					className={cn(
-						'whitespace-nowrap transition-all ease-in-out flex items-center pl-3 gap-2',
-						isMobile ? 'duration-300' : 'duration-500',
-						isMobile
-							? 'opacity-100 group-hover:text-orange-500'
-							: isCurrent
-							? 'text-orange-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out  group-hover/sidebar:blur-none'
-							: 'opacity-0 group-hover/sidebar:opacity-40 group-hover:text-orange-500 group-hover:opacity-100 blur-md group-hover/sidebar:blur-none',
-						!isMobile && 'group-hover:text-orange-500 group-hover:opacity-100'
-					)}
-				>
-					{link.label}
-				</span>
-			</Link>
-			<motion.span
-				className='bg-foreground/20 block h-[1px] w-[32px] mb-2'
-				initial={{ scaleX: 0 }}
-				animate={{ scaleX: 1 }}
-				transition={{
-					duration,
-					delay: sectionIndex * delayMultiplier + linkIndex * linkDelayMultiplier + baseDelay,
-				}}
-				style={{ transformOrigin: 'left' }}
-			/>
-			<motion.span
-				className='bg-foreground/20 block h-[1px] w-[32px]'
-				initial={{ scaleX: 0 }}
-				animate={{ scaleX: 1 }}
-				transition={{
-					duration,
-					delay: sectionIndex * delayMultiplier + linkIndex * linkDelayMultiplier + baseDelay,
-				}}
-				style={{ transformOrigin: 'left' }}
-			/>
-		</motion.div>
-	);
+  return (
+    <motion.div
+      key={link.href}
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        duration,
+        delay:
+          sectionIndex * delayMultiplier +
+          linkIndex * linkDelayMultiplier +
+          baseDelay,
+        ease: "easeOut",
+      }}
+    >
+      <Link
+        href={link.href}
+        className="group relative flex h-px cursor-pointer items-center py-2"
+        onMouseEnter={() => !isMobile && setHoveredLink(link.href)}
+        onMouseLeave={() => !isMobile && setHoveredLink(null)}
+        onClick={onClick}
+      >
+        <span
+          className={cn(
+            "inline-block h-px bg-foreground/20 transition-all duration-300 ease-in-out",
+            !isMobile && "group-hover:bg-orange-500",
+            isCurrent && "bg-orange-500 w-[55px]",
+            isMobile && !isCurrent && "w-[32px] bg-foreground/50",
+            !isMobile && (hoveredLink === link.href || isCurrent) && "w-[55px]",
+            !isMobile &&
+              !(hoveredLink === link.href || isCurrent) &&
+              "w-[32px]",
+          )}
+        />
+        <span
+          className={cn(
+            "whitespace-nowrap transition-all flex items-center pl-3 gap-2",
+            isMobile ? "duration-300 ease-in-out opacity-100" : "duration-500 ease-in-out",
+            !isMobile && isCurrent && "text-orange-500 opacity-0 group-hover/sidebar:opacity-100 transition-all duration-300 ease-out group-hover/sidebar:blur-none",
+            !isMobile && !isCurrent && "opacity-0 group-hover/sidebar:opacity-40 blur-md group-hover/sidebar:blur-none",
+            !isMobile && "group-hover:text-orange-500 group-hover:opacity-100",
+            isMobile && isCurrent && "text-orange-500"
+          )}
+        >
+          {link.label}
+        </span>
+      </Link>
+      <motion.span
+        className="bg-foreground/20 block h-[1px] w-[32px] mb-2"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{
+          duration,
+          delay:
+            sectionIndex * delayMultiplier +
+            linkIndex * linkDelayMultiplier +
+            baseDelay,
+        }}
+        style={{ transformOrigin: "left" }}
+      />
+      <motion.span
+        className="bg-foreground/20 block h-[1px] w-[32px]"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{
+          duration,
+          delay:
+            sectionIndex * delayMultiplier +
+            linkIndex * linkDelayMultiplier +
+            baseDelay,
+        }}
+        style={{ transformOrigin: "left" }}
+      />
+    </motion.div>
+  );
 }
 
 function NavigationSection({
-	section,
-	sectionIndex,
-	isMobile = false,
-	hoveredLink,
-	setHoveredLink,
-	onLinkClick,
-	currentPath,
-	isLastSection = false,
+  section,
+  sectionIndex,
+  isMobile = false,
+  hoveredLink,
+  setHoveredLink,
+  onLinkClick,
+  currentPath,
+  isLastSection = false,
 }: {
-	section: NavSection;
-	sectionIndex: number;
-	isMobile?: boolean;
-	hoveredLink: string | null;
-	setHoveredLink: (href: string | null) => void;
-	onLinkClick?: () => void;
-	currentPath: string;
-	isLastSection?: boolean;
+  section: NavSection;
+  sectionIndex: number;
+  isMobile?: boolean;
+  hoveredLink: string | null;
+  setHoveredLink: (href: string | null) => void;
+  onLinkClick?: () => void;
+  currentPath: string;
+  isLastSection?: boolean;
 }) {
-	return (
-		<motion.div
-			key={section.title}
-			initial={{ opacity: 0, y: 20 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{
-				duration: isMobile ? 0.3 : 0.5,
-				delay: sectionIndex * (isMobile ? 0.05 : 0.1),
-				ease: 'easeOut',
-			}}
-		>
-			<SectionTitle
-				title={section.title}
-				sectionIndex={sectionIndex}
-				isMobile={isMobile}
-			/>
+  return (
+    <motion.div
+      key={section.title}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: isMobile ? 0.3 : 0.5,
+        delay: sectionIndex * (isMobile ? 0.05 : 0.1),
+        ease: "easeOut",
+      }}
+    >
+      <SectionTitle
+        title={section.title}
+        sectionIndex={sectionIndex}
+        isMobile={isMobile}
+      />
 
-			{section.links.map((link, linkIndex) => (
-				<NavLinkItem
-					key={link.href}
-					link={link}
-					sectionIndex={sectionIndex}
-					linkIndex={linkIndex}
-					isMobile={isMobile}
-					hoveredLink={hoveredLink}
-					setHoveredLink={setHoveredLink}
-					onClick={onLinkClick}
-					currentPath={currentPath}
-				/>
-			))}
+      {section.links.map((link, linkIndex) => (
+        <NavLinkItem
+          key={link.href}
+          link={link}
+          sectionIndex={sectionIndex}
+          linkIndex={linkIndex}
+          isMobile={isMobile}
+          hoveredLink={hoveredLink}
+          setHoveredLink={setHoveredLink}
+          onClick={onLinkClick}
+          currentPath={currentPath}
+        />
+      ))}
 
-			{!isLastSection && <SectionDivider />}
-		</motion.div>
-	);
+      {!isLastSection && <SectionDivider />}
+    </motion.div>
+  );
 }
 
-function MobileMenuButton({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
-	return (
-		<button
-			onClick={onClick}
-			className='group fixed top-6 left-6 z-50 md:hidden p-2 rounded-2xl bg-foreground/5 backdrop-blur-md hover:bg-foreground/10 transition-colors'
-			aria-label='Toggle navigation menu'
-			aria-expanded={isOpen}
-		>
-			<svg
-				strokeWidth='1.5'
-				viewBox='0 0 24 24'
-				fill='none'
-				xmlns='http://www.w3.org/2000/svg'
-				className='h-5 w-5'
-			>
-				<path
-					d={isOpen ? 'M6 18L18 6' : 'M3 5H11'}
-					stroke='currentColor'
-					strokeWidth='1.5'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-				/>
-				<path
-					d={isOpen ? 'M6 6L18 18' : 'M3 12H16'}
-					stroke='currentColor'
-					strokeWidth='1.5'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-				/>
-				<path
-					d='M3 19H21'
-					stroke='currentColor'
-					strokeWidth='1.5'
-					strokeLinecap='round'
-					strokeLinejoin='round'
-					style={{ opacity: isOpen ? 0 : 1 }}
-				/>
-			</svg>
-		</button>
-	);
+function MobileMenuButton({
+  isOpen,
+  onClick,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group fixed top-6 left-6 z-50 md:hidden p-2 rounded-2xl bg-foreground/5 backdrop-blur-md hover:bg-foreground/10 transition-colors duration-200 ease-out"
+      aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+      aria-expanded={isOpen}
+      aria-controls="mobile-navigation"
+    >
+      <svg
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+      >
+        <path
+          d={isOpen ? "M6 18L18 6" : "M3 5H11"}
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d={isOpen ? "M6 6L18 18" : "M3 12H16"}
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M3 19H21"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          style={{ opacity: isOpen ? 0 : 1 }}
+        />
+      </svg>
+    </button>
+  );
 }
 
 function Overlay({
-	isVisible,
-	onClick,
-	isMobile = false,
+  isVisible,
+  onClick,
+  isMobile = false,
 }: {
-	isVisible: boolean;
-	onClick?: () => void;
-	isMobile?: boolean;
+  isVisible: boolean;
+  onClick?: () => void;
+  isMobile?: boolean;
 }) {
-	return (
-		<AnimatePresence>
-			{isVisible && (
-				<motion.div
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-					transition={{ duration: isMobile ? 0.3 : 0.5 }}
-					className={cn(
-						'fixed inset-0 backdrop-blur-md',
-						isMobile
-							? 'bg-background/95 z-30 md:hidden'
-							: 'bg-background/80 pointer-events-none z-30 hidden md:block'
-					)}
-					onClick={onClick}
-				/>
-			)}
-		</AnimatePresence>
-	);
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: isMobile ? 0.3 : 0.5 }}
+          className={cn(
+            "fixed inset-0 backdrop-blur-md",
+            isMobile
+              ? "bg-background/95 z-30 md:hidden"
+              : "bg-background/80 pointer-events-none z-30 hidden md:block",
+          )}
+          onClick={onClick}
+        />
+      )}
+    </AnimatePresence>
+  );
 }
 
 export function Sidebar({ navigationData }: SidebarProps) {
-	const [hoveredLink, setHoveredLink] = useState<string | null>(null);
-	const [isSidebarHovered, setIsSidebarHovered] = useState(false);
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const pathname = usePathname();
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [isSidebarHovered, setIsSidebarHovered] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-	return (
-		<>
-			<MobileMenuButton
-				isOpen={isMobileMenuOpen}
-				onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-			/>
+  return (
+    <>
+      <MobileMenuButton
+        isOpen={isMobileMenuOpen}
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      />
 
-			<Overlay
-				isVisible={isMobileMenuOpen}
-				onClick={() => setIsMobileMenuOpen(false)}
-				isMobile={true}
-			/>
+      <Overlay
+        isVisible={isMobileMenuOpen}
+        onClick={() => setIsMobileMenuOpen(false)}
+        isMobile={true}
+      />
 
-			<Overlay
-				isVisible={isSidebarHovered}
-				isMobile={false}
-			/>
+      <Overlay isVisible={isSidebarHovered} isMobile={false} />
 
-			{/* Desktop Sidebar */}
-			<motion.aside
-				initial={{ x: -20, opacity: 0 }}
-				animate={{ x: 0, opacity: 1 }}
-				transition={{ duration: 0.6, ease: 'easeOut' }}
-				className='fixed left-2 z-40 h-[100dvh] w-[300px] truncate-overflow p-4 pl-2 pr-2 group/sidebar hidden md:block'
-				onMouseEnter={() => {
-					setIsSidebarHovered(true);
-				}}
-				onMouseLeave={() => setIsSidebarHovered(false)}
-			>
-				<Link
-					href='/'
-					className='flex mt-[5vh] pl-2 gap-4 items-center'
-				>
-					<Logo className='w-10 h-10' />
-					<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none font-serif'>
-						Crafts
-					</span>
-				</Link>
-				<motion.div className='relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]'>
-					<div className='relative flex h-fit w-full flex-col'>
-						{navigationData.map((section, sectionIndex) => (
-							<NavigationSection
-								key={section.title}
-								section={section}
-								sectionIndex={sectionIndex}
-								isMobile={false}
-								hoveredLink={hoveredLink}
-								setHoveredLink={setHoveredLink}
-								currentPath={pathname}
-								isLastSection={sectionIndex === navigationData.length - 1}
-							/>
-						))}
-					</div>
-				</motion.div>
-			</motion.aside>
+      {/* Desktop Sidebar */}
+      <motion.aside
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="fixed left-2 z-40 h-[100dvh] w-[300px] truncate-overflow p-4 pl-2 pr-2 group/sidebar hidden md:block"
+        onMouseEnter={() => {
+          setIsSidebarHovered(true);
+        }}
+        onMouseLeave={() => setIsSidebarHovered(false)}
+      >
+        <Link href="/" className="flex mt-[5vh] pl-2 gap-4 items-center">
+          <Logo className="w-10 h-10" />
+          <span className="text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none font-serif">
+            Crafts
+          </span>
+        </Link>
+        <motion.div className="relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]">
+          <div className="relative flex h-fit w-full flex-col">
+            {navigationData.map((section, sectionIndex) => (
+              <NavigationSection
+                key={section.title}
+                section={section}
+                sectionIndex={sectionIndex}
+                isMobile={false}
+                hoveredLink={hoveredLink}
+                setHoveredLink={setHoveredLink}
+                currentPath={pathname}
+                isLastSection={sectionIndex === navigationData.length - 1}
+              />
+            ))}
+          </div>
+        </motion.div>
+      </motion.aside>
 
-			{/* Mobile Sidebar */}
-			<AnimatePresence>
-				{isMobileMenuOpen && (
-					<motion.aside
-						initial={{ x: -320, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						exit={{ x: -320, opacity: 0 }}
-						transition={{ duration: 0.3, ease: 'easeOut' }}
-						className='fixed left-0 top-0 z-30 h-[100dvh] max-w-[400px] p-4 md:hidden w-full'
-					>
-						<div className='bg-muted rounded-3xl p-4 h-full w-full overflow-hidden'>
-							<Link
-								href='/'
-								className='flex mt-[5vh] pl-2 gap-4 items-center'
-							>
-								<Logo className='w-10 h-10' />
-								<span className='text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none font-serif'>
-									Crafts
-								</span>
-							</Link>
-							<motion.div className='relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]'>
-								<div className='relative flex h-fit w-full flex-col'>
-									{navigationData.map((section, sectionIndex) => (
-										<NavigationSection
-											key={section.title}
-											section={section}
-											sectionIndex={sectionIndex}
-											isMobile={true}
-											hoveredLink={hoveredLink}
-											setHoveredLink={setHoveredLink}
-											onLinkClick={() => setIsMobileMenuOpen(false)}
-											currentPath={pathname}
-											isLastSection={sectionIndex === navigationData.length - 1}
-										/>
-									))}
-								</div>
-							</motion.div>
-						</div>
-					</motion.aside>
-				)}
-			</AnimatePresence>
-		</>
-	);
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.aside
+            initial={{ x: -320, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -320, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="fixed left-0 top-0 z-30 h-[100dvh] max-w-[400px] p-4 md:hidden w-full"
+          >
+            <div className="bg-muted rounded-3xl p-4 h-full w-full overflow-hidden">
+              <Link href="/" className="flex mt-[5vh] pl-2 gap-4 items-center">
+                <Logo className="w-10 h-10" />
+                <span className="text-2xl font-light group-hover/sidebar:opacity-100 opacity-0 transition-all duration-300 ease-out blur-md group-hover/sidebar:blur-none font-serif">
+                  Crafts
+                </span>
+              </Link>
+              <motion.div className="relative flex h-full w-full overflow-x-hidden overflow-y-scroll pl-3 pr-3 text-[15px] tracking-tight scrollbar-hide pb-[15vh] mt-[5vh] pt-[1vh]">
+                <div className="relative flex h-fit w-full flex-col">
+                  {navigationData.map((section, sectionIndex) => (
+                    <NavigationSection
+                      key={section.title}
+                      section={section}
+                      sectionIndex={sectionIndex}
+                      isMobile={true}
+                      hoveredLink={hoveredLink}
+                      setHoveredLink={setHoveredLink}
+                      onLinkClick={() => setIsMobileMenuOpen(false)}
+                      currentPath={pathname}
+                      isLastSection={sectionIndex === navigationData.length - 1}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }

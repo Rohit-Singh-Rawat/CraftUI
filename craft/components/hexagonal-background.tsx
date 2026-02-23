@@ -1,29 +1,29 @@
-import type { HTMLProps } from 'react';
+import type { HTMLProps } from "react";
 
 interface HexagonBackgroundProps {
-	color?: string;
-	secondaryColor?: string;
-	cellSize?: string | number;
-	strokeWidth?: number | string;
-	className?: string;
-	fade?: boolean;
-	fadePercentage?: number;
-	opacity?: number;
+  color?: string;
+  secondaryColor?: string;
+  cellSize?: string | number;
+  strokeWidth?: number | string;
+  className?: string;
+  fade?: boolean;
+  fadePercentage?: number;
+  opacity?: number;
 }
 
 const HexagonBackground = ({
-	color = '#5271ff',
-	secondaryColor,
-	cellSize = '50px',
-	strokeWidth = '3',
-	className,
-	fade = true,
-	fadePercentage = 20,
-	opacity = 1,
-	...props
+  color = "#5271ff",
+  secondaryColor,
+  cellSize = "50px",
+  strokeWidth = "3",
+  className,
+  fade = true,
+  fadePercentage = 20,
+  opacity = 1,
+  ...props
 }: HexagonBackgroundProps & HTMLProps<HTMLDivElement>) => {
-	const actualSecondaryColor = secondaryColor || color;
-	const svg = `
+  const actualSecondaryColor = secondaryColor || color;
+  const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 345">
       <defs>
         <linearGradient id="colorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -51,25 +51,24 @@ const HexagonBackground = ({
         stroke="url(#colorGradient)" stroke-width="${strokeWidth}" fill="none"/>
     </svg>
   `;
-	const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-	return (
-		<div
-			className={`pointer-events-none ${className}`}
-			style={{
-				backgroundImage: `url("${svgDataUrl}")`,
-				backgroundRepeat: 'repeat',
-				backgroundSize: cellSize,
-				maskImage: fade
-					? `radial-gradient(ellipse at top, white, transparent ${100 - fadePercentage}%)`
-					: undefined,
-				WebkitMaskImage: fade
-					? `radial-gradient(ellipse at top, white, transparent ${100 - fadePercentage}%)`
-					: undefined,
-			}}
-			{...props}
-		/>
-	);
+  const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  return (
+    <div
+      className={`pointer-events-none ${className}`}
+      style={{
+        backgroundImage: `url("${svgDataUrl}")`,
+        backgroundRepeat: "repeat",
+        backgroundSize: cellSize,
+        maskImage: fade
+          ? `radial-gradient(ellipse at top, white, transparent ${100 - fadePercentage}%)`
+          : undefined,
+        WebkitMaskImage: fade
+          ? `radial-gradient(ellipse at top, white, transparent ${100 - fadePercentage}%)`
+          : undefined,
+      }}
+      {...props}
+    />
+  );
 };
 
 export default HexagonBackground;
-
