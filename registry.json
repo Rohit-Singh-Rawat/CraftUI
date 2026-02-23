@@ -1,117 +1,130 @@
 {
-	"$schema": "https://ui.shadcn.com/schema/registry.json",
-	"name": "@craft",
-	"homepage": "https://craft.yoursite.com",
-	"items": [
-		{
-			"name": "action-bar",
-			"type": "registry:component",
-			"title": "Action Bar",
-			"description": "Flexible floating action bar with dock and contextual modes",
-			"registryDependencies": ["button"],
-			"files": [
-				{
-					"path": "craft/components/action-bar.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "gooey-search-bar",
-			"type": "registry:component",
-			"title": "Gooey Search Bar",
-			"description": "Animated search bar with gooey blob effects",
-			"registryDependencies": ["input", "button"],
-			"files": [
-				{
-					"path": "craft/components/gooey-search-bar.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "hexagonal-background",
-			"type": "registry:component",
-			"title": "Hexagonal Background",
-			"description": "A customizable hexagonal pattern background component",
-			"files": [
-				{
-					"path": "craft/components/hexagonal-background.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "password-validation",
-			"type": "registry:component",
-			"title": "Password Validation",
-			"description": "Animated password validation component with customizable rules",
-			"registryDependencies": ["badge"],
-			"dependencies": ["motion"],
-			"files": [
-				{
-					"path": "craft/components/password-validation.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "scroll-timeline",
-			"type": "registry:demo",
-			"title": "Scroll-Driven Animations",
-			"description": "Pure CSS scroll-driven animations using animation-timeline, CSS masking, and @property",
-			"files": [
-				{
-					"path": "craft/components/scroll-timeline.tsx",
-					"type": "registry:component"
-				},
-				{
-					"path": "styles/animate-timeline.css",
-					"type": "registry:style"
-				}
-			]
-		},
-		{
-			"name": "fluid-asset-preview",
-			"type": "registry:component",
-			"title": "Fluid Asset Preview",
-			"description": "A fluid, animated asset preview component with smooth morphing dropdown menu inspired by modern design patterns",
-			"dependencies": ["motion", "@hugeicons/react"],
-			"files": [
-				{
-					"path": "craft/components/fluid-asset-preview.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "animated-tabs",
-			"type": "registry:component",
-			"title": "Animated Tabs",
-			"description": "Animated pill tabs with synchronized content transitions for storytelling-heavy layouts",
-			"dependencies": ["motion"],
-			"files": [
-				{
-					"path": "craft/components/animated-tabs.tsx",
-					"type": "registry:component"
-				}
-			]
-		},
-		{
-			"name": "clock",
-			"type": "registry:component",
-			"title": "Clock",
-			"description": "A beautiful, customizable analog clock component with timezone support, multiple variants, and digital overlay",
-			"files": [
-				{
-					"path": "craft/components/clock.tsx",
-					"type": "registry:component"
-				},
-				{
-					"path": "craft/hooks/use-clock.ts",
-					"type": "registry:hook"
-				}
-			]
-		}
-	]
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "@craft",
+  "homepage": "https://craft.yoursite.com",
+  "items": [
+    {
+      "name": "action-bar",
+      "type": "registry:component",
+      "title": "Action Bar",
+      "description": "Flexible floating action bar with dock and contextual modes",
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "craft/components/action-bar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "gooey-search-bar",
+      "type": "registry:component",
+      "title": "Gooey Search Bar",
+      "description": "Animated search bar with gooey blob effects",
+      "registryDependencies": ["input", "button"],
+      "files": [
+        {
+          "path": "craft/components/gooey-search-bar.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "hexagonal-background",
+      "type": "registry:component",
+      "title": "Hexagonal Background",
+      "description": "A customizable hexagonal pattern background component",
+      "files": [
+        {
+          "path": "craft/components/hexagonal-background.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "password-validation",
+      "type": "registry:component",
+      "title": "Password Validation",
+      "description": "Animated password validation component with customizable rules",
+      "registryDependencies": ["badge"],
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "craft/components/password-validation.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "scroll-timeline",
+      "type": "registry:demo",
+      "title": "Scroll-Driven Animations",
+      "description": "Pure CSS scroll-driven animations using animation-timeline, CSS masking, and @property",
+      "files": [
+        {
+          "path": "craft/components/scroll-timeline.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "styles/animate-timeline.css",
+          "type": "registry:style"
+        }
+      ]
+    },
+    {
+      "name": "fluid-asset-preview",
+      "type": "registry:component",
+      "title": "Fluid Asset Preview",
+      "description": "A fluid, animated asset preview component with smooth morphing dropdown menu inspired by modern design patterns",
+      "dependencies": ["motion", "@hugeicons/react"],
+      "files": [
+        {
+          "path": "craft/components/fluid-asset-preview.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "animated-tabs",
+      "type": "registry:component",
+      "title": "Animated Tabs",
+      "description": "Animated pill tabs with synchronized content transitions for storytelling-heavy layouts",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "craft/components/animated-tabs.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "clock",
+      "type": "registry:component",
+      "title": "Clock",
+      "description": "A beautiful, customizable analog clock component with timezone support, multiple variants, and digital overlay",
+      "files": [
+        {
+          "path": "craft/components/clock.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "craft/hooks/use-clock.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "brave-search",
+      "type": "registry:component",
+      "title": "Brave Search",
+      "description": "A beautiful hero search component with interactive results, tabs, and side cards for a futuristic dashboard feel.",
+      "dependencies": ["@hugeicons/react", "@hugeicons/core-free-icons"],
+      "files": [
+        {
+          "path": "craft/components/brave-search.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
 }

@@ -1,0 +1,113 @@
+---
+title: Brave Search
+category: Navigation
+description: A recreation of the Brave browser's new tab search bar — built as a compound component with animated results and a React Suspense Freeze for clean exit animations.
+---
+
+# Brave Search
+
+A React implementation of the search experience from the [Brave Browser's](https://brave.com) new tab page. It uses a compound component architecture so you can freely place any layout — tabs, cards, side content — around the search bar, and those elements will automatically fade and scale away when the user focuses the input.
+
+## Craft Story
+
+I was using Brave as my browser and noticed how smooth the new tab page felt — the search bar that expands and moves up, the surrounding UI that gracefully steps aside when you start typing. I wanted to recreate that specific interaction in React, with the same fluid transition style and composition flexibility.
+
+The component uses React Context to coordinate state between the individual pieces (`Root`, `Background`, `Main`, `SearchBar`, `Results`) so consumers can slot in their own UI without passing props through every layer.
+
+## Freeze — Fixing the Exit Animation
+
+While building the results dropdown, I ran into a specific React animation bug that's easy to miss but very distracting once you see it.
+
+The glitch is **not** triggered by blurring the input — blurring just fades the container via CSS and looks fine. The problem happens when you **clear the search query**. When the query becomes empty, React instantly re-renders the dropdown to show "No results found" on the exact same frame the CSS `opacity` and `scale` exit animation begins. The inner content snaps to the new state while the container is still animating out — two conflicting visual updates at once.
+
+Try it yourself in the demo below. Type any query, get results, then delete the text character by character and watch the snap:
+
+<SearchGlitchDemo />
+
+To fix this, `BraveSearch.Results` wraps its inner content in a `Freeze` component powered by `React.Suspense`. As described by [Cameron Barvian](https://barvian.me/react-exit-animations), this pauses React DOM commits inside the dropdown the moment it starts exiting. The CSS animation plays out on the frozen, unchanged content, and React discards it cleanly afterwards.
+
+<DependencySection
+	dependencies={[
+		{
+			name: '@hugeicons/react',
+			href: 'https://hugeicons.com/',
+		},
+		{
+			name: '@hugeicons/core-free-icons',
+			href: 'https://hugeicons.com/',
+		},
+	]}
+/>
+
+## How to Use
+
+`BraveSearch` is a compound component. Wrap any background elements in `BraveSearch.Background` — they will auto-hide when the input is focused. Place `SearchBar` and `Results` inside `BraveSearch.Main`.
+
+<CodeBlock
+	code={`import { BraveSearch, useSearchContext } from '@/craft/components/brave-search';
+
+function SearchResultsWrapper() {
+  const { searchQuery } = BraveSearch.useSearchContext();
+
+  const results = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    return MY_DATA.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    ).slice(0, 4);
+  }, [searchQuery]);
+
+  return <BraveSearch.Results results={results} />;
+}
+
+export default function App() {
+  return (
+    <BraveSearch.Root>
+      <BraveSearch.Background>
+        {/* Tabs, cards, or any UI — auto-hides on focus */}
+        <div className="flex gap-4 absolute top-8">
+          <button>Tab One</button>
+          <button>Tab Two</button>
+        </div>
+      </BraveSearch.Background>
+
+      <BraveSearch.Main>
+        <BraveSearch.SearchBar />
+        <SearchResultsWrapper />
+      </BraveSearch.Main>
+    </BraveSearch.Root>
+  );
+}`}
+	language='tsx'
+/>
+
+## Components API
+
+### BraveSearch.Root
+The context provider. Must wrap all other `BraveSearch` components. Manages `isSearchFocused` and `searchQuery` internally.
+
+### BraveSearch.Background
+Wraps any UI that should disappear when the user focuses the search bar. Applies `opacity`, `scale`, and `pointer-events` transitions automatically.
+
+### BraveSearch.Main
+Structural wrapper for the search bar and results. Lifts up visually when the user starts searching.
+
+### BraveSearch.SearchBar
+<PropsTable>
+	<PropsTableRow
+		prop='placeholder'
+		description='Placeholder text shown in the input when empty.'
+		defaultValue='"Ask Brave Search"'
+	/>
+</PropsTable>
+
+### BraveSearch.Results
+<PropsTable>
+	<PropsTableRow
+		prop='results'
+		description='Filtered array of SearchResult objects to render. Pass your own filtered data — the component handles visibility and the Freeze exit animation.'
+		defaultValue='[]'
+	/>
+</PropsTable>
+
+### `BraveSearch.useSearchContext()`
+Exported hook for reading `searchQuery` and `isSearchFocused` inside any child of `BraveSearch.Root`. Use this to filter data without prop drilling.

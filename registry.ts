@@ -31,10 +31,15 @@ export const craftRegistry: Record<string, CraftMetadata> = {
     title: "Animated Tabs",
     category: "Inspiration",
   },
-  "clock": {
+  clock: {
     slug: "clock",
     title: "Clock",
     category: "Inspiration",
+  },
+  "brave-search": {
+    slug: "brave-search",
+    title: "Brave Search",
+    category: "Navigation",
   },
   // Add more crafts as you create them
   // "my-component": {
@@ -43,4 +48,3 @@ export const craftRegistry: Record<string, CraftMetadata> = {
   //   category: "UI",
   // },
 };
-
