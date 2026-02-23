@@ -26,18 +26,10 @@ Try it yourself in the demo below. Type any query, get results, then delete the 
 
 To fix this, `BraveSearch.Results` wraps its inner content in a `Freeze` component powered by `React.Suspense`. As described by [Cameron Barvian](https://barvian.me/react-exit-animations), this pauses React DOM commits inside the dropdown the moment it starts exiting. The CSS animation plays out on the frozen, unchanged content, and React discards it cleanly afterwards.
 
-<DependencySection
-	dependencies={[
-		{
-			name: '@hugeicons/react',
-			href: 'https://hugeicons.com/',
-		},
-		{
-			name: '@hugeicons/core-free-icons',
-			href: 'https://hugeicons.com/',
-		},
-	]}
-/>
+<DependencySection>
+  <DependencyCard name="@hugeicons/react" href="https://hugeicons.com/" />
+  <DependencyCard name="@hugeicons/core-free-icons" href="https://hugeicons.com/" />
+</DependencySection>
 
 ## How to Use
 

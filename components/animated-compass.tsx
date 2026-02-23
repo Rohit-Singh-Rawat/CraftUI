@@ -38,7 +38,7 @@ export function AnimatedCompass({ className }: AnimatedCompassProps) {
         className="w-full h-full origin-center"
         initial={{ scale: 0.6, opacity: 0.5, rotate: -90 }}
       >
-        <LandingCompass className="w-full h-full" />
+        <LandingCompass className="w-full h-full"  />
       </motion.div>
     </div>
   );

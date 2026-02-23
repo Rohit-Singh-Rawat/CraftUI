@@ -125,6 +125,19 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "navigation-compass",
+      "type": "registry:component",
+      "title": "Navigation Compass",
+      "description": "A scroll and drag-driven SVG compass dial with proximity-glow nav links and spring physics.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "craft/components/navigation-compass.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

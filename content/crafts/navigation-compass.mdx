@@ -1,0 +1,90 @@
+---
+title: "Navigation Compass"
+category: "Interaction"
+description: "A scroll and drag-driven SVG compass dial that doubles as a navigation system: all links, active zones, and physics tuned via props."
+---
+
+# Navigation Compass
+
+A scroll and drag-driven SVG compass dial. Spin it, scroll it, watch the ticks pulse and links glow as they rotate through the active zone.
+
+## Craft Story
+
+Stumbled on [Jayesh's site](https://jayesh.me/): his navigation had this compass-style dial that I couldn't stop spinning. Decided to recreate it with my own taste: proportional geometry, a proximity glow that ripples through the tick marks, spring physics that feel like turning a real instrument, and a fully prop-driven API so it can live anywhere.
+
+Not a 1:1 recreation: the physics, active-zone system, and link rendering are all my own implementation. Just the feeling of it.
+
+<DependencySection>
+  <DependencyCard name="motion" href="https://motion.dev/" />
+</DependencySection>
+
+## How to Use
+
+<CodeBlock
+	code={`import { NavigationCompass } from '@/craft/components/navigation-compass';
+
+const LINKS = [
+  { angle: 270, label: 'Home',   href: '/'       },
+  { angle: 330, label: 'Crafts', href: '/crafts'  },
+  { angle: 30,  label: 'Diary',  href: '/diary'   },
+  { angle: 90,  label: 'Home',   href: '/'        },
+  { angle: 150, label: 'Crafts', href: '/crafts'  },
+  { angle: 210, label: 'Diary',  href: '/diary'   },
+];
+
+export function MyCompass() {
+  return (
+    <NavigationCompass
+      links={LINKS}
+      activeZoneAngle={45}
+      roseRotation={45}
+    />
+  );
+}`}
+	language='tsx'
+/>
+
+## Props
+
+<PropsTable>
+	<PropsTableRow
+		prop='links'
+		description='Array of `{ angle, label, href }`. `angle` is degrees clockwise from top (0 = 12 o-clock). Duplicating links at opposite angles creates a symmetric dial.'
+		defaultValue='required'
+	/>
+	<PropsTableRow
+		prop='activeZoneAngle'
+		description='The compass bearing (degrees, 0=top) that acts as the active pointer. Links that rotate through this angle glow and ticks pulse outward.'
+		defaultValue='required'
+	/>
+	<PropsTableRow
+		prop='activeZoneThreshold'
+		description='Half-width of the active zone cone in degrees. Smaller = tighter glow, larger = wider pulse area.'
+		defaultValue='15'
+	/>
+	<PropsTableRow
+		prop='roseRotation'
+		description='Rotation of the static compass rose needle decoration. Set to 45 on desktop, 0 on mobile.'
+		defaultValue='45'
+	/>
+	<PropsTableRow
+		prop='tickCount'
+		description='Number of tick marks around the dial. Higher values look denser but cost more renders.'
+		defaultValue='180'
+	/>
+	<PropsTableRow
+		prop='size'
+		description='SVG viewBox size in px (square). The component fills its container — this only affects internal geometry proportions.'
+		defaultValue='756'
+	/>
+	<PropsTableRow
+		prop='colors'
+		description='Object with `active`, `idle`, and `idleHover` Tailwind class strings for link text styling.'
+		defaultValue='orange-300 active, foreground/50 idle'
+	/>
+	<PropsTableRow
+		prop='showDetails'
+		description='Renders a draggable debug HUD showing live rotation angle and which link is currently active.'
+		defaultValue='false'
+	/>
+</PropsTable>

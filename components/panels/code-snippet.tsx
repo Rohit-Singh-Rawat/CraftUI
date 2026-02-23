@@ -21,6 +21,8 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   const isDark = resolvedTheme === "dark";
   const theme = (isDark ? themes.dark : themes.light) as PrismTheme;
 
+  if (!code) return null;
+
   return (
     <div className={cn("py-5", className)}>
       <Highlight theme={theme} code={code.trim()} language={language}>

@@ -75,6 +75,7 @@ export function generateMetadata({
   };
 
   return {
+    metadataBase: new URL(defaultSEO.url),
     title: pageTitle,
     description: seo.description,
     keywords: seo.keywords,

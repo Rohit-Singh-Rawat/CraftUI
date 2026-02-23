@@ -41,10 +41,9 @@ export const craftRegistry: Record<string, CraftMetadata> = {
     title: "Brave Search",
     category: "Navigation",
   },
-  // Add more crafts as you create them
-  // "my-component": {
-  //   slug: "my-component",
-  //   title: "My Component",
-  //   category: "UI",
-  // },
+  "navigation-compass": {
+    slug: "navigation-compass",
+    title: "Navigation Compass",
+    category: "Interaction",
+  },
 };

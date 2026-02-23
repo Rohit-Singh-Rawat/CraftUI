@@ -55,17 +55,19 @@ const packageManagers: PackageManager[] = [
 ];
 
 interface DependencySectionProps {
-  dependencies: Array<{
+  dependencies?: Array<{
     name: string;
     href: string;
     logo?: React.ReactNode;
     label?: string;
   }>;
+  children?: React.ReactNode;
   className?: string;
 }
 
 export function DependencySection({
-  dependencies,
+  dependencies = [],
+  children,
   className,
 }: DependencySectionProps) {
   const [copied, setCopied] = useState(false);
@@ -75,17 +77,20 @@ export function DependencySection({
     const shadcnComponents: string[] = [];
     const regularPackages: string[] = [];
 
-    dependencies.forEach((dep) => {
-      if (
-        dep.label?.toLowerCase() === "shadcn/ui" ||
-        dep.href.includes("ui.shadcn.com")
-      ) {
-        // Extract just the component name from shadcn components
-        shadcnComponents.push(dep.name.toLowerCase());
-      } else {
-        regularPackages.push(dep.name);
-      }
-    });
+    if (Array.isArray(dependencies)) {
+      dependencies.forEach((dep) => {
+        if (
+          typeof dep === 'object' && dep !== null &&
+          (dep.label?.toLowerCase() === "shadcn/ui" ||
+          dep.href?.includes("ui.shadcn.com"))
+        ) {
+          // Extract just the component name from shadcn components
+          shadcnComponents.push(dep.name.toLowerCase());
+        } else if (typeof dep === 'object' && dep !== null) {
+          regularPackages.push(dep.name);
+        }
+      });
+    }
 
     let command = "";
 
@@ -110,7 +115,7 @@ export function DependencySection({
 
   return (
     <div className={cn("my-6", className)}>
-      <div className="flex items-center gap-3 mb-4 mt-20">
+      <div className="flex items-center gap-3 mb-4 mt-8">
         <h2
           id="dependencies"
           className="text-sm text-muted-foreground font-normal py-0 tracking-tight uppercase"
@@ -171,31 +176,39 @@ export function DependencySection({
         </DropdownMenu>
       </div>
       <div className="flex flex-wrap gap-3">
-        {dependencies.map((dep) => {
-          // Auto-detect and assign logos if not provided
-          let logo = dep.logo;
-          if (!logo) {
-            const nameLower = dep.name.toLowerCase();
-            if (nameLower === "motion" || nameLower === "framer-motion") {
-              logo = <MotionLogo className="h-2.5 w-auto shrink-0" />;
-            } else if (
-              dep.label?.toLowerCase() === "shadcn/ui" ||
-              dep.href.includes("ui.shadcn.com")
-            ) {
-              logo = <ShadcnLogo className="size-4 shrink-0" />;
+        {children ? (
+          children
+        ) : dependencies.length > 0 ? (
+          dependencies.map((dep) => {
+            // Auto-detect and assign logos if not provided
+            let logo = dep.logo;
+            if (!logo) {
+              const nameLower = dep.name.toLowerCase();
+              if (nameLower === "motion" || nameLower === "framer-motion") {
+                logo = <MotionLogo className="h-2.5 w-auto shrink-0" />;
+              } else if (
+                dep.label?.toLowerCase() === "shadcn/ui" ||
+                dep.href?.includes("ui.shadcn.com")
+              ) {
+                logo = <ShadcnLogo className="size-4 shrink-0" />;
+              }
             }
-          }
 
-          return (
-            <DependencyCard
-              key={dep.name}
-              name={dep.name}
-              href={dep.href}
-              logo={logo}
-              label={dep.label}
-            />
-          );
-        })}
+            return (
+              <DependencyCard
+                key={dep.name}
+                name={dep.name}
+                href={dep.href}
+                logo={logo}
+                label={dep.label}
+              />
+            );
+          })
+        ) : (
+          <p className="text-sm text-muted-foreground italic">
+            No dependencies listed for this craft.
+          </p>
+        )}
       </div>
     </div>
   );
