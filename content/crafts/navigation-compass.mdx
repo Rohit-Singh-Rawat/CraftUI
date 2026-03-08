@@ -20,8 +20,8 @@ Not a 1:1 recreation: the physics, active-zone system, and link rendering are al
 
 ## How to Use
 
-<CodeBlock
-	code={`import { NavigationCompass } from '@/craft/components/navigation-compass';
+```tsx
+import { NavigationCompass } from '@/craft/components/navigation-compass';
 
 const LINKS = [
   { angle: 270, label: 'Home',   href: '/'       },
@@ -40,9 +40,8 @@ export function MyCompass() {
       roseRotation={45}
     />
   );
-}`}
-	language='tsx'
-/>
+}
+```
 
 ## Props
 
@@ -74,7 +73,7 @@ export function MyCompass() {
 	/>
 	<PropsTableRow
 		prop='size'
-		description='SVG viewBox size in px (square). The component fills its container — this only affects internal geometry proportions.'
+		description='SVG viewBox size in px (square). The component fills its container - this only affects internal geometry proportions.'
 		defaultValue='756'
 	/>
 	<PropsTableRow

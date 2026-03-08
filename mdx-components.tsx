@@ -178,12 +178,21 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <hr className="" {...props} />
     ),
     pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => {
-      // Extract code and language from the code element inside pre
-      const codeElement = React.Children.toArray(children).find(
-        (child) => React.isValidElement(child) && child.type === "code",
-      ) as
-        | React.ReactElement<{ className?: string; children?: React.ReactNode }>
-        | undefined;
+      const isCodeElement = (
+        child: React.ReactNode,
+      ): child is React.ReactElement<{
+        className?: string;
+        children?: React.ReactNode;
+      }> => {
+        if (!React.isValidElement(child)) return false;
+        const { type } = child;
+        return (
+          type === "code" ||
+          (typeof type === "function" && type.name === "code")
+        );
+      };
+
+      const codeElement = React.Children.toArray(children).find(isCodeElement);
 
       if (codeElement) {
         const className = codeElement.props.className || "";
@@ -195,7 +204,6 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
             : String(codeElement.props.children || "");
         return <CodeBlock code={codeString} language={language} />;
       }
-      // Fallback to default pre styling
       return <pre {...props}>{children}</pre>;
     },
     code: ({

@@ -32,8 +32,8 @@ The progressive blur effect uses CSS masking with three layers:
 
 Here's how the masking works:
 
-<CodeBlock
-code={`mask-image: 
+```css
+mask-image: 
   linear-gradient(to top, transparent, var(--foreground) 90%),
   linear-gradient(to bottom, transparent 0%, var(--foreground) 100%),
   linear-gradient(var(--background), var(--background));
@@ -43,9 +43,8 @@ mask-size:
   100% var(--bottom-mask-height), 
   100% 100%;
 
-mask-composite: exclude;`}
-language="css"
-/>
+mask-composite: exclude;
+```
 
 The `mask-composite: exclude` is key - it subtracts the gradient areas from the solid mask, creating the blur zones. Think of it like cutting holes in a piece of paper where you want the gradients to show through.
 
@@ -53,8 +52,8 @@ The `mask-composite: exclude` is key - it subtracts the gradient areas from the 
 
 To animate the mask heights, we need to register them as animatable custom properties:
 
-<CodeBlock
-code={`@property --top-mask-height {
+```css
+@property --top-mask-height {
   syntax: '<length>';
   inherits: true;
   initial-value: 0px;
@@ -64,9 +63,8 @@ code={`@property --top-mask-height {
   syntax: '<length>';
   inherits: true;
   initial-value: 80px;
-}`}
-language="css"
-/>
+}
+```
 
 Without `@property`, CSS custom properties can't be animated because the browser doesn't know their type. The `syntax` field tells the browser "this is a length value, so you can interpolate it smoothly." This is crucial when animating CSS variables - without `@property`, they're treated as strings and can't be interpolated.
 
@@ -74,13 +72,12 @@ Without `@property`, CSS custom properties can't be animated because the browser
 
 This is where `animation-timeline` shines:
 
-<CodeBlock
-code={`animation-name: show-top-mask, hide-bottom-mask;
+```css
+animation-name: show-top-mask, hide-bottom-mask;
 animation-timeline: scroll(self), scroll(self);
 animation-range: 0 var(--scroll-buffer), calc(100% - var(--scroll-buffer)) 100%;
-animation-fill-mode: both;`}
-language="css"
-/>
+animation-fill-mode: both;
+```
 
 - `animation-timeline: scroll(self)` - Links each animation to the element's own scroll progress. You can also use `scroll()` to watch the nearest ancestor scrollbar, or `scroll(nearest)` to find the nearest scroll container.
 - `animation-range` - Controls when each animation plays during the scroll. It accepts several value types:
@@ -106,8 +103,8 @@ The `animation-range` is brilliant - instead of animating for the full scroll, y
 
 For the SVG stroke effect, we animate the `stroke-dashoffset` property:
 
-<CodeBlock
-code={`@property --draw-progress {
+```css
+@property --draw-progress {
   syntax: '<number>';
   inherits: true;
   initial-value: 101;
@@ -129,9 +126,8 @@ code={`@property --draw-progress {
   100% {
     --draw-progress: 0;
   }
-}`}
-language="css"
-/>
+}
+```
 
 The `stroke-dasharray` creates a dashed stroke the length of the entire path, and `stroke-dashoffset` shifts it. By animating from `101` (hidden) to `0` (fully visible), the stroke "draws" itself as you scroll. Notice we use `animation-range: normal` here, which means the animation plays for the entire scroll range - perfect for a continuous drawing effect.
 
