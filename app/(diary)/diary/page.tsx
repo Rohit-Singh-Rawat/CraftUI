@@ -15,7 +15,7 @@ export default async function DiaryPage() {
   const craftsByCategory = await getCraftsByCategory(craftRegistry);
 
   return (
-    <main className="flex h-full w-full flex-1 flex-col items-center overflow-y-auto ">
+    <div className="flex h-full w-full flex-1 flex-col items-center overflow-y-auto">
       <ProgrssiveBlur
         position="top"
         height="100px"
@@ -28,16 +28,20 @@ export default async function DiaryPage() {
       />
       <div className="w-full max-w-7xl px-6 py-16">
         <div className="mb-16 text-center">
-          <h1 className="text-6xl font-serif mb-4">Craft Diary</h1>
-          <p className="text-muted-foreground/60 font-light text-lg">
+          <h1 className="text-6xl font-serif mb-4 text-balance">Craft Diary</h1>
+          <p className="text-muted-foreground/60 font-light text-lg text-pretty">
             A curated collection of meticulously crafted elements
           </p>
         </div>
 
         <div className="space-y-16">
-          {Object.entries(craftsByCategory).map(([category, crafts]) => (
-            <section key={category}>
-              <h2 className="text-3xl font-serif mb-8">{category}</h2>
+          {Object.entries(craftsByCategory).map(([category, crafts]) => {
+            const sectionId = `category-${category.toLowerCase().replace(/\s+/g, "-")}`;
+            return (
+            <section key={category} aria-labelledby={sectionId}>
+              <h2 id={sectionId} className="text-3xl font-serif mb-8 text-balance">
+                {category}
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {crafts.map((craft) => (
                   <CraftCard
@@ -49,9 +53,10 @@ export default async function DiaryPage() {
                 ))}
               </div>
             </section>
-          ))}
+            );
+          })}
         </div>
       </div>
-    </main>
+    </div>
   );
 }

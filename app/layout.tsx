@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Doto, Instrument_Serif } from "next/font/google";
 import "../styles/globals.css";
 import { Providers } from "@/components/providers";
+import { ArchivedBanner } from "@/components/archived-banner";
+import { JsonLd } from "@/components/json-ld";
+import { SkipLink } from "@/components/skip-link";
 import Navbar from "@/components/navigation/navbar";
 import { generateMetadata } from "@/lib/utils";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/next";
@@ -29,11 +32,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+      <head>
+        <JsonLd />
+      </head>
       <body
         className={`${doto.variable} ${inter.className} ${instrumentSerif.variable} antialiased font-sans`}
       >
         <Providers>
+          <SkipLink />
+          <ArchivedBanner />
           <Navbar />
           {children}
         </Providers>

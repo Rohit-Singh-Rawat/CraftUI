@@ -214,11 +214,6 @@ export const jsonLd = {
       "@type": "Person",
       name: defaultSEO.author,
     },
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${defaultSEO.url}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   },
   breadcrumb: {
     "@context": "https://schema.org",

@@ -1,6 +1,7 @@
 import React, { Children } from "react";
 import { ExternalLinkIcon } from "lucide-react";
 import type { MDXComponents } from "mdx/types";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 import "katex/dist/katex.min.css";
@@ -23,7 +24,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <h1
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
         className={cn(
-          "text-sm text-muted-foreground font-normal mt-20  tracking-tight text-pretty leading-tight mb-4 uppercase",
+          "text-sm text-muted-foreground font-normal mt-20 tracking-tight text-balance leading-tight mb-4 uppercase scroll-mt-24",
           className,
         )}
         {...props}
@@ -35,7 +36,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <h2
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
         className={cn(
-          "text-sm text-muted-foreground font-normal mb-4 mt-20 py-0  tracking-tight uppercase",
+          "text-sm text-muted-foreground font-normal mb-4 mt-20 py-0 tracking-tight uppercase text-balance scroll-mt-24",
           className,
         )}
         {...props}
@@ -47,7 +48,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <h3
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
         className={cn(
-          "text-foreground font-medium py-0 mt-12 tracking-tight",
+          "text-foreground font-medium py-0 mt-12 tracking-tight text-balance scroll-mt-24",
           className,
         )}
         {...props}
@@ -59,7 +60,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <h4
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
         className={cn(
-          "text-lg md:text-xl font-medium py-0 mt-10 [h3+&]:mt-0 tracking-tight",
+          "text-lg md:text-xl font-medium py-0 mt-10 [h3+&]:mt-0 tracking-tight text-balance scroll-mt-24",
           className,
         )}
         {...props}
@@ -76,9 +77,10 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
             "inline-flex items-center gap-1.5 group",
             "transition-colors duration-200 ease-out",
             "hover:text-blue-600 dark:hover:text-blue-300",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm",
             "relative after:absolute after:bottom-0 after:left-0",
             "after:w-0 after:h-[1.5px] after:bg-blue-600 dark:after:bg-blue-300",
-            "after:transition-all after:duration-200 after:ease-out",
+            "after:transition-[width] after:duration-200 after:ease-out",
             "hover:after:w-full",
             className,
           )}
@@ -97,7 +99,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <Link
         href={href}
         className={cn(
-          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-300 ease-out inline-flex items-center leading-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm",
           className,
         )}
         {...props}
@@ -163,15 +165,20 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     img: ({
       className,
       alt,
+      width,
+      height,
       ...props
     }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-      //@ts-expect-error img src expects a Blob or string
-      <ImageComponent
+      <Image
         src={props.src as string}
-        alt={alt as string}
-        caption={true}
-        className={className}
-        {...props}
+        alt={alt ?? ""}
+        width={Number(width) || 800}
+        height={Number(height) || 450}
+        className={cn(
+          "my-4 rounded-lg outline outline-1 outline-black/10 dark:outline-white/10",
+          className,
+        )}
+        loading="lazy"
       />
     ),
     hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (

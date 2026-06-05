@@ -15,9 +15,11 @@ export default function NotFound404({
   className,
 }: NotFound404Props) {
   return (
-    <div
+    <main
+      id="main-content"
+      tabIndex={-1}
       className={cn(
-        "relative min-h-screen w-full overflow-hidden bg-background flex items-center justify-center px-6",
+        "relative flex min-h-screen w-full scroll-mt-4 items-center justify-center overflow-hidden bg-background px-6",
         className,
       )}
     >
@@ -27,30 +29,31 @@ export default function NotFound404({
           "flex min-w-0 flex-1 flex-col items-center justify-center gap-6 rounded-xl border-dashed p-6 text-center text-balance md:p-12",
         )}
       >
-        <div
+        <header
           data-slot="empty-header"
           className={cn("flex max-w-sm flex-col items-center text-center")}
         >
           <AnimatedGhostIcon />
-          <div
+          <h1
             data-slot="empty-title"
             className={cn(
               "font-heading text-xl leading-none",
-              "text-4xl font-normal  bg-linear-to-r from-primary via-primary/80 to-blue-500 bg-clip-text text-transparent",
+              "bg-linear-to-r from-primary via-primary/80 to-blue-500 bg-clip-text text-4xl font-normal text-transparent",
             )}
           >
-            404
-          </div>
-          <div
+            <span className="sr-only">{title}</span>
+            <span aria-hidden="true">404</span>
+          </h1>
+          <p
             data-slot="empty-description"
             className={cn(
-              "text-sm/relaxed font-light  text-muted-foreground [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary [[data-slot=empty-title]+&]:mt-1",
+              "text-sm/relaxed font-light text-muted-foreground text-pretty [&>a]:underline [&>a]:underline-offset-4 [&>a:hover]:text-primary [[data-slot=empty-title]+&]:mt-1",
               "text-lg",
             )}
           >
             {description}
-          </div>
-        </div>
+          </p>
+        </header>
         <div
           data-slot="empty-content"
           className={cn(
@@ -60,6 +63,6 @@ export default function NotFound404({
           <NotFoundActions />
         </div>
       </div>
-    </div>
+    </main>
   );
 }

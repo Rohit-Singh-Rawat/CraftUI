@@ -2,6 +2,7 @@ import { Ruler } from "@/components/landing-ruler";
 import { AnimatedCompass } from "@/components/animated-compass";
 import { LandingHero } from "@/components/landing-hero";
 import Logo from "@/components/navigation/logo";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { generateMetadata, cn } from "@/lib/utils";
 
@@ -10,11 +11,15 @@ export const metadata: Metadata = generateMetadata();
 
 export default function Page() {
   return (
-    <main className="w-full min-h-[1500vh] bg-white dark:bg-[#0a0a0a] font-sans selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black relative">
+    <main
+      id="main-content"
+      className="w-full min-h-[1500vh] bg-white dark:bg-[#0a0a0a] font-sans selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black relative scroll-mt-4"
+    >
       <div className="w-full h-screen sticky top-0 flex relative bg-white dark:bg-[#0a0a0a] overflow-hidden">
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none z-0"
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
         >
           <defs>
             <pattern
@@ -54,10 +59,16 @@ export default function Page() {
           className="flex-1 grid h-full grid-cols-1 md:grid-cols-[1fr_2fr] grid-rows-[1fr_auto_1fr] relative border-x border-[#e5e5e5] dark:border-[#222]"
         >
           <div className="bg-white dark:bg-[#0a0a0a] relative h-full w-full border-0 md:border-b md:border-r border-[#e5e5e5] dark:border-[#222] md:col-start-1 md:row-start-1 flex items-center p-4 justify-center">
-            <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="flex items-center gap-3 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              aria-label="Craft Diary home"
+            >
               <Logo size={40} />
-              <span className="font-medium text-4xl tracking-tight font-serif">Craft</span>
-            </div>
+              <span className="font-medium text-4xl tracking-tight font-serif text-balance">
+                Craft
+              </span>
+            </Link>
           </div>
 
           <div className="bg-white dark:bg-[#0a0a0a] flex flex-col items-start justify-center p-6 sm:p-8 md:p-12 lg:p-16 xl:p-24 relative border-0 md:border-b md:border-t md:border-l border-[#e5e5e5] dark:border-[#222] md:col-start-2 md:row-start-2">
@@ -72,6 +83,7 @@ export default function Page() {
             <div className="absolute inset-0 flex flex-col justify-between items-end overflow-hidden">
               <span
                 className="text-black/40 dark:text-white/40 font-mono text-sm tracking-widest uppercase relative z-10 p-8"
+                aria-hidden="true"
                 style={{
                   fontFamily: "var(--font-doto)",
                   letterSpacing: "0.2em",
@@ -92,6 +104,7 @@ export default function Page() {
 }
 const Corner = ({ className }: { className?: string }) => (
   <div
+    aria-hidden="true"
     className={cn(
       "absolute size-3 bg-white dark:bg-[#0a0a0a] border border-[#e5e5e5] dark:border-[#222] z-20",
       className

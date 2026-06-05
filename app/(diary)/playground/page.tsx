@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 
 export default function PlaygroundPage() {
   return (
-    <main className="bg-background border rounded-3xl w-full h-full px-6 py-16">
+    <div className="h-full w-full rounded-3xl border bg-background px-6 py-16">
+      <h1 className="sr-only">Playground</h1>
       <ProgrssiveBlur
         position="top"
         height="100px"
@@ -22,6 +23,6 @@ export default function PlaygroundPage() {
         backgroundColor="var(--background)"
       />
       <PlayGround />
-    </main>
+    </div>
   );
 }

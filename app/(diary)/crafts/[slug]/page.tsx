@@ -1,10 +1,7 @@
 import { getAllCraftSlugs, getCraftBySlug } from "@/diary";
 import { craftRegistry } from "@/registry";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { Heading } from "@/components/heading";
-import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowLeft02Icon } from "@hugeicons/core-free-icons";
 import { CraftLayoutClient } from "@/components/layouts/craft-layout-client";
 import { getRegistryItem } from "@/lib/registry";
 import type { Metadata } from "next";
@@ -68,7 +65,7 @@ export default async function CraftPage({
   const registryItem = getRegistryItem(resolvedParams.slug);
 
   return (
-    <main className="flex h-full w-full flex-1 flex-col lg:flex-row lg:justify-start relative">
+    <div className="relative flex h-full w-full flex-1 flex-col lg:flex-row lg:justify-start">
       <CraftLayoutClient
         previewName={resolvedParams.slug}
         previewComponent={registryItem}
@@ -81,7 +78,7 @@ export default async function CraftPage({
         infoContent={
           <div className="flex h-full flex-col py-6">
             <div className="flex items-start justify-between mb-6 gap-4">
-              <div className="flex-1 px-6	">
+              <div className="flex-1 px-6">
                 <Heading
                   heading={craft.title}
                   subheading={craft.category || "Component"}
@@ -114,6 +111,6 @@ export default async function CraftPage({
           </div>
         }
       />
-    </main>
+    </div>
   );
 }
