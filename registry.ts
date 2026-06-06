@@ -46,4 +46,14 @@ export const craftRegistry: Record<string, CraftMetadata> = {
     title: "Navigation Compass",
     category: "Interaction",
   },
+  "password-validation": {
+    slug: "password-validation",
+    title: "Password Validation",
+    category: "Input",
+  },
+  "hexagonal-background": {
+    slug: "hexagonal-background",
+    title: "Hexagonal Background",
+    category: "CSS",
+  },
 };

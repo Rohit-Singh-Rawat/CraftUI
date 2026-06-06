@@ -376,17 +376,14 @@ export async function getAllCrafts(
   metadataMap?: Record<string, CraftMetadata>,
 ): Promise<CraftEntry[]> {
   const slugs = getAllCraftSlugs();
-  const crafts: CraftEntry[] = [];
+  const crafts = await Promise.all(
+    slugs.map(async (slug) => {
+      const metadata = metadataMap?.[slug];
+      return getCraftBySlug(slug, metadata);
+    }),
+  );
 
-  for (const slug of slugs) {
-    const metadata = metadataMap?.[slug];
-    const craft = await getCraftBySlug(slug, metadata);
-    if (craft) {
-      crafts.push(craft);
-    }
-  }
-
-  return crafts;
+  return crafts.filter((craft): craft is CraftEntry => craft !== null);
 }
 
 /**

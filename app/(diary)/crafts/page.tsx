@@ -15,6 +15,8 @@ export default function CraftsPage() {
     redirect("/diary");
   }
 
-  const randomCraft = crafts[Math.floor(Math.random() * crafts.length)];
-  redirect(`/crafts/${randomCraft.slug}`);
+  const [firstCraft] = crafts.toSorted((a, b) =>
+    a.slug.localeCompare(b.slug),
+  );
+  redirect(`/crafts/${firstCraft.slug}`);
 }
