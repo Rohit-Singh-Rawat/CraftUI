@@ -33,7 +33,7 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
           >
             {tokens.map((line, i) => (
               <div
-                key={i}
+                key={`line-${i + 1}-${line[0]?.content ?? ""}`}
                 {...getLineProps({ line })}
                 className="flex items-center hover:bg-editor-border py-px px-4"
               >

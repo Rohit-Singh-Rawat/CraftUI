@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DependencyCard } from "./dependency-card";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { BunLogo } from "@/components/icons/brands/bun";
 import { PnpmLogo } from "@/components/icons/brands/pnpm";
@@ -118,14 +118,19 @@ export function DependencySection({
       <div className="flex items-center gap-3 mb-4 mt-8">
         <h2
           id="dependencies"
-          className="text-sm text-muted-foreground font-normal py-0 tracking-tight uppercase"
+          className="text-sm text-muted-foreground font-normal py-0 tracking-tight uppercase text-balance"
         >
           Dependencies
         </h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-6 w-6">
-              <AnimatePresence mode="popLayout">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              aria-label={copied ? "Copied" : "Copy install command"}
+            >
+              <AnimatePresence mode="popLayout" initial={false}>
                 {copied ? (
                   <motion.div
                     key="tick"
@@ -138,6 +143,7 @@ export function DependencySection({
                       icon={Tick02Icon}
                       size={14}
                       className="text-green-600"
+                      aria-hidden="true"
                     />
                   </motion.div>
                 ) : (
@@ -152,6 +158,7 @@ export function DependencySection({
                       icon={Copy01Icon}
                       size={14}
                       className="text-muted-foreground"
+                      aria-hidden="true"
                     />
                   </motion.div>
                 )}

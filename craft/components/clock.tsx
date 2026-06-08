@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useReducedMotion } from "motion/react";
 import { useClock } from "@/craft/hooks/use-clock";
 import { cn } from "@/lib/utils";
 
@@ -90,6 +91,18 @@ export function Clock({
     customTime,
   });
   const { secondAngle, minuteAngle, hourAngle } = angles;
+  const prefersReducedMotion = useReducedMotion();
+
+  const clockAriaLabel = useMemo(() => {
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+      ...(timezone && { timeZone: timezone }),
+    };
+    return `Analog clock showing ${new Intl.DateTimeFormat(undefined, timeOptions).format(now)}`;
+  }, [now, timezone]);
 
   const diameter = size;
   const radius = diameter / 2;
@@ -168,11 +181,14 @@ export function Clock({
         height: diameter,
         borderRadius,
       }}
+      role="img"
+      aria-label={clockAriaLabel}
     >
       <div className="overflow-hidden" style={faceStyle}>
         <svg
           className="w-full h-full rounded-full"
           viewBox={`0 0 ${diameter} ${diameter}`}
+          aria-hidden="true"
         >
           <g>
             {Array.from({ length: 60 }).map((_, i) => {
@@ -249,6 +265,7 @@ export function Clock({
             opacity={0.9}
             tail={scale.secondHandTail}
             borderRadius={scale.secondHandThickness * 0.5}
+            animate={!prefersReducedMotion}
           />
           <div
             style={{
@@ -286,6 +303,7 @@ interface HandProps {
   opacity?: number;
   tail?: number;
   borderRadius?: number;
+  animate?: boolean;
 }
 
 function Hand({
@@ -296,6 +314,7 @@ function Hand({
   opacity = 1,
   tail = 0,
   borderRadius,
+  animate = true,
 }: HandProps) {
   const total = length + tail;
   const effectiveBorderRadius = borderRadius ?? thickness;
@@ -315,7 +334,7 @@ function Hand({
         borderRadius: effectiveBorderRadius,
         opacity,
         boxShadow: "0 1px 2px rgba(0,0,0,0.25)",
-        willChange: "transform",
+        willChange: animate ? "transform" : undefined,
       }}
     />
   );
@@ -385,10 +404,11 @@ function DigitalOverlay({
   return (
     <div
       className={cn(
-        "grid grid-cols-2 w-full items-center justify-items-center gap-0",
+        "grid grid-cols-2 w-full items-center justify-items-center gap-0 tabular-nums",
         digitalClassName,
       )}
       style={style}
+      aria-hidden="true"
     >
       <div className="place-self-end pr-8">{weekday}</div>
       <div className="pl-8 place-self-start">{time}</div>

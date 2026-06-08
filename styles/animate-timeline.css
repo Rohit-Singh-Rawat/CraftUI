@@ -78,3 +78,19 @@
     --draw-progress: 0;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .viewable-scroll {
+    animation: none;
+    --top-mask-height: var(--mask-height);
+    --bottom-mask-height: 0px;
+  }
+
+  .svg-stroke-demo-content {
+    animation: none;
+  }
+
+  .svg-stroke-demo-content .draw-path {
+    stroke-dashoffset: 0;
+  }
+}

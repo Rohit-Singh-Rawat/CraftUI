@@ -8,7 +8,8 @@ import {
   Delete02Icon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import Image from "next/image";
 import { useState, useRef, useEffect, useId } from "react";
 
 interface FluidAssetPreviewProps {
@@ -30,6 +31,35 @@ export function FluidAssetPreview({
   const linkButtonRef = useRef<HTMLDivElement>(null);
   const uniqueId = useId();
   const layoutId = `dropdown-menu-${uniqueId}`;
+  const menuId = `${uniqueId}-file-actions-menu`;
+  const prefersReducedMotion = useReducedMotion();
+
+  const motionProps = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0 },
+        whileInView: { opacity: 1 },
+        viewport: { once: true },
+        transition: { duration: 0.3, ease: "easeInOut" as const },
+      };
+
+  const thumbnailMotionProps = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0.5, filter: "blur(4px)" },
+        whileInView: { opacity: 1, filter: "blur(0px)" },
+        viewport: { once: true },
+        transition: { duration: 0.3, ease: "easeInOut" as const, delay: 0.1 },
+      };
+
+  const infoMotionProps = prefersReducedMotion
+    ? {}
+    : {
+        initial: { opacity: 0, filter: "blur(4px)" },
+        whileInView: { opacity: 1, filter: "blur(0px)" },
+        viewport: { once: true },
+        transition: { duration: 0.3, ease: "easeInOut" as const, delay: 0.15 },
+      };
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -45,30 +75,23 @@ export function FluidAssetPreview({
   return (
     <motion.article
       className="flex items-stretch h-fit md:min-w-[300px]  w-full"
-      role="article"
       aria-label={`File preview: ${fileName}`}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
+      {...motionProps}
     >
       {/* Left side: Logo/Image */}
       <div className="flex items-center gap-3 flex-1 w-full  bg-background p-2 rounded-xl rounded-tr-none">
         <motion.div
-          className="w-12 h-12 shrink-0 bg-gray-200 rounded-md overflow-hidden"
-          role="img"
-          aria-label={`${fileType?.toUpperCase() || "File"} thumbnail`}
-          initial={{ opacity: 0.5, filter: "blur(4px)" }}
-          whileInView={{ opacity: 1, filter: "blur(0px)" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, ease: "easeInOut", delay: 0.1 }}
+          className="relative w-12 h-12 shrink-0 bg-gray-200 rounded-md overflow-hidden"
+          {...thumbnailMotionProps}
         >
           {thumbnailUrl ? (
-            <img
+            <Image
               src={thumbnailUrl}
               alt={`Thumbnail for ${fileName}`}
-              className="w-full h-full object-cover"
-              loading="lazy"
+              fill
+              sizes="48px"
+              className="object-cover"
+              unoptimized={thumbnailUrl.startsWith("http")}
             />
           ) : (
             <div
@@ -83,20 +106,17 @@ export function FluidAssetPreview({
         </motion.div>
 
         {/* File info */}
-        <motion.div
-          className="flex-1 min-w-0 space-y-1"
-          initial={{ opacity: 0, filter: "blur(4px)" }}
-          whileInView={{ opacity: 1, filter: "blur(0px)" }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.3, ease: "easeInOut", delay: 0.15 }}
-        >
+        <motion.div className="flex-1 min-w-0 space-y-1" {...infoMotionProps}>
           <h3
             className="text-sm font-medium text-foreground truncate"
             title={fileName}
           >
             {fileName}
           </h3>
-          <time className="text-xs text-muted-foreground" dateTime={fileDate}>
+          <time
+            className="text-xs text-muted-foreground tabular-nums"
+            dateTime={fileDate}
+          >
             {fileDate}
           </time>
         </motion.div>
@@ -106,9 +126,12 @@ export function FluidAssetPreview({
       <div className="flex flex-col justify-between">
         <div className='h-full w-full bg-background rounded-none  rounded-r-lg relative flex-1 after:content-[""] after:block after:w-5 after:h-5 after:absolute after:bg-transparent after:-left-[10px] after:border-l-10 after:border-l-background after:border-t-10 after:border-t-background after:rounded-tl-[20px] after:-bottom-[10px] after:[clip-path:inset(10px_0px_0px_10px)] flex-center'>
           <button
-            className="h-fit cursor-pointer outline-none focus:outline-none focus-visible:outline-none text-muted-foreground relative z-40"
+            type="button"
+            className="h-fit cursor-pointer outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 text-muted-foreground relative z-40 rounded-md active:scale-[0.96] transition-transform"
             aria-label={`More actions for ${fileName}`}
             aria-haspopup="menu"
+            aria-expanded={isOpen}
+            aria-controls={menuId}
             onClick={() => setIsOpen(true)}
           >
             <svg
@@ -124,8 +147,8 @@ export function FluidAssetPreview({
                 cy="10"
                 r="2.5"
                 fill="currentColor"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={prefersReducedMotion ? false : { opacity: 0 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, ease: "easeInOut", delay: 0.2 }}
               />
@@ -134,8 +157,8 @@ export function FluidAssetPreview({
                 cy="10"
                 r="2.5"
                 fill="currentColor"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={prefersReducedMotion ? false : { opacity: 0 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, ease: "easeInOut", delay: 0.25 }}
               />
@@ -144,8 +167,8 @@ export function FluidAssetPreview({
                 cy="10"
                 r="2.5"
                 fill="currentColor"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={prefersReducedMotion ? false : { opacity: 0 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.3, ease: "easeInOut", delay: 0.3 }}
               />
@@ -156,15 +179,19 @@ export function FluidAssetPreview({
         {/* Link button / Dropdown container */}
         <div ref={linkButtonRef} className="pt-2 pl-2 relative">
           <motion.button
-            className="h-8 w-8 bg-background rounded-lg cursor-pointer outline-none focus:outline-none focus-visible:outline-none flex items-center justify-center group/link-button"
+            className="h-8 w-8 bg-background rounded-lg cursor-pointer outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 flex items-center justify-center group/link-button active:scale-[0.96]"
             onClick={onLinkClick}
             aria-label={`Open ${fileName} in new window`}
             type="button"
-            layoutId={layoutId}
-            layout
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            layoutId={prefersReducedMotion ? undefined : layoutId}
+            layout={!prefersReducedMotion}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { type: "spring", stiffness: 300, damping: 30 }
+            }
+            initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.5 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             style={{
               opacity: isOpen ? 0 : 1,
@@ -173,7 +200,7 @@ export function FluidAssetPreview({
           >
             <HugeiconsIcon
               icon={ArrowUpRight01Icon}
-              className="h-4 w-4 stroke-2 group-hover/link-button:text-primary transition-all duration-300 transform group-hover/link-button:translate-x-0.5 group-hover/link-button:-translate-y-0.5"
+              className="h-4 w-4 stroke-2 group-hover/link-button:text-primary transition-[colors,transform] duration-300 group-hover/link-button:translate-x-0.5 group-hover/link-button:-translate-y-0.5"
               aria-hidden="true"
             />
           </motion.button>
@@ -184,37 +211,49 @@ export function FluidAssetPreview({
                 {/* Backdrop */}
                 <motion.div
                   className="fixed inset-0 bg-black/20 z-40"
-                  initial={{ opacity: 0 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
+                  exit={prefersReducedMotion ? undefined : { opacity: 0 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
                   onClick={() => setIsOpen(false)}
                   aria-hidden="true"
                 />
 
                 {/* Dropdown menu */}
                 <motion.div
-                  layoutId={layoutId}
-                  layout
+                  id={menuId}
+                  layoutId={prefersReducedMotion ? undefined : layoutId}
+                  layout={!prefersReducedMotion}
                   className="absolute top-2 left-2 z-50 bg-background text-foreground min-w-48 overflow-hidden rounded-xl border border-border/50 p-1 shadow-sm"
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={
+                    prefersReducedMotion ? false : { opacity: 0, scale: 0.8 }
+                  }
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{
-                    opacity: 0,
-                    scale: 0.3,
-                    backdropFilter: "blur(10px)",
-                    translateY: "100px",
-                    animationDuration: "0.2s",
-                    animationTimingFunction: "ease-in-out",
-                    animationFillMode: "forwards",
-                  }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  exit={
+                    prefersReducedMotion
+                      ? undefined
+                      : {
+                          opacity: 0,
+                          scale: 0.3,
+                          backdropFilter: "blur(10px)",
+                          translateY: "100px",
+                          animationDuration: "0.2s",
+                          animationTimingFunction: "ease-in-out",
+                          animationFillMode: "forwards",
+                        }
+                  }
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 300, damping: 30 }
+                  }
                   role="menu"
                   aria-label="File actions menu"
                 >
                   <button
-                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
+                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground active:scale-[0.98] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
                     role="menuitem"
+                    type="button"
                     onClick={() => setIsOpen(false)}
                   >
                     <HugeiconsIcon
@@ -225,8 +264,9 @@ export function FluidAssetPreview({
                     Download
                   </button>
                   <button
-                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
+                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground active:scale-[0.98] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
                     role="menuitem"
+                    type="button"
                     onClick={() => setIsOpen(false)}
                   >
                     <HugeiconsIcon
@@ -237,8 +277,9 @@ export function FluidAssetPreview({
                     Rename
                   </button>
                   <button
-                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
+                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground active:scale-[0.98] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
                     role="menuitem"
+                    type="button"
                     onClick={() => setIsOpen(false)}
                   >
                     <HugeiconsIcon
@@ -249,8 +290,9 @@ export function FluidAssetPreview({
                     Copy link
                   </button>
                   <button
-                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-destructive/10 focus:bg-destructive/10 text-red-600 hover:text-red-600 focus:text-red-600 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
+                    className="w-full relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none select-none hover:bg-destructive/10 focus:bg-destructive/10 text-red-600 hover:text-red-600 focus:text-red-600 active:scale-[0.98] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-4"
                     role="menuitem"
+                    type="button"
                     onClick={() => setIsOpen(false)}
                   >
                     <HugeiconsIcon

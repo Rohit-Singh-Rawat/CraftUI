@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Tick02Icon } from "@hugeicons/core-free-icons";
 import CopyIcon from "@/components/icons/copy";
@@ -23,15 +23,16 @@ export function CopyCodeButton({ code, className }: CopyCodeButtonProps) {
 
   return (
     <button
+      type="button"
       onClick={handleCopy}
+      aria-label={copied ? "Copied" : "Copy code"}
       className={cn(
-        "flex items-center justify-center rounded-md p-2 group transition-colors bg-muted hover:bg-muted/80 border border-border relative",
+        "flex min-h-10 min-w-10 items-center justify-center rounded-md p-2 group bg-muted hover:bg-muted/80 border border-border relative outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-muted transition-colors",
         copied ? "text-green-600" : "",
         className,
       )}
-      aria-label={copied ? "Copied!" : "Copy code"}
     >
-      <AnimatePresence mode="popLayout">
+      <AnimatePresence mode="popLayout" initial={false}>
         {copied ? (
           <motion.div
             key="tick"
@@ -45,6 +46,7 @@ export function CopyCodeButton({ code, className }: CopyCodeButtonProps) {
               size={16}
               strokeWidth={1.5}
               className="text-primary"
+              aria-hidden="true"
             />
           </motion.div>
         ) : (
@@ -55,7 +57,10 @@ export function CopyCodeButton({ code, className }: CopyCodeButtonProps) {
             exit={{ opacity: 0, filter: "blur(4px)" }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <CopyIcon className="group-hover:text-primary transition-all duration-300 text-muted-foreground size-4 stroke-[1.5] relative" />
+            <CopyIcon
+              aria-hidden="true"
+              className="group-hover:text-primary transition-colors duration-300 text-muted-foreground size-4 stroke-[1.5] relative"
+            />
           </motion.div>
         )}
       </AnimatePresence>

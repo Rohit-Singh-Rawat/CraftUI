@@ -3,12 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  Copy01Icon,
-  Download01Icon,
-  Cancel01Icon,
-  Tick02Icon,
-} from "@hugeicons/core-free-icons";
+import { Cancel01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
 import { cn } from "@/lib/utils";
 import ProgrssiveBlur from "../animate/progessive-blur";
 import { CodeSnippet } from "./code-snippet";
@@ -92,13 +87,13 @@ export function CodeDrawer({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="appearance-none bg-transparent border-0 p-0 m-0 cursor-pointer"
+        className="appearance-none bg-transparent border-0 p-0 m-0 cursor-pointer rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-accent/40 transition-colors"
         aria-label="Open code drawer"
       >
         {children}
       </button>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {isOpen && (
           <>
             {/* Mobile backdrop */}
@@ -107,7 +102,8 @@ export function CodeDrawer({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/50 z-50 lg:hidden"
+              className="fixed inset-0 bg-black/50 z-50 lg:hidden touch-manipulation"
+              aria-hidden="true"
               onClick={(): void => setIsOpen(false)}
             />
 
@@ -118,11 +114,11 @@ export function CodeDrawer({
               exit={{ y: "100%", filter: "blur(4px)" }}
               transition={{ ease: "easeInOut", duration: 0.3 }}
               className={cn(
-                "fixed lg:z-10 flex flex-col h-dvh",
+                "fixed lg:z-10 flex flex-col overscroll-contain",
                 // Mobile: drawer from bottom with padding
                 "bottom-0 z-50 left-0 right-0 max-h-[85vh] rounded-t-3xl",
-                // Desktop: fixed split panel
-                "lg:top-0 lg:bottom-auto lg:max-h-none lg:h-dvh lg:rounded-3xl lg:p-3 lg:w-[calc(50%-3rem)]",
+                // Desktop: fixed split panel below archived banner
+                "lg:top-[var(--archived-banner-height)] lg:bottom-auto lg:max-h-none lg:h-[calc(100dvh-var(--archived-banner-height))] lg:rounded-3xl lg:p-3 lg:w-[calc(50%-3rem)]",
                 side === "left"
                   ? "lg:left-20 lg:right-auto"
                   : "lg:left-auto lg:right-0",
@@ -134,21 +130,23 @@ export function CodeDrawer({
                   {/* Toolbar */}
                   <div className="flex items-center justify-between px-4 py-3 lg:px-6 lg:py-4">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-sm font-light">Source Code</h2>
+                      <h2 className="text-sm font-light text-balance">
+                        Source Code
+                      </h2>
                     </div>
                     <div className="flex items-center gap-1 lg:gap-2">
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button
+                            type="button"
                             onClick={handleCopy}
+                            aria-label={copied ? "Copied" : "Copy code"}
                             className={cn(
-                              "flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20 relative",
+                              "flex min-h-10 min-w-10 items-center justify-center rounded-md p-2 group hover:bg-background/20 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-background/30 transition-colors",
                               copied ? "text-green-600" : "",
                             )}
-                            title="Copy code"
                           >
-                            <span className="sr-only">Copy code</span>
-                            <AnimatePresence mode="popLayout">
+                            <AnimatePresence mode="popLayout" initial={false}>
                               {copied ? (
                                 <motion.div
                                   key="tick"
@@ -165,6 +163,7 @@ export function CodeDrawer({
                                     size={16}
                                     strokeWidth={1.5}
                                     className="text-primary"
+                                    aria-hidden="true"
                                   />
                                 </motion.div>
                               ) : (
@@ -178,7 +177,10 @@ export function CodeDrawer({
                                     ease: "easeInOut",
                                   }}
                                 >
-                                  <CopyIcon className="group-hover:text-primary transition-all duration-300 text-muted-foreground size-4 stroke-[1.5] relative" />
+                                  <CopyIcon
+                                    aria-hidden="true"
+                                    className="group-hover:text-primary transition-colors duration-300 text-muted-foreground size-4 stroke-[1.5] relative"
+                                  />
                                 </motion.div>
                               )}
                             </AnimatePresence>
@@ -192,12 +194,15 @@ export function CodeDrawer({
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button
+                            type="button"
                             onClick={handleDownload}
-                            className="flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20"
-                            title="Download code"
+                            aria-label="Download code"
+                            className="flex min-h-10 min-w-10 items-center justify-center rounded-md p-2 group hover:bg-background/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-background/30 transition-colors"
                           >
-                            <span className="sr-only">Download code</span>
-                            <DownloadIcon className="group-hover:text-primary transition-all duration-300 text-muted-foreground size-4 stroke-[1.5]" />
+                            <DownloadIcon
+                              aria-hidden="true"
+                              className="group-hover:text-primary transition-colors duration-300 text-muted-foreground size-4 stroke-[1.5]"
+                            />
                           </button>
                         </TooltipTrigger>
                         <TooltipContent>
@@ -208,16 +213,17 @@ export function CodeDrawer({
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button
+                            type="button"
                             onClick={(): void => setIsOpen(false)}
-                            className="flex items-center justify-center rounded-md p-2 group transition-colors hover:bg-background/20 "
-                            title="Close"
+                            aria-label="Close"
+                            className="flex min-h-10 min-w-10 items-center justify-center rounded-md p-2 group hover:bg-background/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-background/30 transition-colors"
                           >
-                            <span className="sr-only">Close</span>
                             <HugeiconsIcon
                               icon={Cancel01Icon}
                               size={16}
                               strokeWidth={1.5}
-                              className="group-hover:text-primary transition-all duration-300 text-muted-foreground group-hover:rotate-90 rotate-0 ease-in-out"
+                              aria-hidden="true"
+                              className="group-hover:text-primary transition-[colors,transform] duration-300 text-muted-foreground group-hover:rotate-90 rotate-0 ease-in-out"
                             />
                           </button>
                         </TooltipTrigger>
@@ -241,7 +247,7 @@ export function CodeDrawer({
                             aria-selected={selectedFileIndex === index}
                             onClick={() => onFileSelect(index)}
                             className={cn(
-                              "px-3 py-1.5 text-sm font-normal transition-colors relative",
+                              "px-3 py-1.5 text-sm font-normal relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-background/30 transition-colors",
                               "text-muted-foreground hover:text-foreground",
                               selectedFileIndex === index && "text-foreground",
                             )}

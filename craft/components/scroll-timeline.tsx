@@ -7,7 +7,12 @@ import "@/styles/animate-timeline.css";
 export const ProgressiveBlurScroll = () => {
   return (
     <div className="w-full h-full flex items-center justify-center ">
-      <div className="w-full max-w-md h-[600px] overflow-y-scroll rounded-lg   p-8 relative viewable-scroll">
+      <div
+        className="w-full max-w-md h-[600px] overflow-y-scroll rounded-lg   p-8 relative viewable-scroll"
+        role="region"
+        aria-label="Progressive blur scroll demo"
+        tabIndex={0}
+      >
         <h2 className="text-2xl font-light mb-4">Progressive Blur Demo</h2>
         <p className="text-muted-foreground mb-6">
           Scroll to see the blur fade in at the top and fade out at the bottom
@@ -39,14 +44,20 @@ export const ProgressiveBlurScroll = () => {
 export const SvgStrokeScroll = () => {
   return (
     <div className="w-full h-full flex items-center justify-center ">
-      <div className="svg-stroke-demo-content w-full max-w-md h-[600px] overflow-y-scroll rounded-lg   relative viewable-scroll">
+      <div
+        className="svg-stroke-demo-content w-full max-w-md h-[600px] overflow-y-scroll rounded-lg   relative viewable-scroll"
+        role="region"
+        aria-label="SVG stroke scroll drawing demo"
+        tabIndex={0}
+      >
         <div className="sticky top-0 w-full h-full flex items-center justify-center pointer-events-none flex-col gap-4">
           <span className="text-xl font-light mb-4 text-muted-foreground">
             Scroll to draw
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            aria-label="Threads"
+            aria-label="Threads logo"
+            role="img"
             viewBox="0 0 192 192"
             className="size-1/2"
           >
@@ -62,7 +73,7 @@ export const SvgStrokeScroll = () => {
             />
           </svg>
         </div>
-        <div className="h-[2000px]" />
+        <div className="h-[2000px]" aria-hidden="true" />
       </div>
     </div>
   );
@@ -73,7 +84,10 @@ export const SvgStrokeScroll = () => {
  */
 export const ScrollTimelineDemo = () => {
   return (
-    <div className="w-full h-full flex flex-col md:flex-row gap-6 p-4">
+    <div
+      className="w-full h-full flex flex-col md:flex-row gap-6 p-4"
+      aria-label="Scroll timeline demos"
+    >
       <ProgressiveBlurScroll />
       <SvgStrokeScroll />
     </div>

@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useId, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 type Tab = {
@@ -23,6 +25,7 @@ function AnimatedTabs({
   contentClassName,
 }: AnimatedTabsProps) {
   const generatedId = useId();
+  const prefersReducedMotion = useReducedMotion();
   const safeTabs = useMemo(() => tabs.filter(Boolean), [tabs]);
   const [activeTab, setActiveTab] = useState<Tab | null>(safeTabs[0] ?? null);
 
@@ -93,7 +96,7 @@ function AnimatedTabs({
                   onClick={() => setActiveTab(tab)}
                   onKeyDown={(e) => handleKeyDown(e, safeTabs.indexOf(tab))}
                   className={cn(
-                    "relative z-0 rounded-md cursor-pointer px-4 py-1.5 text-sm font-medium transition-colors sm:px-5 sm:text-base md:text-lg",
+                    "relative z-0 rounded-md cursor-pointer px-4 py-1.5 text-sm font-medium transition-colors sm:px-5 sm:text-base md:text-lg active:scale-[0.96]",
                     tabClassName,
                     isActive
                       ? "text-foreground"
@@ -107,13 +110,21 @@ function AnimatedTabs({
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="animated-tabs-active-pill"
-                      transition={{
-                        type: "spring",
-                        bounce: 0.1,
-                        duration: 0.6,
-                        ease: "easeInOut",
-                      }}
+                      layoutId={
+                        prefersReducedMotion
+                          ? undefined
+                          : "animated-tabs-active-pill"
+                      }
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : {
+                              type: "spring",
+                              bounce: 0.1,
+                              duration: 0.6,
+                              ease: "easeInOut",
+                            }
+                      }
                       className={cn(
                         "absolute inset-0 bg-background rounded-t-md",
                         'after:content-[""] after:block after:w-5 after:h-5 after:absolute after:bg-transparent after:-bottom-2.5 after:-right-2.5',
@@ -144,23 +155,27 @@ function AnimatedTabs({
           id={getPanelDomId(activeTab.label)}
           aria-labelledby={getTabDomId(activeTab.label)}
         >
-          <motion.div layoutId="animated-tabs-active-content">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab.label}
-                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-              >
-                {activeTab.content}
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
+          {prefersReducedMotion ? (
+            activeTab.content
+          ) : (
+            <motion.div layoutId="animated-tabs-active-content">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab.label}
+                  initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                >
+                  {activeTab.content}
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>
   );
-};
+}
 
 export default AnimatedTabs;

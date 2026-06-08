@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Check, X } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 // Type compatible with react-hook-form's FieldError
@@ -51,13 +51,14 @@ export function ValidationBadge({
   index,
 }: ValidationBadgeProps) {
   const isValid = rule.validator(password);
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <motion.div
-      layout
-      initial={{ scale: 0.8, opacity: 0.6 }}
+      layout={!prefersReducedMotion}
+      initial={prefersReducedMotion ? false : { scale: 0.8, opacity: 0.6 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: index * 0.05 }}
+      transition={{ delay: prefersReducedMotion ? 0 : index * 0.05 }}
       role="listitem"
     >
       <Badge
@@ -71,14 +72,20 @@ export function ValidationBadge({
         aria-label={`${rule.label}: ${isValid ? "valid" : "invalid"}`}
       >
         <motion.span
-          layout
+          layout={!prefersReducedMotion}
           className="flex items-center justify-center"
           aria-hidden="true"
         >
           {isValid ? (
-            <Check className="size-4 rounded-full bg-green-500 p-0.5 text-white animate-in zoom-in-50 duration-200" />
+            <Check className={cn(
+              "size-4 rounded-full bg-green-500 p-0.5 text-white",
+              !prefersReducedMotion && "animate-in zoom-in-50 duration-200",
+            )} />
           ) : (
-            <X className="size-4 rounded-full bg-neutral-400 dark:bg-neutral-600 p-0.5 text-white animate-in zoom-in-50 duration-200" />
+            <X className={cn(
+              "size-4 rounded-full bg-neutral-400 dark:bg-neutral-600 p-0.5 text-white",
+              !prefersReducedMotion && "animate-in zoom-in-50 duration-200",
+            )} />
           )}
         </motion.span>
         <span>{rule.label}</span>
@@ -106,6 +113,7 @@ export function PasswordValidation({
   className,
   alwaysShow = false,
 }: PasswordValidationProps) {
+  const prefersReducedMotion = useReducedMotion();
   const allValidationsPassed = rules.every((rule) => rule.validator(password));
   const showValidation =
     alwaysShow ||
@@ -119,10 +127,22 @@ export function PasswordValidation({
     <AnimatePresence>
       {showValidation && (
         <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.2 }}
+          initial={
+            prefersReducedMotion
+              ? { opacity: 0 }
+              : { opacity: 0, height: 0 }
+          }
+          animate={
+            prefersReducedMotion
+              ? { opacity: 1 }
+              : { opacity: 1, height: "auto" }
+          }
+          exit={
+            prefersReducedMotion
+              ? { opacity: 0 }
+              : { opacity: 0, height: 0 }
+          }
+          transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
           className={cn("mt-2 space-y-2 overflow-hidden", className)}
           role="region"
           aria-label="Password requirements"
@@ -133,7 +153,7 @@ export function PasswordValidation({
             {validCount} of {totalCount} password requirements met
           </div>
           <motion.div
-            layout
+            layout={!prefersReducedMotion}
             className="flex flex-wrap gap-2"
             role="list"
             aria-label="Password validation rules"

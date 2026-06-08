@@ -54,7 +54,7 @@ export function PanelProvider({
   exampleFileName,
   additionalFiles = EMPTY_FILES,
 }: PanelProviderProps): React.ReactElement {
-  const [isMaximized, setIsMaximized] = useState<boolean>(true);
+  const [isMaximized, setIsMaximized] = useState<boolean>(false);
   const restartRef = useRef<RestartFn | undefined>(undefined);
   const [codeDrawerOpen, setCodeDrawerOpen] = useState<boolean>(false);
   const [codeFiles, setCodeFiles] = useState<CodeFile[]>([]);

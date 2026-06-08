@@ -54,6 +54,7 @@ const HexagonBackground = ({
   const svgDataUrl = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   return (
     <div
+      aria-hidden="true"
       className={`pointer-events-none ${className}`}
       style={{
         backgroundImage: `url("${svgDataUrl}")`,

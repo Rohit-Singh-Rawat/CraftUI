@@ -20,10 +20,11 @@ export function InfoPanel({
     <div
       data-maximized={isMaximized}
       className={cn(
-        "bg-background top-0 flex h-full flex-col justify-end  rounded-2xl px-4",
-        "transition-all duration-300 ease-in-out",
-        "lg:fixed lg:h-screen lg:w-[calc(50%-3rem)]",
+        "bg-background top-0 flex h-full flex-col justify-end rounded-2xl px-4",
+        "transition-[width] duration-300 ease-in-out",
+        "lg:fixed lg:top-[var(--archived-banner-height)] lg:h-[calc(100dvh-var(--archived-banner-height))] lg:w-[calc(50%-3rem)]",
         side === "left" ? "left-0 lg:left-20" : "right-0 lg:right-0",
+        !isMaximized && "hidden",
         "z-1",
         className,
       )}

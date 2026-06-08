@@ -2,17 +2,18 @@
 
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
+import { useReducedMotion } from "motion/react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const actionBarVariants = cva(
-  "fixed z-50 p-3 border overflow-hidden border-border/50 bg-popover/95 backdrop-blur-md text-popover-foreground shadow-lg",
+  "fixed z-50 overflow-hidden border border-border/50 bg-popover/95 text-popover-foreground backdrop-blur-md shadow-lg",
   {
     variants: {
       size: {
-        sm: "p-3",
-        md: "p-4",
-        lg: "p-5",
+        sm: "p-1.5",
+        md: "p-2",
+        lg: "p-2.5",
       },
       position: {
         top: "left-1/2 -translate-x-1/2 rounded-2xl",
@@ -190,6 +191,7 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
     ref,
   ) => {
     const { mode, isOpen, position: contextPosition } = useActionBar();
+    const prefersReducedMotion = useReducedMotion();
     const [shouldRender, setShouldRender] = React.useState(
       mode === "dock" || isOpen,
     );
@@ -289,12 +291,14 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
         style={getPositionStyles()}
         className={cn(
           actionBarVariants({ size, position: finalPosition }),
-          // Sizing based on orientation
           isVertical
             ? "w-auto min-h-[200px]"
-            : "max-w-[calc(100%-2rem)] sm:w-auto sm:min-w-[400px]",
-          // Contextual mode animations
-          mode === "contextual" && getAnimationClasses(),
+            : mode === "dock"
+              ? "w-auto max-w-[calc(100%-2rem)]"
+              : "max-w-[calc(100%-2rem)] sm:w-auto sm:min-w-[400px]",
+          mode === "contextual" &&
+            !prefersReducedMotion &&
+            getAnimationClasses(),
           className,
         )}
         {...props}
@@ -304,7 +308,9 @@ const ActionBar = React.forwardRef<HTMLDivElement, ActionBarProps>(
             "flex h-full w-full gap-2",
             isVertical
               ? "flex-col items-center justify-start"
-              : "flex-row items-center justify-between",
+              : mode === "dock"
+                ? "flex-row items-center justify-center"
+                : "flex-row items-center justify-between",
           )}
         >
           {children}
@@ -326,7 +332,7 @@ const ActionBarHeader = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex gap-4",
+        "flex gap-2",
         isVertical ? "flex-col items-center text-center" : "items-center",
         className,
       )}
@@ -401,6 +407,7 @@ interface ActionBarCloseProps
 const ActionBarClose = React.forwardRef<HTMLButtonElement, ActionBarCloseProps>(
   ({ className, srText = "Close", onClick, ...props }, ref) => {
     const { setIsOpen } = useActionBar();
+    const prefersReducedMotion = useReducedMotion();
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setIsOpen(false);
@@ -413,7 +420,8 @@ const ActionBarClose = React.forwardRef<HTMLButtonElement, ActionBarCloseProps>(
         type="button"
         onClick={handleClick}
         className={cn(
-          "inline-flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-105",
+          "inline-flex size-9 items-center justify-center rounded-xl text-muted-foreground transition-colors transition-transform duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.96]",
+          !prefersReducedMotion && "hover:scale-105",
           className,
         )}
         aria-label={srText}
@@ -504,6 +512,7 @@ const ActionBarTrigger = React.forwardRef<
   React.ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className, onClick, children, ...props }, ref) => {
   const { setIsOpen, isOpen } = useActionBar();
+  const prefersReducedMotion = useReducedMotion();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsOpen(!isOpen);
@@ -515,8 +524,10 @@ const ActionBarTrigger = React.forwardRef<
       ref={ref}
       type="button"
       onClick={handleClick}
+      aria-expanded={isOpen}
       className={cn(
-        "inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-105 active:scale-95",
+        "inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-medium transition-colors transition-transform duration-200 hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.96]",
+        !prefersReducedMotion && "hover:scale-105",
         className,
       )}
       {...props}

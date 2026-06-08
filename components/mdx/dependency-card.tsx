@@ -25,7 +25,7 @@ export function DependencyCard({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex items-center gap-3 px-4 py-2 rounded-lg  bg-secondary hover:bg-secondary/80 transition-colors text-sm",
+        "inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-secondary hover:bg-secondary/80 text-sm outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 active:bg-secondary transition-colors",
         className,
       )}
     >

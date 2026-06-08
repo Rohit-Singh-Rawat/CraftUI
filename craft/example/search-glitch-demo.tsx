@@ -50,14 +50,15 @@ export default function SearchGlitchDemo() {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          placeholder="Search..."
+          placeholder="Search…"
           className="flex-1 bg-transparent outline-none text-sm text-foreground placeholder:text-muted-foreground"
         />
         {query && (
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="text-muted-foreground hover:text-foreground transition-colors text-xs"
+            aria-label="Clear search"
+            className="text-muted-foreground hover:text-foreground text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm active:scale-[0.96] transition-[colors,transform]"
           >
             ✕
           </button>
@@ -66,7 +67,7 @@ export default function SearchGlitchDemo() {
 
       {/* Animated results — NO Freeze */}
       <div
-        className="absolute top-[calc(100%-3.5rem)] z-10 w-full transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[visible=true]:opacity-100 data-[visible=true]:scale-100 data-[visible=true]:pointer-events-auto data-[visible=false]:opacity-0 data-[visible=false]:scale-95 data-[visible=false]:pointer-events-none"
+        className="absolute top-[calc(100%-3.5rem)] z-10 w-full transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[visible=true]:opacity-100 data-[visible=true]:scale-100 data-[visible=true]:pointer-events-auto data-[visible=false]:opacity-0 data-[visible=false]:scale-95 data-[visible=false]:pointer-events-none"
         data-visible={isVisible}
       >
         <div className="bg-background border border-border/50 rounded-xl shadow-lg overflow-hidden mt-1">

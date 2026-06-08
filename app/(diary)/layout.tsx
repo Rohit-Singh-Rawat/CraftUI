@@ -31,9 +31,14 @@ export default async function DiaryLayout({
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-[calc(100dvh-var(--archived-banner-height))]">
       <Sidebar navigationData={navigationData} />
-      <main className="flex-1 overflow-auto md:pl-20">{children}</main>
+      <main
+        id="main-content"
+        className="flex-1 overflow-auto md:pl-20 scroll-mt-4"
+      >
+        {children}
+      </main>
     </div>
   );
 }

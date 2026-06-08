@@ -24,6 +24,8 @@ import {
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   ActionBarProvider,
   ActionBar,
@@ -46,7 +48,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ThemeSwitch from "@/components/navigation/theme-toggle";
 import Logo from "@/components/navigation/logo";
-import { DottedBorder } from "@/components/dotted-border";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 /**
  * DOCK MODE - Persistent bottom navigation
@@ -57,21 +59,20 @@ export function DockModeDemo() {
 
   return (
     <div className="relative">
-      <div className="flex justify-center mb-4">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={showDock}
-            onChange={(e) => setShowDock(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-300"
-          />
-          <span className="text-sm">Show Dock</span>
-        </label>
+      <div className="mb-4 flex items-center justify-center gap-2.5">
+        <Switch
+          id="show-dock"
+          checked={showDock}
+          onCheckedChange={setShowDock}
+        />
+        <Label htmlFor="show-dock" className="cursor-pointer text-sm">
+          Show Dock
+        </Label>
       </div>
 
       {showDock && (
         <ActionBarProvider mode="dock">
-          <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+          <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
             <ActionBarLogo>
               <Logo className="size-8 rounded-full bg-black mr-1" />
             </ActionBarLogo>
@@ -157,7 +158,7 @@ export function ShoppingCartDemo() {
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+        <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
           <ActionBarContent className="gap-0">
             <ActionBarHeader className="h-fit gap-2 px-2">
               <ShoppingCart className="size-4 text-muted-foreground" />
@@ -232,7 +233,7 @@ export function BulkSelectionDemo() {
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+        <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
           <ActionBarContent className="gap-0">
             <ActionBarClose className="hover:bg-accent rounded-full size-8" />
             <ActionBarHeader className="h-fit px-2">
@@ -295,7 +296,7 @@ export function SuccessNotificationDemo() {
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+        <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
           <ActionBarContent className="gap-0">
             <ActionBarHeader className="h-fit gap-2 px-2">
               <Check className="size-4 text-green-600" />
@@ -396,7 +397,7 @@ export function EdgePositionsDemo() {
             <ActionBarClose className="hover:bg-accent rounded-full size-8" />
           </ActionBar>
         ) : (
-          <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+          <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
             <ActionBarContent className="gap-0">
               <ActionBarHeader className="h-fit gap-2 px-2">
                 <Bell className="size-4 text-muted-foreground" />
@@ -476,7 +477,7 @@ export function PositionDemo() {
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+        <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
           <ActionBarContent className="gap-0">
             <ActionBarHeader className="h-fit px-2">
               <Bell className="size-4 text-muted-foreground" />
@@ -643,7 +644,7 @@ export function DockPositionDemo() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row justify-center gap-3">
+      <div className="flex flex-col justify-center gap-3 sm:flex-row">
         <div className="flex justify-center gap-2">
           <Button
             onClick={() => setPosition("top")}
@@ -660,20 +661,21 @@ export function DockPositionDemo() {
             Bottom
           </Button>
         </div>
-        <label className="flex items-center justify-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
+        <div className="flex items-center justify-center gap-2.5">
+          <Switch
+            id="show-dock-position"
             checked={showDock}
-            onChange={(e) => setShowDock(e.target.checked)}
-            className="w-4 h-4 rounded border-gray-300"
+            onCheckedChange={setShowDock}
           />
-          <span className="text-sm">Show Dock</span>
-        </label>
+          <Label htmlFor="show-dock-position" className="cursor-pointer text-sm">
+            Show Dock
+          </Label>
+        </div>
       </div>
 
       {showDock && (
         <ActionBarProvider mode="dock" position={position}>
-          <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+          <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
             <ActionBarLogo>
               <Logo className="size-8 rounded-full bg-black mr-1" />
             </ActionBarLogo>
@@ -758,7 +760,7 @@ export function OffsetDemo() {
       >
         <ActionBar
           offset={offset}
-          className="sm:min-w-fit p-2 h-fit rounded-full"
+          className="h-auto w-auto rounded-full p-2.5 sm:min-w-0"
         >
           <ActionBarContent className="gap-2">
             <ActionBarHeader className="h-fit px-2">
@@ -927,7 +929,7 @@ export function EmailToolbarDemo() {
         open={isOpen}
         onOpenChange={setIsOpen}
       >
-        <ActionBar className="sm:min-w-fit p-2 h-fit rounded-full">
+        <ActionBar className="h-auto w-auto rounded-full p-2.5 sm:min-w-0">
           <ActionBarContent className="gap-0">
             <ActionBarHeader className="h-fit px-2">
               <ActionBarTitle className="font-normal text-sm">
@@ -1043,52 +1045,94 @@ export function EmailToolbarDemo() {
     </div>
   );
 }
-const ActionBarDemos = () => {
-  const demos = [
-    {
-      title: "Dock",
-      component: DockModeDemo,
-    },
-    {
-      title: "Cart",
-      component: ShoppingCartDemo,
-    },
-    {
-      title: "Selection",
-      component: BulkSelectionDemo,
-    },
-    {
-      title: "Notification",
-      component: SuccessNotificationDemo,
-    },
-    {
-      title: "Edge Positions",
-      component: EdgePositionsDemo,
-    },
-    {
-      title: "Email Toolbar",
-      component: EmailToolbarDemo,
-    },
-  ];
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-4 w-full">
-      {demos.map((demo, index) => (
-        <div key={index} className="relative h-80 rounded-lg flex flex-col">
-          <div className="relative p-4">
-            <h3 className="text-sm font-medium text-foreground">
-              {demo.title}
-            </h3>
-          </div>
-          <div className="flex-1 flex items-center justify-center p-4">
-            <demo.component />
-          </div>
-          {index <= 2 && <DottedBorder position="bottom" />}
+const DEMOS = [
+  {
+    id: "dock",
+    title: "Dock",
+    description: "Persistent navigation that stays docked to an edge.",
+    component: DockModeDemo,
+  },
+  {
+    id: "cart",
+    title: "Cart",
+    description: "Contextual bar that appears when something is added.",
+    component: ShoppingCartDemo,
+  },
+  {
+    id: "selection",
+    title: "Selection",
+    description: "Bulk actions for multi-select workflows.",
+    component: BulkSelectionDemo,
+  },
+  {
+    id: "notification",
+    title: "Notification",
+    description: "Transient feedback with a dismiss action.",
+    component: SuccessNotificationDemo,
+  },
+  {
+    id: "positions",
+    title: "Positions",
+    description: "Top, left, and right edge placements.",
+    component: EdgePositionsDemo,
+  },
+  {
+    id: "email",
+    title: "Email toolbar",
+    description: "Rich actions with overflow menu support.",
+    component: EmailToolbarDemo,
+  },
+] as const;
 
-          {![2, 5].includes(index) ? (
-            <DottedBorder orientation="vertical" position="right" />
-          ) : null}
-        </div>
-      ))}
+function DemoStage({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative min-h-[360px] flex-1 overflow-hidden rounded-2xl border border-border/60 bg-linear-to-b from-muted/35 to-background [transform:translateZ(0)]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_115%,var(--foreground)_0%,transparent_58%)] opacity-[0.04]"
+      />
+      <div className="relative flex h-full min-h-[360px] items-center justify-center p-6 sm:p-10">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+const ActionBarDemos = () => {
+  return (
+    <div className="flex h-full w-full min-h-0 flex-col px-4 sm:px-6 md:px-8">
+      <Tabs defaultValue="dock" className="flex h-full min-h-0 w-full flex-col gap-4">
+        <TabsList className="mx-auto h-auto w-full max-w-3xl flex-wrap justify-center gap-1 rounded-full bg-muted/70 p-1">
+          {DEMOS.map((demo) => (
+            <TabsTrigger
+              key={demo.id}
+              value={demo.id}
+              className="rounded-full px-3 py-1.5 text-xs sm:px-4 sm:text-sm"
+            >
+              {demo.title}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        {DEMOS.map((demo) => {
+          const Demo = demo.component;
+
+          return (
+            <TabsContent
+              key={demo.id}
+              value={demo.id}
+              className="mt-0 flex min-h-0 flex-1 flex-col gap-3 focus-visible:outline-none"
+            >
+              <p className="text-center text-muted-foreground text-sm">
+                {demo.description}
+              </p>
+              <DemoStage>
+                <Demo />
+              </DemoStage>
+            </TabsContent>
+          );
+        })}
+      </Tabs>
     </div>
   );
 };

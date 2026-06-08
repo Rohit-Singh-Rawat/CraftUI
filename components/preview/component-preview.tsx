@@ -26,9 +26,7 @@ export function ComponentPreview({
   const [previewKey, setPreviewKey] = React.useState<number>(0);
   const { setRestartFn } = usePanel();
 
-  const [component] = React.useState<RegistryItem | undefined>(
-    providedComponent,
-  );
+  const component = providedComponent;
 
   const handleRestart = React.useCallback((): void => {
     setPreviewKey((prev: number) => prev + 1);
@@ -75,7 +73,7 @@ export function ComponentPreview({
     >
       <div
         className={cn(
-          "w-full flex items-center justify-center h-full overflow-scroll relative ",
+          "relative w-full flex h-full items-center justify-center overflow-scroll px-4 sm:px-6 md:px-8",
           align === "center" && "justify-center",
           align === "start" && "justify-start",
           align === "end" && "justify-end",
@@ -90,7 +88,7 @@ export function ComponentPreview({
                 strokeWidth={1.5}
                 className="animate-spin mr-2"
               />
-              Loading...
+              Loading…
             </div>
           }
         >

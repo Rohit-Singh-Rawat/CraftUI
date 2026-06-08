@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -40,11 +40,12 @@ export function PanelButtons({
         <Tooltip key={button.id}>
           <TooltipTrigger asChild>
             <motion.button
+              type="button"
               onClick={button.onClick}
               data-first={index === 0}
               data-last={index === buttons.length - 1}
               className={cn(
-                "panel-button bg-background p-2.5 cursor-pointer shadow-none backdrop-blur-sm transition-colors ",
+                "panel-button relative bg-background p-2.5 min-h-10 min-w-10 cursor-pointer shadow-none backdrop-blur-sm hover:bg-background/90 outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 transition-colors touch-manipulation",
                 button.active && "bg-background/90",
                 index === 0 && "rounded-tl-xl",
                 index === buttons.length - 1 && "rounded-bl-xl",

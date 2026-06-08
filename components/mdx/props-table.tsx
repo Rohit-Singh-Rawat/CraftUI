@@ -18,7 +18,7 @@ export function PropsTable({ children, className }: PropsTableProps) {
             <th className="text-left py-3 px-4 font-medium text-muted-foreground text-sm border-b border-border uppercase">
               Description
             </th>
-            <th className="text-left py-3 px-4 font-medium text-muted-foreground text-sm border-b border-border uppercase">
+            <th className="text-left py-3 px-4 font-medium text-muted-foreground text-sm border-b border-border uppercase tabular-nums">
               Default
             </th>
           </tr>
@@ -50,7 +50,7 @@ export function PropsTableRow({
       <td className="py-3 px-4 border-b border-border/50 text-sm">
         {description}
       </td>
-      <td className="py-3 px-4 border-b border-border/50 text-sm text-muted-foreground">
+      <td className="py-3 px-4 border-b border-border/50 text-sm text-muted-foreground tabular-nums">
         {defaultValue}
       </td>
     </tr>

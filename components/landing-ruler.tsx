@@ -25,6 +25,7 @@ export function Ruler({ side, className }: RulerProps) {
         side === "left" ? "border-r items-end" : "border-l items-start",
         className
       )}
+      aria-hidden="true"
     >
       <div className="absolute inset-0 bg-[#F5F5F5] dark:bg-[#111111] opacity-80 mix-blend-overlay pointer-events-none z-0" />
 
@@ -39,12 +40,12 @@ export function Ruler({ side, className }: RulerProps) {
 
           return (
             <div
-              key={i}
+              key={`tick-${val.toFixed(1)}`}
               className={cn(
                 "relative flex items-center w-full group h-[0px] justify-end",
               )}
             >
-              <div className="absolute inset-x-0 h-4 -top-2 z-10 cursor-pointer" />
+              <div className="absolute inset-x-0 h-4 -top-2 z-10" />
 
               <motion.div
                 initial={{ scaleX: 0, opacity: 0 }}
@@ -55,7 +56,7 @@ export function Ruler({ side, className }: RulerProps) {
                   ease: "easeOut",
                 }}
                 className={cn(
-                  "h-px bg-foreground/20 absolute transition-all duration-200 ease-out group-hover:bg-foreground/40",
+                  "h-px bg-foreground/20 absolute transition-[colors,transform] duration-200 ease-out group-hover:bg-foreground/40",
                   tickWidth,
                   side === "left" ? "right-0 origin-right group-hover:scale-x-[1.5]" : "left-0 origin-left group-hover:scale-x-[1.5]",
                 )}
@@ -67,7 +68,7 @@ export function Ruler({ side, className }: RulerProps) {
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.02 + 0.1, duration: 0.3 }}
                   className={cn(
-                    "absolute text-[10px] text-foreground/40 font-mono flex items-center justify-center transition-colors duration-200 group-hover:text-foreground/70",
+                    "absolute text-[10px] text-foreground/40 font-mono tabular-nums flex items-center justify-center transition-colors duration-200 group-hover:text-foreground/70",
                     side === "left" ? "right-10" : "left-10",
                   )}
                   style={{

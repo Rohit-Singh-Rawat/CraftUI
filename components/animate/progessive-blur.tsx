@@ -17,6 +17,7 @@ const ProgressiveBlur = ({
 
   return (
     <div
+      aria-hidden="true"
       className={`pointer-events-none absolute left-0 z-10 w-full select-none ${className}`}
       style={{
         [isTop ? "top" : "bottom"]: 0,

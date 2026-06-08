@@ -94,8 +94,12 @@ function TabButton({ icon, label }: TabButtonProps) {
       aria-label={label}
       className="flex flex-col items-center gap-1"
     >
-      <span className="size-14 backdrop-blur-md rounded-xl flex items-center justify-center cursor-pointer transition-all duration-200 ease-out hover:scale-105 active:scale-[0.97] bg-muted-foreground/10 hover:bg-muted-foreground/20 ">
-        <HugeiconsIcon icon={icon} className="size-5 text-foreground" />
+      <span className="size-14 backdrop-blur-md rounded-xl flex items-center justify-center cursor-pointer transition-[colors,transform] duration-200 ease-out hover:scale-105 active:scale-[0.96] bg-muted-foreground/10 hover:bg-muted-foreground/20">
+        <HugeiconsIcon
+          icon={icon}
+          className="size-5 text-foreground"
+          aria-hidden="true"
+        />
       </span>
       <span className="text-sm text-foreground">{label}</span>
     </button>
@@ -148,7 +152,7 @@ function SearchResultsWrapper() {
 
 export default function BraveSearchDemo() {
   return (
-    <div className="w-full h-full min-h-[600px]  flex items-center justify-center">
+    <div className="flex h-full min-h-[600px] w-full items-center justify-center">
       <BraveSearch.Root>
         <BraveSearch.Background className="m-2">
           <Tabs>

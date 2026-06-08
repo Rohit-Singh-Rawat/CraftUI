@@ -228,6 +228,7 @@ interface CompassTickProps {
   totalRotation: MotionValue<number>;
   activeZoneAngle: number;
   activeZoneThreshold: number;
+  prefersReducedMotion: boolean;
 }
 
 function CompassTick({
@@ -241,6 +242,7 @@ function CompassTick({
   totalRotation,
   activeZoneAngle,
   activeZoneThreshold,
+  prefersReducedMotion,
 }: CompassTickProps) {
   const angleDeg = (index * 360) / tickCount;
   const angleRad = toAngleRad(angleDeg);
@@ -250,6 +252,7 @@ function CompassTick({
   const baseRadius = isMajor ? tickMajorRadius : isMedium ? tickMediumRadius : tickMinorRadius;
 
   const innerRadius = useTransform(totalRotation, (rotation) => {
+    if (prefersReducedMotion) return baseRadius;
     const progress = calcProximityProgress(angleDeg, rotation, activeZoneAngle, activeZoneThreshold);
     return baseRadius - progress * 25;
   });
@@ -278,6 +281,7 @@ interface CompassLinkItemProps {
   activeZoneAngle: number;
   activeZoneThreshold: number;
   colors: CompassColors;
+  prefersReducedMotion: boolean;
 }
 
 function CompassLinkItem({
@@ -288,6 +292,7 @@ function CompassLinkItem({
   activeZoneAngle,
   activeZoneThreshold,
   colors,
+  prefersReducedMotion,
 }: CompassLinkItemProps) {
   const { x: textX, y: textY } = polarToCartesian(center, textRadius, link.angle);
   const { x: hitX1, y: hitY1 } = polarToCartesian(center, 200, link.angle);
@@ -304,12 +309,20 @@ function CompassLinkItem({
     calcProximityProgress(link.angle, latest, activeZoneAngle, activeZoneThreshold)
   );
   const springProgress = useSpring(rawProgress, LINK_SPRING);
-  const scale = useTransform(springProgress, [0, 1], [1, 1.2]);
+  const scale = useTransform(
+    springProgress,
+    [0, 1],
+    prefersReducedMotion ? [1, 1] : [1, 1.2],
+  );
   // Counter-rotate so labels stay upright as the dial spins
   const counterRotation = useTransform(totalRotation, (r) => -r);
 
   return (
-    <Link href={link.href} aria-label={`Navigate to ${link.label}`}>
+    <Link
+      href={link.href}
+      aria-label={`Navigate to ${link.label}`}
+      className="active:scale-[0.96] transition-transform"
+    >
       {/* Wide invisible hit target for easier tap/click along the link's arm */}
       <line
         x1={hitX1}
@@ -360,7 +373,7 @@ function CompassDegreeLabels({ center, numberRadius, links }: CompassDegreeLabel
               <text
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="fill-foreground/40 text-xs"
+                className="fill-foreground/40 text-xs tabular-nums"
                 style={{ fontFamily: "var(--font-doto)" }}
               >
                 {angle}
@@ -443,11 +456,11 @@ function CompassDebugHud({ totalRotation, activeZoneAngle, activeZoneThreshold, 
       </div>
       <div className="flex justify-between gap-6 pointer-events-none">
         <span className="text-foreground/60">Wheel Rotation</span>
-        <span className="text-orange-500 font-medium">{debugInfo.rot}°</span>
+        <span className="text-orange-500 font-medium tabular-nums">{debugInfo.rot}°</span>
       </div>
       <div className="flex justify-between gap-6 pointer-events-none">
         <span className="text-foreground/60">Active Zone</span>
-        <span className="text-green-500 font-medium">{activeZoneAngle}° ±{activeZoneThreshold}°</span>
+        <span className="text-green-500 font-medium tabular-nums">{activeZoneAngle}° ±{activeZoneThreshold}°</span>
       </div>
       <div className="flex justify-between gap-6 pointer-events-none">
         <span className="text-foreground/60">Active Link</span>
@@ -557,6 +570,7 @@ export function NavigationCompass({
               totalRotation={totalRotation}
               activeZoneAngle={activeZoneAngle}
               activeZoneThreshold={activeZoneThreshold}
+              prefersReducedMotion={!!prefersReducedMotion}
             />
           ))}
 
@@ -570,6 +584,7 @@ export function NavigationCompass({
               activeZoneAngle={activeZoneAngle}
               activeZoneThreshold={activeZoneThreshold}
               colors={colors}
+              prefersReducedMotion={!!prefersReducedMotion}
             />
           ))}
 

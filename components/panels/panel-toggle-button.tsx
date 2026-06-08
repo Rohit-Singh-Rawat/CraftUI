@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowShrink01Icon,
@@ -24,14 +24,13 @@ export function PanelToggleButton({
 }: PanelToggleButtonProps): React.ReactElement {
   return (
     <motion.button
+      type="button"
       onClick={onToggle}
       className={cn(
-        "absolute top-16 z-30 panel-toggle-button panel-button rounded-l-xl bg-background p-2.5 shadow-none backdrop-blur-sm transition-colors hover:bg-background/90",
+        "absolute top-16 z-30 panel-toggle-button panel-button relative rounded-l-xl bg-background p-2.5 min-h-10 min-w-10 shadow-none backdrop-blur-sm hover:bg-background/90 outline-none focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-offset-0 transition-colors touch-manipulation",
         side === "left" ? "right-0" : "left-4",
         className,
       )}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
       aria-label={isMaximized ? "Show side panel" : "Hide side panel"}
     >
       <motion.div
@@ -44,6 +43,7 @@ export function PanelToggleButton({
           size={20}
           color="currentColor"
           strokeWidth={1.5}
+          aria-hidden="true"
         />
       </motion.div>
     </motion.button>

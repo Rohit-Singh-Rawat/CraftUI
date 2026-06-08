@@ -20,8 +20,8 @@ export function PreviewPanel({
     <section
       data-maximized={isMaximized}
       className={cn(
-        "relative z-12 grid h-full min-h-dvh grid-cols-1 flex-col items-center justify-center p-3",
-        "transition-all duration-300 ease-in-out",
+        "relative z-12 grid h-full min-h-[calc(100dvh-var(--archived-banner-height))] grid-cols-1 flex-col items-center justify-center p-3",
+        "transition-[width] duration-300 ease-in-out",
         "w-full lg:flex",
         side === "left" ? "lg:ml-0" : "lg:mr-0",
         "data-[maximized=true]:lg:w-1/2",
