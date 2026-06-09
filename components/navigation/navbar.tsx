@@ -59,7 +59,7 @@ const Navbar = () => {
         <ActionBarTitle className=" font-normal font-serif text-lg">
           Crafts
         </ActionBarTitle>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
@@ -76,6 +76,7 @@ const Navbar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="rounded-xl"
+            side="top"
             alignOffset={20}
             sideOffset={10}
           >

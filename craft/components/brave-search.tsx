@@ -7,6 +7,7 @@ import React, {
   useRef,
   type ReactNode,
 } from "react";
+import { useReducedMotion } from "motion/react";
 import { Search01Icon, PokemonIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { cn } from "@/lib/utils";
@@ -58,12 +59,12 @@ function Root({ children }: RootProps) {
   return (
     <SearchContext.Provider value={value}>
       <div
-        className="absolute inset-0 bg-black/5 dark:bg-black/40 z-10 transition-opacity duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] pointer-events-none data-[visible=true]:opacity-100 data-[visible=false]:opacity-0"
+        className="pointer-events-none fixed inset-0 z-40 bg-black/5 transition-opacity duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[visible=false]:opacity-0 data-[visible=true]:opacity-100 dark:bg-black/40"
         data-visible={isSearchFocused}
         aria-hidden="true"
       />
       <div
-        className="w-full h-[600px]  flex flex-col items-center p-6 relative overflow-hidden [&[data-focused=true]_.search-wrapper]:max-w-lg [&[data-focused=true]_.search-wrapper]:[inset-block-start:12vh] [&[data-focused=false]_.search-wrapper]:max-w-sm [&[data-focused=false]_.search-wrapper]:top-0"
+        className="relative z-50 flex h-full min-h-[600px] w-full flex-col items-center overflow-hidden p-6 [&[data-focused=true]_.search-wrapper]:max-w-lg [&[data-focused=true]_.search-wrapper]:[inset-block-start:12vh] [&[data-focused=false]_.search-wrapper]:top-0 [&[data-focused=false]_.search-wrapper]:max-w-sm"
         data-focused={isSearchFocused}
       >
         {children}
@@ -79,16 +80,18 @@ interface BackgroundProps {
 
 function Background({ children, className }: BackgroundProps) {
   const { isSearchFocused } = useSearchContext();
+  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div
       className={cn(
-        "absolute inset-0 transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
-        "data-[hidden=true]:opacity-0 data-[hidden=true]:scale-95 data-[hidden=true]:pointer-events-none",
-        "data-[hidden=false]:opacity-100 data-[hidden=false]:scale-100 data-[hidden=false]:pointer-events-auto",
+        prefersReducedMotion
+          ? "absolute inset-0 data-[hidden=true]:pointer-events-none data-[hidden=true]:opacity-0 data-[hidden=false]:opacity-100 data-[hidden=false]:pointer-events-auto"
+          : "absolute inset-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[hidden=true]:opacity-0 data-[hidden=true]:scale-95 data-[hidden=true]:pointer-events-none data-[hidden=false]:opacity-100 data-[hidden=false]:scale-100 data-[hidden=false]:pointer-events-auto",
         className,
       )}
       data-hidden={isSearchFocused}
+      aria-hidden={isSearchFocused}
     >
       {children}
     </div>
@@ -104,7 +107,7 @@ function Main({ children, className }: MainProps) {
   return (
     <div
       className={cn(
-        "search-wrapper w-full mb-auto z-10 mx-auto relative transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]",
+        "search-wrapper relative z-10 mx-auto mb-auto w-full overflow-hidden rounded-xl border border-border/50 bg-background backdrop-blur-md shadow-[0_0_15px_rgba(0,0,0,0.05)] transition-[opacity,transform,box-shadow] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_0_25px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(0,0,0,0.4)] dark:hover:shadow-[0_0_40px_rgba(0,0,0,0.6)]",
         className,
       )}
     >
@@ -138,7 +141,7 @@ function SearchBar({ placeholder = "Ask Brave Search" }: SearchBarProps) {
 
   return (
     <div
-      className="flex mx-auto items-center gap-3 px-5 py-2.5 bg-background backdrop-blur-md rounded-xl border border-border/50 shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_20px_rgba(0,0,0,0.4)] transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] hover:shadow-[0_0_25px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_40px_rgba(0,0,0,0.6)] [&[data-focused=false]_.search-icon]:opacity-0 [&[data-focused=true]_.search-icon]:opacity-100"
+      className="flex w-full items-center gap-3 px-5 py-2.5 [&[data-focused=false]_.search-icon]:opacity-0 [&[data-focused=true]_.search-icon]:opacity-100"
       data-focused={isSearchFocused}
       onClick={handleContainerClick}
       onKeyDown={handleContainerKeyDown}
@@ -193,26 +196,33 @@ interface ResultsProps {
 
 function Results({ results }: ResultsProps) {
   const { isSearchFocused, searchQuery } = useSearchContext();
+  const prefersReducedMotion = useReducedMotion();
 
   const hasQuery = searchQuery.trim().length > 0;
   const isVisible = isSearchFocused && hasQuery;
 
   return (
     <div
-      className="mx-auto max-w-lg mt-3 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[visible=true]:opacity-100 data-[visible=true]:blur-none data-[visible=true]:pointer-events-auto data-[visible=false]:opacity-0 data-[visible=false]:blur-sm data-[visible=false]:pointer-events-none data-[visible=false]:scale-95"
+      className={cn(
+        "w-full overflow-hidden data-[visible=true]:border-t data-[visible=true]:border-border/50",
+        prefersReducedMotion
+          ? "data-[visible=true]:opacity-100 data-[visible=true]:pointer-events-auto data-[visible=false]:opacity-0 data-[visible=false]:pointer-events-none"
+          : "transition-[opacity,transform,filter] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] data-[visible=true]:opacity-100 data-[visible=true]:blur-none data-[visible=true]:pointer-events-auto data-[visible=false]:opacity-0 data-[visible=false]:blur-sm data-[visible=false]:pointer-events-none data-[visible=false]:scale-95",
+      )}
       data-visible={isVisible}
       role="listbox"
       aria-label="Search results"
+      aria-hidden={!isVisible}
     >
       <Freeze frozen={!isVisible}>
-        <div className="bg-background/95 backdrop-blur-md rounded-xl border border-border/50 shadow-lg overflow-hidden">
+        <div className="overflow-hidden">
           {results.length > 0 ? (
             <ul className="divide-y divide-border/50" role="group">
               {results.map((result) => (
-                <li key={result.id} role="option">
+                <li key={result.id} role="option" aria-selected={false}>
                   <button
                     type="button"
-                    className="w-full px-5 py-3 text-left hover:bg-muted/50 transition-colors duration-150 ease-out"
+                    className="w-full px-5 py-3 text-left hover:bg-muted/50 transition-colors duration-150 ease-out active:scale-[0.99]"
                     onMouseDown={(e) => e.preventDefault()}
                   >
                     <div className="flex items-center justify-between gap-3">
