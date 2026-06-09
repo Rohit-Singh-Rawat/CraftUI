@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const LATEST_CRAFTS_URL = "https://crafts.rohitsinghrawat.com";
+const LATEST_CRAFTS_URL = "https://ichi.rohitsinghrawat.com";
 
 export function ArchivedBanner() {
   return (
@@ -34,7 +34,7 @@ export function ArchivedBanner() {
             rel="noopener noreferrer"
             className="font-medium text-foreground underline decoration-foreground/25 underline-offset-[3px] transition-colors duration-200 ease-out hover:decoration-foreground/60"
           >
-            crafts.rohitsinghrawat.com
+            ichi.rohitsinghrawat.com
             <span className="sr-only"> (opens in new tab)</span>
           </Link>
           . Everything here stays{" "}
