@@ -22,6 +22,7 @@
       "title": "Gooey Search Bar",
       "description": "Animated search bar with gooey blob effects",
       "registryDependencies": ["input", "button"],
+      "dependencies": ["motion"],
       "files": [
         {
           "path": "craft/components/gooey-search-bar.tsx",
