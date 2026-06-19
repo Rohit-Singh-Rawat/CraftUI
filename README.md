@@ -14,13 +14,13 @@ Craft Diary is a component diary system that treats UI components as craft entri
 
 ## Features
 
-- 📖 **Diary System** - File-based component discovery with automatic metadata extraction
-- 🎨 **Beautiful by default** - Modern design with dark mode support
-- ♿ **Fully accessible** - ARIA compliant with keyboard navigation
-- 📱 **Responsive** - Split-panel layout adapts to any screen size
-- 🎭 **Animated** - Smooth transitions and micro-interactions
-- 🔧 **Customizable** - Built with Tailwind CSS and CSS variables
-- 📚 **MDX Documentation** - Write docs alongside your components
+-  **Diary System** - File-based component discovery with automatic metadata extraction
+-  **Beautiful by default** - Modern design with dark mode support
+- **Fully accessible** - ARIA compliant with keyboard navigation
+-  **Responsive** - Split-panel layout adapts to any screen size
+-  **Animated** - Smooth transitions and micro-interactions
+-  **Customizable** - Built with Tailwind CSS and CSS variables
+-  **MDX Documentation** - Write docs alongside your components
 
 ## How It Works
 
